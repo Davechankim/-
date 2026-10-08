@@ -21,18 +21,6 @@
     }, opts || { threshold: 0.25 });
     io.observe(el);
   }
-  function whileVisible(el, start, stop, opts) {
-    if (!el) return;
-    if (!('IntersectionObserver' in window)) { start(); return; }
-    var running = false;
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting && !running) { running = true; start(); }
-        else if (!e.isIntersecting && running) { running = false; stop(); }
-      });
-    }, opts || { threshold: 0.3 });
-    io.observe(el);
-  }
 
   /* ---------- 테마 ---------- */
   var THEME_KEY = 'best-theme';
@@ -52,6 +40,18 @@
   }
   var themeBtn = $('#themeBtn');
   if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
+
+  /* ---------- 히어로 로드 시퀀스 ---------- */
+  $$('.hero-title .w').forEach(function (w, i) { w.style.setProperty('--i', i); });
+  function markLoaded() {
+    requestAnimationFrame(function () { requestAnimationFrame(function () { root.classList.add('loaded'); }); });
+  }
+  if (document.fonts && document.fonts.ready) {
+    var done = false;
+    var go = function () { if (!done) { done = true; markLoaded(); } };
+    document.fonts.ready.then(go);
+    setTimeout(go, 900); /* 폰트가 늦어도 0.9초 뒤에는 시작 */
+  } else { markLoaded(); }
 
   /* ---------- 상단바 · 진행 바 · 메뉴 ---------- */
   var topbar = $('#topbar');
@@ -88,10 +88,10 @@
   var sections = $$('main > .section');
   var dots = $('#dots');
   if (dots) {
-    sections.forEach(function (s) {
+    sections.forEach(function (s, i) {
       var a = document.createElement('a');
       a.href = '#' + s.id;
-      a.innerHTML = '<span>' + (s.getAttribute('data-title') || s.id) + '</span>';
+      a.innerHTML = '<span>ST.' + (i < 10 ? '0' + i : i) + ' ' + (s.getAttribute('data-title') || s.id) + '</span>';
       a.setAttribute('aria-label', s.getAttribute('data-title') || s.id);
       a.tabIndex = -1;
       dots.appendChild(a);
@@ -108,10 +108,7 @@
     sections.forEach(function (s) { secIO.observe(s); });
   }
 
-  /* ---------- 히어로 단어 순차 등장 ---------- */
-  $$('.hero-title .w').forEach(function (w, i) { w.style.setProperty('--i', i); });
-
-  /* ---------- 스크롤 등장 ---------- */
+  /* ---------- 스크롤 등장 (1회) ---------- */
   $$('[data-stagger]').forEach(function (g) {
     Array.prototype.forEach.call(g.children, function (c, i) { c.style.setProperty('--i', i); });
   });
@@ -123,9 +120,8 @@
       entries.forEach(function (e) {
         if (e.isIntersecting) { e.target.classList.add('in'); revIO.unobserve(e.target); }
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    }, { threshold: 0.15, rootMargin: '0px 0px -5% 0px' });
     revealEls.forEach(function (el) { revIO.observe(el); });
-    /* 화면 안에 이미 있는 요소가 관찰 지연으로 남지 않도록 보험 */
     window.setTimeout(function () {
       revealEls.forEach(function (el) {
         var r = el.getBoundingClientRect();
@@ -134,24 +130,6 @@
     }, 1200);
   }
   onVisible($('#contact'), function (el) { el.classList.add('in'); }, { threshold: 0.2 });
-
-  /* ---------- 숫자 카운트업 ---------- */
-  function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
-  $$('[data-count]').forEach(function (el) {
-    var target = parseFloat(el.getAttribute('data-count'));
-    var dec = parseInt(el.getAttribute('data-decimals') || '0', 10);
-    if (reduced) { el.textContent = target.toFixed(dec); return; }
-    onVisible(el, function () {
-      var start = null, dur = 1500;
-      function frame(ts) {
-        if (!start) start = ts;
-        var p = Math.min(1, (ts - start) / dur);
-        el.textContent = (target * easeOut(p)).toFixed(dec);
-        if (p < 1) requestAnimationFrame(frame);
-      }
-      requestAnimationFrame(frame);
-    }, { threshold: 0.6 });
-  });
 
   /* ---------- 노선도 ---------- */
   var STATIONS = {
@@ -199,7 +177,7 @@
     panel.classList.add('swap');
   }
   if (metro) {
-    onVisible(metro, function () { metro.classList.add('drawn'); }, { threshold: 0.25 });
+    onVisible(metro, function () { metro.classList.add('drawn'); }, { threshold: 0.3 });
     $$('.station', metro).forEach(function (s) {
       s.addEventListener('click', function () { showStation(s.getAttribute('data-id')); });
       s.addEventListener('keydown', function (e) {
@@ -263,10 +241,9 @@
   }
   function addTyping() {
     var m = el('div', 'msg');
-    m.appendChild(el('span', 'who', '<i>A</i>ARGOS'));
-    var b = el('div', 'bubble typing', '<i></i><i></i><i></i>');
     m.setAttribute('aria-hidden', 'true');
-    m.appendChild(b);
+    m.appendChild(el('span', 'who', '<i>A</i>ARGOS'));
+    m.appendChild(el('div', 'bubble typing', '<i></i><i></i><i></i>'));
     chatBody.appendChild(m); scrollChat();
     return m;
   }
@@ -280,7 +257,7 @@
       '<div class="ccard-row"><span>대파</span><b>100단</b></div>' +
       '<div class="ccard-row"><span>양파</span><b>20망</b></div>' +
       '<div class="ccard-row"><span>배추</span><b>30망</b></div>' +
-      '<div class="ccard-warn">⚠ 대파 재고가 기준 이하입니다.</div>' +
+      '<div class="ccard-warn">대파 재고가 기준 이하입니다.</div>' +
       '</div>';
     m.appendChild(c);
     chatBody.appendChild(m); scrollChat();
@@ -297,7 +274,7 @@
       '<div class="ccard-row"><span>승인권자</span><b>점주</b></div>' +
       '<div class="ccard-row"><span>실행</span><span>승인 시 ERP 발주 API로 전달</span></div>' +
       '</div>' +
-      '<div class="ccard-actions"><button type="button" class="ok">승인</button><button type="button" class="no">거절</button></div>';
+      '<div class="ccard-actions"><button type="button" class="btn btn-primary ok">승인</button><button type="button" class="btn btn-secondary no">거절</button></div>';
     m.appendChild(c);
     chatBody.appendChild(m); scrollChat();
     var ok = $('.ok', c), no = $('.no', c), done = false, auto;
@@ -310,10 +287,10 @@
       $('.ccard-head .code', c).textContent = approved ? '승인됨' : '거절됨';
       if (approved) {
         addSys('ok', '승인자·시각 기록 → ERP 발주 API 전달 → 감사로그 저장');
-        setTimeout(function () { if (run === chatRun) addMsg('bot', '발주 요청이 ERP에 전달되었습니다. 입고 결과는 이 대화에서 확인됩니다.'); }, reduced ? 0 : 900);
+        setTimeout(function () { if (run === chatRun) addMsg('bot', '발주 요청이 ERP에 전달되었습니다. 입고 결과는 이 대화에서 확인됩니다.'); }, reduced ? 0 : 600);
       } else {
         addSys('no', '거절 사유 기록 · 데이터 변경 없음');
-        setTimeout(function () { if (run === chatRun) addMsg('bot', '발주 요청을 취소했습니다. 재고 기준은 그대로 유지됩니다.'); }, reduced ? 0 : 900);
+        setTimeout(function () { if (run === chatRun) addMsg('bot', '발주 요청을 취소했습니다. 재고 기준은 그대로 유지됩니다.'); }, reduced ? 0 : 600);
       }
     }
     ok.addEventListener('click', function () { finish(true); });
@@ -321,8 +298,8 @@
     auto = setTimeout(function () {
       if (done || run !== chatRun) return;
       addSys('', '시연: 승인권자(점주)가 승인 버튼을 누릅니다');
-      setTimeout(function () { finish(true); }, 700);
-    }, 7000);
+      setTimeout(function () { finish(true); }, 600);
+    }, 6000);
   }
   function playChat() {
     if (!chatBody) return;
@@ -333,51 +310,20 @@
     var d = function (ms) { return reduced ? 0 : ms; };
     function at(ms, fn) { t += d(ms); chatTimers.push(setTimeout(function () { if (run === chatRun) fn(); }, t)); }
     var typing;
-    at(300, function () { addMsg('me', '오늘 우장산점 농산팀 발주 상황 확인해줘.'); });
-    at(700, function () { typing = addTyping(); });
-    at(1000, function () { typing.remove(); addMsg('bot', 'ERP에서 발주 정보를 조회하겠습니다.'); });
-    at(600, function () { typing = addTyping(); });
-    at(1200, function () { typing.remove(); dataCard(); });
-    at(1700, function () { addMsg('me', '대파 50단 추가 발주해.'); });
-    at(700, function () { typing = addTyping(); });
-    at(1000, function () { typing.remove(); approveCard(run); });
+    at(200, function () { addMsg('me', '오늘 우장산점 농산팀 발주 상황 확인해줘.'); });
+    at(500, function () { typing = addTyping(); });
+    at(700, function () { typing.remove(); addMsg('bot', 'ERP에서 발주 정보를 조회하겠습니다.'); });
+    at(500, function () { typing = addTyping(); });
+    at(800, function () { typing.remove(); dataCard(); });
+    at(1100, function () { addMsg('me', '대파 50단 추가 발주해.'); });
+    at(500, function () { typing = addTyping(); });
+    at(700, function () { typing.remove(); approveCard(run); });
   }
   var chat = $('#chat');
   if (chat && chatBody) {
     onVisible(chat, function () { playChat(); }, { threshold: 0.35 });
     var replay = $('#chatReplay');
     if (replay) replay.addEventListener('click', playChat);
-  }
-
-  /* ---------- 끊기지 않는 업무: 단계 하이라이트 ---------- */
-  var steps = $$('#steps .step');
-  if (steps.length) {
-    var si = 0, stepTimer = null;
-    function paintSteps() {
-      steps.forEach(function (s, i) {
-        s.classList.toggle('is-on', i === si);
-        s.classList.toggle('done', i < si);
-      });
-    }
-    paintSteps();
-    if (!reduced) {
-      whileVisible($('#steps'), function () {
-        stepTimer = setInterval(function () { si = (si + 1) % steps.length; paintSteps(); }, 1700);
-      }, function () { clearInterval(stepTimer); }, { threshold: 0.4 });
-    }
-  }
-
-  /* ---------- 하나의 마트, 네 가지 역할 ---------- */
-  var roles = $$('#rolesList .role');
-  if (roles.length && !reduced) {
-    var ri = 0, roleTimer = null;
-    function paintRoles() { roles.forEach(function (r, i) { r.classList.toggle('is-on', i === ri); }); }
-    paintRoles();
-    whileVisible($('#rolesList'), function () {
-      roleTimer = setInterval(function () { ri = (ri + 1) % roles.length; paintRoles(); }, 1600);
-    }, function () { clearInterval(roleTimer); }, { threshold: 0.4 });
-  } else if (roles.length) {
-    roles.forEach(function (r) { r.classList.add('is-on'); });
   }
 
   /* ---------- 로드맵 진행선 ---------- */
@@ -407,7 +353,6 @@
   }
 
   /* ---------- 키보드 섹션 이동 (프레젠테이션) ---------- */
-  /* 스무스 스크롤이 진행되는 동안은 실제 scrollY 대신 목표 인덱스를 기준으로 삼아 연타가 유실되지 않게 한다. */
   var targetIdx = null, settleTimer = 0;
   function clearTarget() { targetIdx = null; }
   function currentIndex() {
@@ -441,7 +386,6 @@
     switch (e.key) {
       case 'PageDown': case ' ': {
         if (e.shiftKey) return;
-        /* 섹션 하단이 아직 화면 아래에 남아 있으면 브라우저 기본 한 화면 스크롤을 유지한다 */
         var cur = sections[currentIndex()];
         if (targetIdx === null && cur && cur.getBoundingClientRect().bottom > window.innerHeight + 8) return;
         e.preventDefault(); goTo(currentIndex() + 1); break;
@@ -465,7 +409,9 @@
   /* ---------- 인쇄: 접힌 항목을 펼치고 등장 상태를 모두 보이게 ---------- */
   var printOpened = [];
   window.addEventListener('beforeprint', function () {
+    root.classList.add('loaded');
     revealEls.forEach(function (el) { el.classList.add('in'); });
+    if (metro) metro.classList.add('drawn');
     $$('.faq details').forEach(function (d) { if (!d.open) { d.open = true; printOpened.push(d); } });
   });
   window.addEventListener('afterprint', function () {
@@ -475,6 +421,7 @@
 
   /* ---------- 동작 줄이기 환경 ---------- */
   if (reduced) {
+    root.classList.add('loaded');
     $$('animateMotion').forEach(function (a) { a.parentNode.removeChild(a); });
   }
 })();

@@ -19,9 +19,9 @@ GitHub Pages, Vercel, Netlify 등 정적 호스팅에 폴더째 올리면 동작
 
 | 경로 | 내용 |
 |---|---|
-| `index.html` | 모든 본문 텍스트와 섹션 구조 (ST.00 ~ ST.13) |
-| `assets/css/style.css` | 디자인 토큰(`:root`), 라이트 테마(`[data-theme="light"]`), 섹션별 스타일, 애니메이션 |
-| `assets/js/main.js` | 노선도 상호작용, 채팅 시연, 스크롤 등장, 카운트업, 키보드 섹션 이동, 테마 전환 |
+| `index.html` | 모든 본문 텍스트와 섹션 구조 (ST.00 ~ ST.09) |
+| `assets/css/style.css` | 디자인 토큰(`:root`), 라이트 테마(`[data-theme="light"]`), 섹션별 스타일, 애니메이션, 인쇄 |
+| `assets/js/main.js` | 노선도 상호작용, 채팅 시연, 스크롤 등장, 키보드 섹션 이동, 테마 전환 |
 
 ## 프레젠테이션 조작
 
@@ -36,7 +36,14 @@ GitHub Pages, Vercel, Netlify 등 정적 호스팅에 폴더째 올리면 동작
 - **상위 브랜드명**: 현재 "BEST 생태계"는 가칭입니다. 상단바(`.brand-text`와 `.brand`의 aria-label), `<title>`, `og:title`, 푸터에서 바꿉니다.
 - **노선도 역 설명**: `assets/js/main.js`의 `STATIONS` 객체를 수정합니다. 역 자체(위치·이름)는 `index.html`의 `<svg class="metro">` 안에 있습니다.
 - **채팅 시연 대사**: `assets/js/main.js`의 `playChat()` 함수와 `dataCard()`, `approveCard()`에 있습니다.
-- **속도 목표 수치**: `index.html`의 `data-count` 속성입니다.
+- **속도 목표 수치**: `index.html`의 `ul.targets` 안에 있습니다.
+
+## 디자인 원칙
+
+- 서체: 헤드라인 Noto Serif KR 600, 본문 IBM Plex Sans KR, 라벨·숫자 IBM Plex Mono (모두 Google Fonts, 요청 1개).
+- 색: 크롬(버튼·링크·강조)의 유채색은 앰버 `--accent` 하나. 노선 4색(`--rail-*`)은 노선도·차트 SVG 안에서만 씁니다.
+- 깊이: 그림자 대신 표면 명도 사다리(`--canvas` → `--s1` → `--s2` → `--s3`)와 1px 헤어라인(`--hair`).
+- 모션: 등장 520ms 1회, 상태 변화 160ms. 루프 애니메이션은 히어로 노선의 작은 불빛 하나뿐이며 `prefers-reduced-motion`에서 꺼집니다.
 
 ## 주의
 
