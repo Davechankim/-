@@ -43,7 +43,7 @@ GitHub Pages, Vercel, Netlify 등 정적 호스팅에 폴더째 올리면 동작
 - 서체: 헤드라인 Noto Serif KR 600, 본문 IBM Plex Sans KR, 라벨·숫자 IBM Plex Mono (모두 Google Fonts, 요청 1개).
 - 색: 크롬(버튼·링크·강조)의 유채색은 앰버 `--accent` 하나. 노선 4색(`--rail-*`)은 노선도·차트 SVG 안에서만 씁니다.
 - 깊이: 그림자 대신 표면 명도 사다리(`--canvas` → `--s1` → `--s2` → `--s3`)와 1px 헤어라인(`--hair`).
-- 모션: 등장 520ms 1회, 상태 변화 160ms. 루프 애니메이션은 히어로 노선의 작은 불빛 하나뿐이며 `prefers-reduced-motion`에서 꺼집니다.
+- 모션: 등장 520ms 1회, 상태 변화 160ms. 루프 애니메이션은 히어로 노선의 작은 불빛과 채팅 시연의 '입력 중' 점 둘뿐이며 `prefers-reduced-motion`에서 꺼집니다.
 
 ## 주의
 

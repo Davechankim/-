@@ -50,7 +50,7 @@
     var done = false;
     var go = function () { if (!done) { done = true; markLoaded(); } };
     document.fonts.ready.then(go);
-    setTimeout(go, 900); /* 폰트가 늦어도 0.9초 뒤에는 시작 */
+    setTimeout(go, 400); /* 폰트가 늦어도 0.4초 뒤에는 시작 */
   } else { markLoaded(); }
 
   /* ---------- 상단바 · 진행 바 · 메뉴 ---------- */
@@ -82,6 +82,9 @@
       menuBtn.setAttribute('aria-label', open ? '메뉴 닫기' : '메뉴 열기');
     });
     nav.addEventListener('click', function (e) { if (e.target.closest('a')) closeMenu(); });
+    document.addEventListener('pointerdown', function (e) {
+      if (nav.classList.contains('open') && !nav.contains(e.target) && !menuBtn.contains(e.target)) closeMenu();
+    });
   }
 
   /* ---------- 섹션 목록 · 점 내비 · 활성 링크 ---------- */
@@ -97,8 +100,12 @@
       dots.appendChild(a);
     });
   }
+  var navIds = $$('.nav a').map(function (a) { return a.getAttribute('href').slice(1); });
   function setActive(id) {
-    $$('.nav a').forEach(function (a) { a.classList.toggle('is-active', a.getAttribute('href') === '#' + id); });
+    /* 상단 내비에 없는 섹션이면 가장 가까운 앞 섹션의 링크를 활성으로 유지 */
+    var navId = id, idx = sections.map(function (s) { return s.id; }).indexOf(id);
+    while (idx > 0 && navIds.indexOf(navId) < 0) { idx -= 1; navId = sections[idx].id; }
+    $$('.nav a').forEach(function (a) { a.classList.toggle('is-active', a.getAttribute('href') === '#' + navId); });
     $$('.dots a').forEach(function (a) { a.classList.toggle('is-active', a.getAttribute('href') === '#' + id); });
   }
   if ('IntersectionObserver' in window) {
@@ -178,6 +185,10 @@
   }
   if (metro) {
     onVisible(metro, function () { metro.classList.add('drawn'); }, { threshold: 0.3 });
+    var stage = $('.map-stage');
+    function centerStage() { if (stage && stage.scrollWidth > stage.clientWidth) stage.scrollLeft = (stage.scrollWidth - stage.clientWidth) / 2; }
+    centerStage();
+    window.addEventListener('resize', centerStage);
     $$('.station', metro).forEach(function (s) {
       s.addEventListener('click', function () { showStation(s.getAttribute('data-id')); });
       s.addEventListener('keydown', function (e) {
@@ -204,6 +215,7 @@
         p.classList.toggle('is-active', on);
       });
     }
+    activate(btns.filter(function (b) { return b.classList.contains('is-active'); })[0] || btns[0]);
     btns.forEach(function (b, i) {
       b.addEventListener('click', function () { activate(b); });
       b.addEventListener('keydown', function (e) {
@@ -265,6 +277,7 @@
   function approveCard(run) {
     var m = el('div', 'msg');
     m.appendChild(el('span', 'who', '<i>A</i>ARGOS'));
+    addSys('', '시연: 여기부터는 승인권자(점주)의 화면입니다');
     var c = el('div', 'ccard pending');
     c.innerHTML =
       '<div class="ccard-head"><span>발주 승인 요청</span><span class="code">승인 대기</span></div>' +
@@ -297,7 +310,7 @@
     no.addEventListener('click', function () { finish(false); });
     auto = setTimeout(function () {
       if (done || run !== chatRun) return;
-      addSys('', '시연: 승인권자(점주)가 승인 버튼을 누릅니다');
+      addSys('', '시연: 점주가 승인 버튼을 누릅니다');
       setTimeout(function () { finish(true); }, 600);
     }, 6000);
   }
@@ -382,7 +395,7 @@
     if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || (t && t.isContentEditable)) return;
     var onControl = t && t.closest && t.closest('button, a, summary, [role="button"], [role="tab"]');
     if ((e.key === ' ' || e.key === 'Enter') && onControl) return;
-    if (e.code === 'KeyT' && e.key !== 't' && e.key !== 'T' && e.key !== 'ㅅ') { toggleTheme(); return; }
+    if (e.code === 'KeyT' && (e.key === 'Process' || e.key === 'Unidentified' || e.isComposing)) { toggleTheme(); return; }
     switch (e.key) {
       case 'PageDown': case ' ': {
         if (e.shiftKey) return;
