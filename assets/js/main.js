@@ -93,6 +93,7 @@
       a.href = '#' + s.id;
       a.innerHTML = '<span>' + (s.getAttribute('data-title') || s.id) + '</span>';
       a.setAttribute('aria-label', s.getAttribute('data-title') || s.id);
+      a.tabIndex = -1;
       dots.appendChild(a);
     });
   }
@@ -176,7 +177,7 @@
       body: '허용된 범위에서 여러 서비스의 상태를 모으고, 확인할 사항을 제안하며, 승인된 실행을 연결합니다. 서비스 정의서와 관계도를 함께 관리해 어떤 서비스가 무엇에 의존하는지 보여줍니다.',
       tags: ['상태 수집', 'AI 제안', '승인된 실행'] },
     next: { line: 'next', lineName: '예정', title: '다음 서비스', who: '기존 레일 위에 역을 추가',
-      body: '픽업 전용 서비스, 배달매장 OS 같은 새 서비스는 계정·점포·주문을 처음부터 만들지 않고 기존 기반을 연결받아 고유한 업무 규칙과 화면만 개발합니다. 서비스 정의서로 이용자·역할·책임·연결 규칙을 먼저 정합니다.',
+      body: '픽업 전용 서비스, 배달매장 OS 같은 새 서비스는 계정·점포·주문을 처음부터 만들지 않고 기존 기반을 연결받아 고유한 업무 규칙과 화면을 개발합니다. 서비스 정의서로 이용자·역할·책임·연결 규칙을 먼저 정합니다.',
       tags: ['서비스 정의서', '기반 재사용', '독립 추가'] }
   };
   var metro = $('#metro');
@@ -239,6 +240,7 @@
   /* ---------- 채팅 시연 ---------- */
   var chatBody = $('#chatBody');
   var chatRun = 0;
+  var chatTimers = [];
   function el(tag, cls, html) {
     var n = document.createElement(tag);
     if (cls) n.className = cls;
@@ -248,7 +250,7 @@
   function scrollChat() { if (chatBody) chatBody.scrollTop = chatBody.scrollHeight; }
   function addMsg(kind, html) {
     var m = el('div', 'msg' + (kind === 'me' ? ' me' : ''));
-    var who = el('span', 'who', kind === 'me' ? '점주' : '<i>A</i>ARGOS');
+    var who = el('span', 'who', kind === 'me' ? '농산팀 담당' : '<i>A</i>ARGOS');
     var b = el('div', 'bubble', html);
     m.appendChild(who); m.appendChild(b);
     chatBody.appendChild(m); scrollChat();
@@ -263,6 +265,7 @@
     var m = el('div', 'msg');
     m.appendChild(el('span', 'who', '<i>A</i>ARGOS'));
     var b = el('div', 'bubble typing', '<i></i><i></i><i></i>');
+    m.setAttribute('aria-hidden', 'true');
     m.appendChild(b);
     chatBody.appendChild(m); scrollChat();
     return m;
@@ -291,6 +294,7 @@
       '<div class="ccard-body">' +
       '<div class="ccard-row"><span>매장 · 팀</span><b>우장산점 · 농산팀</b></div>' +
       '<div class="ccard-row"><span>내용</span><b>대파 추가 발주 50단</b></div>' +
+      '<div class="ccard-row"><span>승인권자</span><b>점주</b></div>' +
       '<div class="ccard-row"><span>실행</span><span>승인 시 ERP 발주 API로 전달</span></div>' +
       '</div>' +
       '<div class="ccard-actions"><button type="button" class="ok">승인</button><button type="button" class="no">거절</button></div>';
@@ -316,18 +320,18 @@
     no.addEventListener('click', function () { finish(false); });
     auto = setTimeout(function () {
       if (done || run !== chatRun) return;
-      addSys('', '시연: 승인권자가 승인 버튼을 누릅니다');
+      addSys('', '시연: 승인권자(점주)가 승인 버튼을 누릅니다');
       setTimeout(function () { finish(true); }, 700);
     }, 7000);
   }
   function playChat() {
     if (!chatBody) return;
     var run = ++chatRun;
+    chatTimers.forEach(clearTimeout); chatTimers = [];
     chatBody.innerHTML = '';
     var t = 0;
     var d = function (ms) { return reduced ? 0 : ms; };
-    var q = [];
-    function at(ms, fn) { t += d(ms); q.push(setTimeout(function () { if (run === chatRun) fn(); }, t)); }
+    function at(ms, fn) { t += d(ms); chatTimers.push(setTimeout(function () { if (run === chatRun) fn(); }, t)); }
     var typing;
     at(300, function () { addMsg('me', '오늘 우장산점 농산팀 발주 상황 확인해줘.'); });
     at(700, function () { typing = addTyping(); });
@@ -403,7 +407,11 @@
   }
 
   /* ---------- 키보드 섹션 이동 (프레젠테이션) ---------- */
+  /* 스무스 스크롤이 진행되는 동안은 실제 scrollY 대신 목표 인덱스를 기준으로 삼아 연타가 유실되지 않게 한다. */
+  var targetIdx = null, settleTimer = 0;
+  function clearTarget() { targetIdx = null; }
   function currentIndex() {
+    if (targetIdx !== null) return targetIdx;
     var y = (window.scrollY || window.pageYOffset) + 80;
     var idx = 0;
     sections.forEach(function (s, i) { if (s.offsetTop <= y) idx = i; });
@@ -411,8 +419,17 @@
   }
   function goTo(i) {
     i = Math.max(0, Math.min(sections.length - 1, i));
+    targetIdx = i;
     sections[i].scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+    clearTimeout(settleTimer);
+    settleTimer = setTimeout(clearTarget, 1200);
   }
+  window.addEventListener('scroll', function () {
+    if (targetIdx === null) return;
+    clearTimeout(settleTimer);
+    settleTimer = setTimeout(clearTarget, 160);
+  }, { passive: true });
+  ['wheel', 'touchstart', 'pointerdown'].forEach(function (ev) { window.addEventListener(ev, clearTarget, { passive: true }); });
   document.addEventListener('keydown', function (e) {
     if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.altKey) return;
     var t = e.target;
@@ -420,16 +437,40 @@
     if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || (t && t.isContentEditable)) return;
     var onControl = t && t.closest && t.closest('button, a, summary, [role="button"], [role="tab"]');
     if ((e.key === ' ' || e.key === 'Enter') && onControl) return;
+    if (e.code === 'KeyT' && e.key !== 't' && e.key !== 'T' && e.key !== 'ㅅ') { toggleTheme(); return; }
     switch (e.key) {
-      case 'ArrowRight': case 'PageDown': case ' ':
+      case 'PageDown': case ' ': {
+        if (e.shiftKey) return;
+        /* 섹션 하단이 아직 화면 아래에 남아 있으면 브라우저 기본 한 화면 스크롤을 유지한다 */
+        var cur = sections[currentIndex()];
+        if (targetIdx === null && cur && cur.getBoundingClientRect().bottom > window.innerHeight + 8) return;
         e.preventDefault(); goTo(currentIndex() + 1); break;
-      case 'ArrowLeft': case 'PageUp':
+      }
+      case 'ArrowRight':
+        e.preventDefault(); goTo(currentIndex() + 1); break;
+      case 'PageUp': {
+        var prevCur = sections[currentIndex()];
+        if (targetIdx === null && prevCur && prevCur.getBoundingClientRect().top < -8) return;
         e.preventDefault(); goTo(currentIndex() - 1); break;
-      case 't': case 'T':
-        if (!onControl) toggleTheme(); break;
+      }
+      case 'ArrowLeft':
+        e.preventDefault(); goTo(currentIndex() - 1); break;
+      case 't': case 'T': case 'ㅅ':
+        toggleTheme(); break;
       case 'Escape':
         closeMenu(); break;
     }
+  });
+
+  /* ---------- 인쇄: 접힌 항목을 펼치고 등장 상태를 모두 보이게 ---------- */
+  var printOpened = [];
+  window.addEventListener('beforeprint', function () {
+    revealEls.forEach(function (el) { el.classList.add('in'); });
+    $$('.faq details').forEach(function (d) { if (!d.open) { d.open = true; printOpened.push(d); } });
+  });
+  window.addEventListener('afterprint', function () {
+    printOpened.forEach(function (d) { d.open = false; });
+    printOpened = [];
   });
 
   /* ---------- 동작 줄이기 환경 ---------- */

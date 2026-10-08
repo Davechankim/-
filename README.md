@@ -25,15 +25,15 @@ GitHub Pages, Vercel, Netlify 등 정적 호스팅에 폴더째 올리면 동작
 
 ## 프레젠테이션 조작
 
-- `←` `→` (또는 `PageUp` `PageDown`, `Space`): 섹션 단위 이동
+- `←` `→`: 섹션 단위 이동. `Space` `PageDown` `PageUp`: 한 화면씩 넘기다가 섹션 끝·시작에서 다음·이전 섹션으로 이동
 - `T`: 다크/라이트 테마 전환 (우상단 버튼과 동일)
 - 노선도의 역을 클릭하면 오른쪽 패널에 설명이 바뀝니다.
 - 채팅 시연은 화면에 들어오면 자동 재생되고, 승인/거절 버튼을 직접 누를 수 있습니다. "다시 보기"로 반복합니다.
 
 ## 내용 수정
 
-- **연락처**: `index.html`에서 `id="contactValue"`인 문단의 텍스트를 담당자 연락처로 바꾸고, 바로 아래 안내 문단(`class="fine"`)은 삭제합니다.
-- **상위 브랜드명**: 현재 "BEST 생태계"는 가칭입니다. 상단바(`.brand-text`), `<title>`, 푸터에서 바꿉니다.
+- **연락처**: `index.html`에서 `id="contactValue"`인 문단의 텍스트("담당자 연락처는 발표 자리에서 안내합니다.")를 실제 연락처로 바꿉니다.
+- **상위 브랜드명**: 현재 "BEST 생태계"는 가칭입니다. 상단바(`.brand-text`와 `.brand`의 aria-label), `<title>`, `og:title`, 푸터에서 바꿉니다.
 - **노선도 역 설명**: `assets/js/main.js`의 `STATIONS` 객체를 수정합니다. 역 자체(위치·이름)는 `index.html`의 `<svg class="metro">` 안에 있습니다.
 - **채팅 시연 대사**: `assets/js/main.js`의 `playChat()` 함수와 `dataCard()`, `approveCard()`에 있습니다.
 - **속도 목표 수치**: `index.html`의 `data-count` 속성입니다.
