@@ -9,6 +9,7 @@
 - 타이포그래피가 주인공입니다. 한글 명조(Noto Serif KR)를 굵게 하지 않고 크게 씁니다.
 - 색은 캔버스·잉크·액센트 하나. 노선 4색은 노선도와 차트 안에서만 씁니다.
 - 깊이는 그림자가 아니라 표면 명도 차로 만듭니다. 그림자는 제품 시연(디바이스 프레임) 한 곳뿐입니다.
+- 시각물(개념도·노선도·역할 표)은 상자에 넣지 않고 캔버스 위에 직접 둡니다. 상자(카드)는 병렬 항목에만 씁니다.
 - 연속된 섹션은 표면을 번갈아 둡니다(크림 → 소프트 크림 → 다크 → 크림 …). 섹션 사이 구분선은 두지 않습니다.
 - 모션은 짧고 한 번만. 반복 애니메이션은 히어로 노선의 작은 불빛과 채팅 '입력 중' 점뿐입니다.
 
@@ -29,10 +30,13 @@
 | `--accent` | `#7F5F24` | `#D9AD64` | 유일한 크롬 유채색: 강조 단어, 활성 상태, 선택된 역 |
 | `--cta` / `--cta-ink` | `#141413` / `#FAF9F5` | `#FAF9F5` / `#141413` | 주 CTA(pill) |
 | `--rail-consumer` | `#C4634F` | `#D4796B` | 소비자선 (SVG 전용) |
-| `--rail-biz` | `#B5842B` | `#D9AD64` | 사업자선 (SVG 전용) |
+| `--rail-business` | `#B5842B` | `#D9AD64` | 사업자선 (SVG 전용) |
 | `--rail-work` | `#3F8A63` | `#6FAE8A` | 업무선 (SVG 전용) |
 | `--rail-hub` | `#3C6DB5` | `#7A9FD6` | 환승역 링 (SVG 전용) |
 | `--state-ok` / `--state-warn` | `#3F8A63` / `#C4634F` | `#6FAE8A` / `#D4796B` | 상태 텍스트와 6px 점에만 |
+| `--edge-featured` | 잉크 10%→2%→앰버 35% 그라디언트 | 흰색 28%→4%→앰버 30% | 피처드 카드의 1px 링 |
+| `--accent-line` / `--canvas-0` | 앰버 40% / 캔버스 투명 | 앰버 40% / 캔버스 투명 | 승인 대기 pill 테두리, 마무리 배경 페이드 |
+| `--shadow-float` | 잉크 22% 소프트 | 검정 75% + 상단 하이라이트 | 디바이스 프레임, 모바일 메뉴 |
 
 규칙: 한 화면에서 크롬에 쓰이는 유채색은 `--accent` 하나, 요소 1~2개까지. 색 테두리·색 상단 띠·틴트 카드는 쓰지 않습니다.
 
@@ -41,59 +45,79 @@
 | 역할 | 서체 | 크기 | 굵기 | 자간 | 행간 |
 |---|---|---|---|---|---|
 | 히어로 H1 | Noto Serif KR | `clamp(2.4rem, 5.2vw, 4rem)` | 500 | −0.02em | 1.16 |
-| 섹션 H2 | Noto Serif KR | `clamp(2rem, 3.6vw, 3rem)` | 500 | −0.016em | 1.22 |
+| 섹션 H2 | Noto Serif KR | `clamp(2rem, 3.4vw, 2.85rem)` | 500 | −0.016em | 1.22 |
 | 소절 H3 | Noto Serif KR | `clamp(1.35rem, 2.1vw, 1.75rem)` | 500 | −0.01em | 1.35 |
 | 마무리 선언 | Noto Serif KR | `clamp(2.2rem, 5vw, 4rem)` | 500 | −0.016em | 1.2 |
 | 리드 | IBM Plex Sans KR | `clamp(1.05rem, 1.35vw, 1.2rem)` | 400 | 0 | 1.7 |
 | 본문 | IBM Plex Sans KR | 17px (`106.25%`) | 400 | 0 | 1.75 |
-| 카드 H3 | IBM Plex Sans KR | 1.1rem | 600 | −0.005em | 1.4 |
+| 카드 H3 | Noto Serif KR | 1.25rem (서비스 카드 1.4rem, 참여 카드 1.15rem) | 500 | −0.01em | 1.3 |
+| 피처드 카드 제목 | IBM Plex Sans KR | 1.1rem | 600 | 0 | 1.4 |
+| 목록 제목 (`.hairlist b`, `.rules-grid b`, `.stage b`) | IBM Plex Sans KR | 0.95rem | 500 | 0 | 1.4 |
 | 캡션 | IBM Plex Sans KR | 0.8rem | 400 | 0 | 1.6 |
-| 라벨·pill·아이브로 | IBM Plex Mono | 0.68rem | 500 | +0.08em | 1.25 |
+| 모노 pill (`.code`, `.chips li`) | IBM Plex Mono | 0.74rem | 500 | +0.04em | 1.25 |
+| 모노 인라인 키 (`.role-k`, `.step-dev`, `.tier dt`, 번호) | IBM Plex Mono | 0.7rem | 500 | +0.04em | — |
 
 - 챕터 헤더(아이브로 → H2 → 리드)는 중앙 정렬, 그 아래 본문 블록은 좌측 정렬.
 - H2는 결론 문장(2줄, 줄당 22자 이내). 색 강조는 히어로 '철도'와 마무리 '사람' 두 곳만.
 - 한글은 `word-break: keep-all`, 헤드라인은 `text-wrap: balance`, 본문은 `text-wrap: pretty`.
 - 굵기 체계는 400·500·600 세 단계. 명조는 500 이하로만 씁니다.
+- 본문 크기 단계: 0.8 / 0.86 / 0.92 / 0.95 / 1 / 1.1rem. 모노 라벨은 12px 미만으로 내려가지 않습니다(0.7rem = 11.9px가 하한).
+- 모노 라벨에는 한글이 섞이므로 자간은 0.04em 하나만 씁니다. 챕터 머리의 역 번호(`.eyebrow .code`)는 테두리 없는 앰버 텍스트입니다.
 
 ## 간격·형태
 
-- 간격은 4px 배수. 섹션 `padding-block: clamp(88px, 10vw, 150px)`, 히어로 상단 `clamp(80px, 12vw, 160px)`.
-- 컨테이너 1200px, 거터 `clamp(16px, 3vw, 32px)`. 본문 측정폭 36em, 리드 38em.
-- 카드 패딩 30px 28px, radius 12px(`--radius`). 패널 radius 18px(`--radius-lg`). 버튼·pill은 999px.
-- 섹션 내부 리듬: 아이브로→H2 22px, H2→리드 20px, 리드→시각물 48~72px. 카드 안 H3→본문 10px.
+- 간격 토큰 `--sp-1`(4) … `--sp-12`(48): 4px 배수만 씁니다. 섹션 `padding-block: clamp(96px, 11vw, 160px)`, 소절(`.sub`) 위 `clamp(80px, 10vw, 140px)`.
+- 히어로와 마무리 선언은 각각 한 화면(`min-height: 100svh`)에 수직 중앙 정렬. 예상 질문은 마무리 아래 부록.
+- 컨테이너 1200px, 거터 `clamp(16px, 3vw, 32px)`. 본문 측정폭 36em, 리드 38em. H2 최대폭 24em.
+- 표면 패딩 `--pad-surface: clamp(16px, 2.5vw, 28px)`, 카드 패딩 28px(`--sp-7`), 카드 그리드 gap 16px.
+- 반경 토큰: `--radius-sm` 8 / `--radius` 12 / `--radius-lg` 18 / `--radius-device` 34 / `--radius-pill` 999. 리터럴 반경은 쓰지 않습니다.
+- 컨트롤 높이 토큰: `--control-sm` 36(소형 버튼·탭·아이콘 버튼) / `--control-md` 44(기본 버튼) / `--control-lg` 52(히어로 CTA).
+- 브레이크포인트는 640 / 720 / 960 / 1280 네 곳뿐입니다. 모든 그리드가 같은 지점에서 접힙니다.
+- 섹션 내부 리듬: 아이브로→H2 16px, H2→리드 24px, 리드→시각물 56~80px. 카드 안 H3→본문 10px.
 
 ## 컴포넌트
 
 | 컴포넌트 | 클래스 | 규격 | 상태 |
 |---|---|---|---|
-| 주 CTA | `.btn.btn-primary` | 잉크 pill, 12px 22px(히어로 14px 26px) | hover 배경 소폭 변화, active `scale(.97)`, focus 2px 캔버스 + 4px `--focus` 링 |
-| 보조 CTA | `.btn.btn-secondary` | `--s2` 배경 + 1px `--hair` | 위와 동일 |
-| 카드 | `.card` | `--s1`, 1px `--hair`, inset 상단 하이라이트 | hover 배경 `--s2` |
-| 피처드 카드 | `.card.card-featured` | `--s2` + 1px 그라디언트 링 | 페이지에 최대 1~2개 |
-| 패널 | `.panel` | 시각물 컨테이너(노선도·차트·역할) | — |
-| 라벨 pill | `.code` | 모노 0.68rem, 1px `--hair`, 배경 없음 | 노선 소속은 앞의 6px `.dot`으로만 표시 |
-| 칩 | `.chips li` | 모노 0.66rem | — |
-| 헤어라인 리스트 | `.hairlist` | 1px 상·하 선, 14px 패딩 | `.plain`, `.cols-2` 변형 |
-| 탭 | `.tab` / `.tabpanel` | pill 탭, 활성은 `--s2` + 액센트 코드 | ←/→ 이동, 패널 `tabindex=0` |
-| 디바이스 프레임 | `.device` > `.chat` | 34px radius, 사이트 유일의 플로팅 그림자 | 항상 다크 밴드 안 |
+| 주 CTA | `.btn.btn-primary` | 잉크 pill, 높이 44 (`.btn-lg` 52, `.btn-small`·`.btn-nav` 36) | hover 배경 소폭 변화, active `scale(.97)`, disabled 45%, focus 2px 캔버스 + 4px `--focus` 링 |
+| 보조 CTA | `.btn.btn-secondary` | `--s2` 배경 + 1px `--hair` | 위와 동일. 소형 버튼은 보이지 않는 4px 히트 슬롭으로 44px 확보 |
+| 아이콘 버튼 | `.icon-btn` | 36px 원, 1px `--hair` | 테마 버튼은 `aria-pressed`로 다크 여부 노출 |
+| 카드 | `.card` | `--s1`, 1px `--hair`, 패딩 28px, 명조 제목 | 정적 표면 — hover 변화 없음 |
+| 피처드 카드 | `.card.card-featured` | `--s2` + 1px `--edge-featured` 링 | 페이지에 최대 1~2개 |
+| 패널 | `.panel` | 탭 패널 등 텍스트 컨테이너 | 시각물(개념도·노선도·역할 표)은 패널에 넣지 않음 |
+| 라벨 pill | `.code` | 모노 0.74rem, 1px `--hair`, 배경 없음 | 노선 소속은 앞의 6px `.dot`으로만 표시. 아이브로 안에서는 테두리 없는 앰버 |
+| 칩 | `.chips li` | `.code`와 같은 규격, 400 | — |
+| 헤어라인 리스트 | `.hairlist` | 1px 상·하 선, 16px 패딩 | `.plain`, `.cols-2` 변형 |
+| 번호 목록 | `.metrics` | 앰버 2자리 번호 + 본문 1rem, 선 없음 | 판단 기준처럼 짧은 문장 8개 이내 |
+| 역할 행 | `.roles-list .role` | 헤어라인 행 2열, 점포 타일 1개 | — |
+| 탭 | `.tab` / `.tabpanel` | pill 탭(높이 36), 활성은 `--s2` + 액센트 코드 | ←/→/Home/End 이동, 패널 `tabindex=0` + 포커스 링 |
+| 거래 흐름 체인 | `.chain` | ≥960px: 1행 레일 그리드(앰버 번호 원 + 1px 선), 그 아래: 알약 + 화살표 | 등장 60ms 스태거 |
+| 디바이스 프레임 | `.device` > `.chat` | `--radius-device` 34px, `--shadow-float` | 항상 다크 밴드 안. 시연은 멈춤·다시 보기 버튼으로 제어 |
 | 채팅 카드 | `.ccard` | `--s2`, 1px `--hair-strong` | `.pending`/`.approved`/`.rejected` |
-| 노선도 역 | `g.station` | 히트 원 r=44, 링 2.5px | hover 링 3.5px, 선택 `--accent` 3px, 키보드 포커스 앰버 헤일로 |
+| 노선도 | `.map-stage` + `.map-panel` | 상자 없음. 선 4px, 라벨 헤일로는 캔버스색. 설명은 왼쪽 헤어라인 1개의 텍스트 열 | 동적 부분만 `aria-live` |
+| 노선도 역 | `g.station` | 히트 원 r=44, 링 2.5px, `role=button` + `aria-pressed` | hover 링 3.5px, 선택 `--accent` 3px, 키보드 포커스 앰버 헤일로. Tab 순서는 환승역부터 |
 | 로드맵 단계 | `.stage` / `.stage-no` | 1px 레일 + 번호 원 | 등장 시 번호 앰버, 진행선 `--p` |
 | 단계 스트립 | `.steps .step` | 번호 pill + 1px 연결선 | — |
-| FAQ | `.faq details` | 헤어라인 아코디언 | summary Enter/Space |
+| 인용 블록 | `.chainline` | 좌측 2px 앰버 선, 모노 0.8rem | 카드 안 상자 대신 |
+| FAQ | `.faq details` | 헤어라인 아코디언, 휴지 `--ink-2` → hover/open `--ink` | summary Enter/Space |
+| 건너뛰기 링크 | `.skip` | 포커스 전 투명, 포커스 시 좌상단 잉크 pill | 첫 Tab |
 
 ## 모션
 
 | 토큰 | 값 | 용도 |
 |---|---|---|
-| `--d-fast` | 160ms | hover·상태 변화 |
-| `--d-base` | 320ms | 말풍선·패널 교체 |
+| `--d-fast` | 160ms | hover·상태 변화·점 내비 |
+| `--d-base` | 320ms | 말풍선·패널 교체·테마 전환 |
+| `--d-slow` | 600ms | 느린 페이드(열차 불빛, 예정선, 로드맵 진행선) |
 | `--d-reveal` | 640ms | 스크롤 등장 1회 (`translateY(14px)` → 0) |
-| `--d-rail` | 1000ms | 노선 그리기 |
+| `--d-rail` | 1000ms | 히어로 노선 그리기 |
+| `--d-draw` | 1200ms | 개념도·노선도 선 긋기 (마무리 수렴선은 ×1.5) |
 | `--ease-out` | `cubic-bezier(.16,1,.3,1)` | 등장 |
 | `--ease-std` | `cubic-bezier(.2,0,0,1)` | 이동·선 긋기 |
 
 - 스태거는 60ms × 최대 5개. 바운스·오버슈트·회전 없음.
+- 브라우저 기본 `ease`는 쓰지 않습니다. 등장은 `--ease-out`, 이동·선 긋기·페이드는 `--ease-std`.
+- 5초 넘게 움직이는 것은 멈출 수 있어야 합니다: 히어로 열차 불빛은 '불빛 멈춤' 버튼, 채팅 시연은 '멈춤' 버튼.
 - `prefers-reduced-motion`에서는 모든 전환을 끄고 최종 상태를 바로 보여줍니다.
 - JS가 꺼져도 모든 내용이 보입니다(숨김 초기값은 `.js` 접두 규칙에만).
 
@@ -105,4 +129,6 @@
 | 명조는 크게, 굵기는 500 | 명조 700 이상, 포스터체, 그라디언트 텍스트 |
 | 노선 4색은 SVG와 6px 점에만 | 섹션마다 다른 강조색, 색 밑줄 |
 | 표면 교차로 리듬 만들기 | 카드마다 그림자, 섹션 구분선 |
+| 시각물은 캔버스 위에 직접, 설명은 헤어라인 한 줄 | 차트·노선도를 테두리 상자에 넣기, 상자 안의 상자 |
+| 정적 카드는 정적으로 | 클릭되지 않는 카드에 hover 효과 |
 | 설계 목표·시연 데이터 라벨 유지 | 실측치 없는 숫자 타일, 과장 수식어 |
