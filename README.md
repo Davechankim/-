@@ -32,6 +32,17 @@ GitHub Pages, Vercel, Netlify 등 정적 호스팅에 폴더째 올리면 동작
 - 채팅 시연은 화면에 들어오면 자동 재생되고, 승인/거절 버튼을 직접 누를 수 있습니다. "멈춤"으로 정지, "다시 보기"로 반복합니다. 시연이 끝나면 승인 장면이 화면에 남습니다.
 - 히어로 노선의 열차 불빛은 캡션 옆 "불빛 멈춤"으로 멈출 수 있습니다. 키보드 사용자는 첫 Tab에서 "본문으로 건너뛰기" 링크를 받습니다.
 
+## 확인 방법
+
+| 방법 | 언제 | 하는 법 |
+|---|---|---|
+| 브라우저 미리보기 | 가장 빠르게, 휴대전화에서도 | Claude에 로그인한 기기에서 아티팩트 링크를 엽니다. 사이트를 고칠 때마다 같은 링크가 갱신됩니다. |
+| 파일로 직접 열기 | 오프라인·발표 자리 | GitHub에서 브랜치를 ZIP으로 받거나 `git clone` 한 뒤 `index.html`을 더블클릭합니다. 글꼴은 인터넷이 있어야 Google Fonts에서 내려받고, 없으면 기기 기본 명조·고딕으로 보입니다. |
+| 휴대전화 실기기 | 터치·스크롤 감각 확인 | PC에서 `python3 -m http.server 8080`을 실행하고, 같은 Wi-Fi의 휴대전화 브라우저에서 `http://<PC의 IP>:8080`을 엽니다. |
+| 기기 흉내 | 여러 폭을 빠르게 | Chrome에서 F12 → Ctrl+Shift+M(기기 툴바) → iPhone·Galaxy·iPad 선택. |
+| 상시 주소 | 투자자에게 링크로 보낼 때 | GitHub 저장소 Settings → Pages → Branch를 배포할 브랜치의 `/ (root)`로 지정하면 `https://davechankim.github.io/-/`에서 열립니다. 사이트가 공개되므로 연락처·브랜드명을 확정한 뒤 켜는 것을 권장합니다. |
+| 자동 스크린샷 | 변경 뒤 회귀 확인 | `npx playwright install chromium` 후 `npx playwright screenshot --viewport-size=390,844 --full-page http://localhost:8080 mobile.png` (데스크톱은 `1440,900`). |
+
 ## 내용 수정
 
 - **연락처**: `index.html`에서 `id="contactValue"`인 문단의 텍스트("담당자 연락처는 발표 자리에서 안내합니다.")를 실제 연락처로 바꿉니다.
