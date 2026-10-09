@@ -39,7 +39,8 @@
       <svg class="ic-moon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
     </button>
     <button class="icon-btn menu-btn" id="menuBtn" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="nav">
-      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 8h16M4 16h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <svg class="ic-menu" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 8h16M4 16h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <svg class="ic-close" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
     </button>
   </div>
 </header>
@@ -124,6 +125,7 @@
           <g class="curve-label label-value"><circle cx="592" cy="50" r="4"/><text x="582" y="36" text-anchor="end">연결·신뢰의 가치</text></g>
           <text class="chart-note" x="66" y="56">개념도 · 수치가 아닌 방향</text>
         </svg>
+        <figcaption class="concept-cap">개념도 · 수치가 아닌 방향</figcaption>
       </figure>
 
       <div class="why-text" data-reveal>
@@ -177,6 +179,7 @@
             <circle class="st-hit" cx="500" cy="350" r="44"/>
             <circle class="st-ring hub l-hub" cx="500" cy="350" r="24"/>
             <circle class="st-core" cx="500" cy="350" r="8"/>
+            <rect class="st-mask" x="493" y="382" width="14" height="48" aria-hidden="true"/>
             <text class="st-name big" x="500" y="404" text-anchor="middle">공통 기반</text>
             <text class="st-sub" x="500" y="424" text-anchor="middle">계정 · 상품 · 파일 · 거래 · 권한 · 알림</text>
           </g>
@@ -278,13 +281,13 @@
       <article class="card svc">
         <span class="code"><i class="dot l-consumer"></i>소비자선</span>
         <h3>베스트마트 온라인몰 <small>협력사몰</small></h3>
-        <p class="svc-who">개인 고객 ↔ 기존 마트·협력사</p>
+        <p class="svc-who">개인 고객 ↔ <span class="nb">기존 마트·협력사</span></p>
         <p>매장별 상품·가격·판매 가능 수량·배송/픽업 조건·고객 응대. 간판과 POS를 바꾸지 않고 참여합니다.</p>
       </article>
       <article class="card svc">
         <span class="code"><i class="dot l-business"></i>사업자선</span>
         <h3>베스트마켓 운영허브 <small>가칭</small></h3>
-        <p class="svc-who">점주·판매점 ↔ 다른 점주·공급사</p>
+        <p class="svc-who">점주·판매점 ↔ <span class="nb">다른 점주·공급사</span></p>
         <p>상품자료 공유·공급 제안·구매 요청·사업자 거래·공동구매. 반무인 픽업전문점도 참여합니다. 본사 관리 화면과는 별개입니다.</p>
       </article>
     </div>

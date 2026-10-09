@@ -93,9 +93,19 @@
       var to = e.relatedTarget;
       if (nav.classList.contains('open') && to && !nav.contains(to) && to !== menuBtn) closeMenu(false);
     });
+    /* 메뉴 밖을 탭하면 닫기만 한다: 그 탭의 click은 한 번 삼켜 아래에 깔린 버튼·링크가 눌리지 않게 한다 (상단바 안의 버튼은 통과) */
+    var dismissTap = false;
     document.addEventListener('pointerdown', function (e) {
-      if (nav.classList.contains('open') && !nav.contains(e.target) && !menuBtn.contains(e.target)) closeMenu(false);
+      dismissTap = false;
+      if (nav.classList.contains('open') && !nav.contains(e.target) && !menuBtn.contains(e.target)) {
+        closeMenu(false);
+        dismissTap = !(topbar && topbar.contains(e.target));
+      }
     });
+    document.addEventListener('pointercancel', function () { dismissTap = false; });
+    document.addEventListener('click', function (e) {
+      if (dismissTap) { dismissTap = false; e.preventDefault(); e.stopPropagation(); }
+    }, true);
   }
 
   /* ---------- 섹션 목록 · 점 내비 · 활성 링크 ---------- */
@@ -193,6 +203,11 @@
     panel.classList.remove('swap');
     void panel.offsetWidth;
     panel.classList.add('swap');
+    /* 한 열 배치(<960px)에서는 설명이 노선도 아래에 있어, 제목이 화면 밖이면 최소한만 끌어올린다 */
+    if (window.matchMedia && window.matchMedia('(max-width: 959.98px)').matches) {
+      var title = $('#panelTitle');
+      if (title && title.getBoundingClientRect().bottom > window.innerHeight) title.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'nearest' });
+    }
   }
   if (metro) {
     onVisible(metro, function () { metro.classList.add('drawn'); }, { threshold: 0.3 });
@@ -354,7 +369,7 @@
     at(700, function () { typing.remove(); approveCard(run); });
   }
   var chat = $('#chat');
-  function stopChat() { chatRun++; chatTimers.forEach(clearTimeout); chatTimers = []; }
+  function stopChat() { chatRun++; chatTimers.forEach(clearTimeout); chatTimers = []; $$('.typing', chatBody).forEach(function (t) { t.parentNode.remove(); }); }
   if (chat && chatBody) {
     onVisible(chat, function () { playChat(); }, { threshold: 0.35 });
     var replay = $('#chatReplay');

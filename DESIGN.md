@@ -45,7 +45,7 @@
 | 역할 | 서체 | 크기 | 굵기 | 자간 | 행간 |
 |---|---|---|---|---|---|
 | 히어로 H1 | Noto Serif KR | `clamp(2.4rem, 5.2vw, 4rem)` | 500 | −0.02em | 1.16 |
-| 섹션 H2 | Noto Serif KR | `clamp(2rem, 3.4vw, 2.85rem)` | 500 | −0.016em | 1.22 |
+| 섹션 H2 | Noto Serif KR | `clamp(2rem, 3.4vw, 2.85rem)` · ≤640px `1.85rem` | 500 | −0.016em | 1.22 |
 | 소절 H3 | Noto Serif KR | `clamp(1.35rem, 2.1vw, 1.75rem)` | 500 | −0.01em | 1.35 |
 | 마무리 선언 | Noto Serif KR | `clamp(2.2rem, 5vw, 4rem)` | 500 | −0.016em | 1.2 |
 | 리드 | IBM Plex Sans KR | `clamp(1.05rem, 1.35vw, 1.2rem)` | 400 | 0 | 1.7 |
@@ -72,7 +72,9 @@
 - 표면 패딩 `--pad-surface: clamp(16px, 2.5vw, 28px)`, 카드 패딩 28px(`--sp-7`), 카드 그리드 gap 16px.
 - 반경 토큰: `--radius-sm` 8 / `--radius` 12 / `--radius-lg` 18 / `--radius-device` 34 / `--radius-pill` 999. 리터럴 반경은 쓰지 않습니다.
 - 컨트롤 높이 토큰: `--control-sm` 36(소형 버튼·탭·아이콘 버튼) / `--control-md` 44(기본 버튼) / `--control-lg` 52(히어로 CTA).
-- 브레이크포인트는 640 / 720 / 960 / 1280 네 곳뿐입니다. 모든 그리드가 같은 지점에서 접힙니다.
+- 브레이크포인트는 640 / 720 / 960 / 1280 네 곳뿐입니다. 모든 그리드가 같은 지점에서 접힙니다. 720–959(태블릿)에서는 3열 카드가 2 + 1, 노선도 라벨은 한 단계 크게.
+- 고정 상단바 아래로 스크롤 위치를 맞추는 값은 `html { scroll-padding-top }` 하나뿐입니다. 섹션에 `scroll-margin-top`을 더 두지 않습니다(겹치면 두 배로 밀립니다).
+- hover 스타일은 `@media (hover: hover)` 안에만 둡니다. 터치 기기에서 탭 뒤 hover 색이 남지 않게.
 - 섹션 내부 리듬: 아이브로→H2 16px, H2→리드 24px, 리드→시각물 56~80px. 카드 안 H3→본문 10px.
 
 ## 컴포넌트
@@ -90,12 +92,12 @@
 | 헤어라인 리스트 | `.hairlist` | 1px 상·하 선, 16px 패딩 | `.plain`, `.cols-2` 변형 |
 | 번호 목록 | `.metrics` | 앰버 2자리 번호 + 본문 1rem, 선 없음 | 판단 기준처럼 짧은 문장 8개 이내 |
 | 역할 행 | `.roles-list .role` | 헤어라인 행 2열, 점포 타일 1개 | — |
-| 탭 | `.tab` / `.tabpanel` | pill 탭(높이 36), 활성은 `--s2` + 액센트 코드 | ←/→/Home/End 이동, 패널 `tabindex=0` + 포커스 링 |
+| 탭 | `.tab` / `.tabpanel` | pill 탭(높이 36 + 4px 히트 슬롭), 활성은 `--s2` + 액센트 코드. 960px 미만에서는 패널 상자 없음 | ←/→/Home/End 이동, 패널 `tabindex=0` + 포커스 링 |
 | 거래 흐름 체인 | `.chain` | ≥960px: 1행 레일 그리드(앰버 번호 원 + 1px 선), 그 아래: 알약 + 화살표 | 등장 60ms 스태거 |
-| 디바이스 프레임 | `.device` > `.chat` | `--radius-device` 34px, `--shadow-float` | 항상 다크 밴드 안. 시연은 멈춤·다시 보기 버튼으로 제어 |
+| 디바이스 프레임 | `.device` > `.chat` | `--radius-device` 34px, `--shadow-float` | 항상 다크 밴드 안. 시연은 멈춤·다시 보기 버튼으로 제어. 960px 미만에서는 안쪽 스크롤 없이 페이지와 함께 길어짐 |
 | 채팅 카드 | `.ccard` | `--s2`, 1px `--hair-strong` | `.pending`/`.approved`/`.rejected` |
 | 노선도 | `.map-stage` + `.map-panel` | 상자 없음. 선 4px, 라벨 헤일로는 캔버스색. 설명은 왼쪽 헤어라인 1개의 텍스트 열 | 동적 부분만 `aria-live` |
-| 노선도 역 | `g.station` | 히트 원 r=44, 링 2.5px, `role=button` + `aria-pressed` | hover 링 3.5px, 선택 `--accent` 3px, 키보드 포커스 앰버 헤일로. Tab 순서는 환승역부터 |
+| 노선도 역 | `g.station` | 히트 원 r=44, 링 2.5px, `role=button` + `aria-pressed` | hover 링 3.5px, 선택 `--accent` 3px, 키보드 포커스 앰버 헤일로. Tab 순서는 환승역부터. 한 열 배치에서는 탭 시 설명 제목이 보이도록 최소 스크롤 |
 | 로드맵 단계 | `.stage` / `.stage-no` | 1px 레일 + 번호 원 | 등장 시 번호 앰버, 진행선 `--p` |
 | 단계 스트립 | `.steps .step` | 번호 pill + 1px 연결선 | — |
 | 인용 블록 | `.chainline` | 좌측 2px 앰버 선, 모노 0.8rem | 카드 안 상자 대신 |
