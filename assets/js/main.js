@@ -25,7 +25,7 @@
   /* ---------- 테마 ---------- */
   var THEME_KEY = 'best-theme';
   function applyTheme(t, persist) {
-    if (t === 'light') root.setAttribute('data-theme', 'light');
+    if (t === 'dark') root.setAttribute('data-theme', 'dark');
     else root.removeAttribute('data-theme');
     if (persist) { try { localStorage.setItem(THEME_KEY, t); } catch (e) { /* 저장 불가 환경 */ } }
   }
@@ -35,8 +35,8 @@
     if (saved === 'light' || saved === 'dark') applyTheme(saved, false);
   })();
   function toggleTheme() {
-    var isLight = root.getAttribute('data-theme') === 'light';
-    applyTheme(isLight ? 'dark' : 'light', true);
+    var isDark = root.getAttribute('data-theme') === 'dark';
+    applyTheme(isDark ? 'light' : 'dark', true);
   }
   var themeBtn = $('#themeBtn');
   if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
