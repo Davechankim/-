@@ -67,3 +67,14 @@ GitHub Pages, Vercel, Netlify 등 정적 호스팅에 폴더째 올리면 동작
 
 사이트의 서비스 구성·업무 흐름·속도 수치는 설계 목표이며, 구현 완료나 검증된 성과가 아닙니다.
 채팅 시연은 가상 데이터입니다. 푸터의 고지 문구를 유지하는 것을 권장합니다.
+
+## Claude Code Design Toolbox
+
+이 브랜치에는 `/design-toolbox` 프로젝트 스킬과 326개 원본 가이드가 포함됩니다.
+클라우드 세션에서도 이 브랜치를 선택하면 읽을 수 있습니다.
+
+```text
+/design-toolbox 모드=개선. DESIGN.md를 유지하면서 모바일 화면을 개선해줘.
+```
+
+Playwright 준비와 Figma·21st 인증은 [클라우드 설정 안내](docs/design-toolbox-cloud.md)를 확인하세요.
