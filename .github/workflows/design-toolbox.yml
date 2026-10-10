@@ -1,5 +1,10 @@
 name: Design Toolbox
 on:
+  push:
+    paths:
+      - '.claude/**'
+      - '.mcp.json'
+      - '.github/workflows/design-toolbox.yml'
   pull_request:
     paths:
       - '.claude/**'
