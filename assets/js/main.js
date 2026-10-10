@@ -35,9 +35,16 @@
     try { saved = localStorage.getItem(THEME_KEY); } catch (e) { /* ignore */ }
     if (saved === 'light' || saved === 'dark') applyTheme(saved, false);
   })();
+  var themePending = null;
   function toggleTheme() {
-    var isDark = root.getAttribute('data-theme') === 'dark';
-    applyTheme(isDark ? 'light' : 'dark', true);
+    /* 다음 테마는 누르는 순간 정한다 — 크로스페이드가 끝나기 전에 또 누르면 같은 상태를 두 번 읽지 않도록 */
+    var cur = themePending || (root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+    var next = cur === 'dark' ? 'light' : 'dark';
+    themePending = next;
+    var flip = function () { applyTheme(next, true); if (themePending === next) themePending = null; };
+    /* 테마 전환은 페이지 전체 크로스페이드 한 번 — 카드·밴드·상단바가 캔버스와 따로 바뀌지 않도록 */
+    if (reduced || !document.startViewTransition) flip();
+    else document.startViewTransition(flip);
   }
   var themeBtn = $('#themeBtn');
   if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
@@ -52,6 +59,8 @@
     var go = function () { if (!done) { done = true; markLoaded(); } };
     document.fonts.ready.then(go);
     setTimeout(go, 400); /* 폰트가 늦어도 0.4초 뒤에는 시작 */
+    /* 모노 라벨의 공백 보정(style.css .mono-ready)은 Plex Mono가 실제로 로드된 뒤에만 */
+    document.fonts.load('500 12px "IBM Plex Mono"').then(function (faces) { if (faces && faces.length) root.classList.add('mono-ready'); }).catch(function () { /* 보정 없이 진행 */ });
   } else { markLoaded(); }
 
   /* ---------- 상단바 · 진행 바 · 메뉴 ---------- */
@@ -203,14 +212,15 @@
     panel.classList.remove('swap');
     void panel.offsetWidth;
     panel.classList.add('swap');
-    /* 한 열 배치(<960px)에서는 설명이 노선도 아래에 있어, 제목이 화면 밖이면 최소한만 끌어올린다 */
-    if (window.matchMedia && window.matchMedia('(max-width: 959.98px)').matches) {
+    /* 한 열 배치(<1280px, .map-layout과 같은 지점)에서는 설명이 노선도 아래에 있어, 제목이 화면 밖이면 최소한만 끌어올린다 */
+    if (window.matchMedia && window.matchMedia('(max-width: 1279.98px)').matches) {
       var title = $('#panelTitle');
       if (title && title.getBoundingClientRect().bottom > window.innerHeight) title.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'nearest' });
     }
   }
   if (metro) {
-    onVisible(metro, function () { metro.classList.add('drawn'); }, { threshold: 0.3 });
+    /* 노선도는 .map-layout 등장(--d-reveal)이 거의 끝난 뒤에 긋는다 — ST.01 개념도의 300ms 리드와 같은 값 */
+    onVisible(metro, function () { setTimeout(function () { metro.classList.add('drawn'); }, reduced ? 0 : 300); }, { threshold: 0.3 });
     var stage = $('.map-stage');
     function centerStage() { if (stage && stage.scrollWidth > stage.clientWidth) stage.scrollLeft = (stage.scrollWidth - stage.clientWidth) / 2; }
     centerStage();
@@ -237,6 +247,7 @@
       });
       panels.forEach(function (p) {
         var on = p.id === btn.getAttribute('aria-controls');
+        if (!on && p.classList.contains('is-active')) p.setAttribute('data-shown', ''); /* 한 번 본 패널은 다시 올 때 스태거 없이 */
         p.hidden = !on;
         p.classList.toggle('is-active', on);
       });
@@ -353,6 +364,7 @@
     if (!chatBody) return;
     var run = ++chatRun;
     chatTimers.forEach(clearTimeout); chatTimers = [];
+    if (chatBody.offsetHeight) chatBody.style.minHeight = chatBody.offsetHeight + 'px'; /* 재생 중 높이 유지 — 비우는 순간 페이지가 튀지 않도록 */
     chatBody.innerHTML = '';
     chatPin = null;
     var t = 0;
@@ -374,6 +386,7 @@
     onVisible(chat, function () { playChat(); }, { threshold: 0.35 });
     var replay = $('#chatReplay');
     if (replay) replay.addEventListener('click', playChat);
+    window.addEventListener('resize', function () { chatBody.style.minHeight = ''; });
     var stopBtn = $('#chatStop');
     if (stopBtn) stopBtn.addEventListener('click', stopChat);
   }
@@ -385,10 +398,11 @@
     function updateRoad() {
       var last = -1;
       stages.forEach(function (s, i) { if (s.classList.contains('is-on')) last = i; });
-      if (last < 0) { road.style.setProperty('--p', '0%'); return; }
+      if (last < 0) { road.style.setProperty('--pf', '0'); return; }
       var s = stages[last];
       var mid = s.offsetTop + s.offsetHeight / 2;
-      road.style.setProperty('--p', Math.min(100, (mid / road.offsetHeight) * 100) + '%');
+      var track = Math.max(1, road.offsetHeight - 28); /* ::before/::after 레일 구간: top 14px ~ bottom 14px */
+      road.style.setProperty('--pf', String(Math.max(0, Math.min(1, (mid - 14) / track))));
     }
     if (reduced || !('IntersectionObserver' in window)) {
       stages.forEach(function (s) { s.classList.add('is-on'); });

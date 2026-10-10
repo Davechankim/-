@@ -15,7 +15,6 @@
   --s3: #E9E3D6;
   --hair: #E6DFD8;
   --hair-strong: #D3CBC0;
-  --edge-hi: rgba(255, 255, 255, 0);
   --ink: #141413;
   --ink-2: #3D3D3A;
   --ink-3: #6C6A64;
@@ -41,7 +40,6 @@
   --chart-b: #6C6A64;
   --state-ok: #3F8A63;
   --state-warn: #C4634F;
-  --grain-o: .025;
   --font-display: 'Noto Serif KR', 'Apple Myungjo', 'Batang', '바탕', 'Apple SD Gothic Neo', 'Malgun Gothic', serif;
   --font-body: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif;
   --font-mono: 'IBM Plex Mono', 'IBM Plex Sans KR', ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -76,7 +74,6 @@
   --s3: #262420;
   --hair: rgba(255, 255, 255, .08);
   --hair-strong: rgba(255, 255, 255, .16);
-  --edge-hi: rgba(255, 255, 255, .06);
   --ink: #FAF9F5;
   --ink-2: #B8B5AD;
   --ink-3: #8E8B82;
@@ -102,7 +99,6 @@
   --chart-b: #8E8B82;
   --state-ok: #6FAE8A;
   --state-warn: #D4796B;
-  --grain-o: .04;
 }
 :root[data-theme="dark"] { color-scheme: dark; }
 .band { background: var(--canvas); color: var(--ink-2); color-scheme: dark; }
@@ -126,8 +122,9 @@ body {
   overflow-x: hidden;
   font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
-  transition: background-color var(--d-base) var(--ease-std), color var(--d-base) var(--ease-std);
 }
+/* 테마 전환: 페이지 전체를 한 번에 크로스페이드(View Transitions, 미지원 브라우저는 즉시 전환) */
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: var(--d-base); animation-timing-function: var(--ease-std); }
 img, svg { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; }
@@ -139,11 +136,6 @@ strong, b { font-weight: 500; color: var(--ink); }
 :focus-visible { outline: none; box-shadow: 0 0 0 2px var(--canvas), 0 0 0 4px var(--focus); border-radius: 6px; }
 ::selection { background: var(--accent); color: var(--accent-ink); }
 main { overflow: clip; position: relative; z-index: 1; }
-
-.grain {
-  position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: var(--grain-o); mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
 
 .wrap { max-width: var(--wrap); margin-inline: auto; padding-inline: max(var(--gutter), env(safe-area-inset-left, 0px)) max(var(--gutter), env(safe-area-inset-right, 0px)); }
 .muted { color: var(--ink-3); }
@@ -166,6 +158,10 @@ main { overflow: clip; position: relative; z-index: 1; }
 }
 /* 챕터 머리의 역 번호는 테두리 없는 앰버 모노 텍스트 */
 .eyebrow .code { border-color: transparent; padding-inline: 0; color: var(--accent); }
+/* Plex Mono의 공백(0.6em)은 Plex Sans KR 공백(0.24em)의 2.5배라 한글 모노 라벨의 단어 사이가 벌어진다.
+   공백만 본문 폭으로 되돌린다(−.36em, 자간 .04em은 유지). Mono가 실제로 로드됐을 때만(html.mono-ready, main.js) 적용해
+   Sans KR만 도착한 구간에서 공백이 0 이하가 되지 않게 한다. */
+.mono-ready :is(.code, .chips li, .dots a span, .legend, .glossary dt, .role-k, .tier dt, .msg .who, .sys, .step-dev, .card .chainline, .concept-cap, .concept .axis text, .concept .chart-note) { word-spacing: -.36em; }
 .dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; flex: none; }
 .dot.l-consumer { background: var(--rail-consumer); }
 .dot.l-business { background: var(--rail-business); }
@@ -219,7 +215,7 @@ main { overflow: clip; position: relative; z-index: 1; }
 .topbar-actions { display: flex; align-items: center; gap: 8px; }
 .icon-btn {
   position: relative; width: var(--control-sm); height: var(--control-sm); border-radius: var(--radius-pill); border: 1px solid var(--hair); background: transparent; color: var(--ink-2);
-  display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: background-color var(--d-fast) var(--ease-out), border-color var(--d-fast) var(--ease-out), color var(--d-fast) var(--ease-out);
+  display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: background-color var(--d-fast) var(--ease-out), border-color var(--d-fast) var(--ease-out), color var(--d-fast) var(--ease-out), transform var(--d-fast) var(--ease-out);
 }
 .icon-btn::after { content: ""; position: absolute; inset: -4px; border-radius: inherit; }
 @media (hover: hover) { .icon-btn:hover { background: var(--s2); border-color: var(--hair-strong); color: var(--ink); } }
@@ -275,12 +271,14 @@ main { overflow: clip; position: relative; z-index: 1; }
 .js [data-reveal].in { opacity: 1; transform: none; }
 .js [data-stagger] > * { opacity: 0; transform: translateY(12px); transition: opacity var(--d-reveal) var(--ease-out), transform var(--d-reveal) var(--ease-out); transition-delay: calc(min(var(--i, 0), 5) * 60ms + 80ms); }
 .js [data-stagger].in > * { opacity: 1; transform: none; }
+/* reveal과 stagger가 같은 그룹에 겹치면 자식만 움직인다 — 그룹 자체는 표면이 없으니 두 번 움직일 이유가 없다 */
+.js [data-reveal][data-stagger] { opacity: 1; transform: none; transition: none; }
 
 /* ---------- surfaces ---------- */
-.panel { background: var(--s1); border: 1px solid var(--hair); border-radius: var(--radius-lg); box-shadow: inset 0 1px 0 var(--edge-hi); }
-.panel:focus-visible, .tabpanel:focus-visible { box-shadow: inset 0 1px 0 var(--edge-hi), 0 0 0 2px var(--canvas), 0 0 0 4px var(--focus); }
+.panel { background: var(--s1); border: 1px solid var(--hair); border-radius: var(--radius-lg); }
+.panel:focus-visible, .tabpanel:focus-visible { box-shadow: 0 0 0 2px var(--canvas), 0 0 0 4px var(--focus); }
 /* 카드는 정적 표면 — 클릭 동작이 없으므로 hover 변화를 두지 않는다 */
-.card { position: relative; background: var(--s1); border: 1px solid var(--hair); border-radius: var(--radius); box-shadow: inset 0 1px 0 var(--edge-hi); padding: var(--sp-7); min-width: 0; }
+.card { position: relative; background: var(--s1); border: 1px solid var(--hair); border-radius: var(--radius); padding: var(--sp-7); min-width: 0; }
 .card > .code { margin-bottom: var(--sp-4); }
 .card h3 { font-family: var(--font-display); font-weight: 500; font-size: 1.25rem; line-height: 1.3; letter-spacing: -.01em; margin-bottom: 10px; }
 .card p { font-size: .92rem; line-height: 1.65; color: var(--ink-2); }
@@ -325,7 +323,8 @@ main { overflow: clip; position: relative; z-index: 1; }
 @media (hover: hover) { .btn-primary:hover { background: var(--cta-hover); } }
 .btn-secondary { background: var(--s2); color: var(--ink); border-color: var(--hair); }
 @media (hover: hover) { .btn-secondary:hover { background: var(--s3); border-color: var(--hair-strong); } }
-.btn:active { transform: scale(.97); }
+/* 누를 수 있는 것은 모두 같은 누름 피드백 */
+.btn:active, .tab:active, .icon-btn:active, .rail-pause:active { transform: scale(.97); }
 .btn:disabled, .btn[aria-disabled="true"] { opacity: .45; cursor: default; pointer-events: none; transform: none; }
 .btn-small, .btn-nav { position: relative; min-height: var(--control-sm); padding: 0 14px; font-size: .82rem; white-space: nowrap; }
 .btn-small::after, .btn-nav::after { content: ""; position: absolute; inset: -4px; border-radius: inherit; }
@@ -375,7 +374,8 @@ main { overflow: clip; position: relative; z-index: 1; }
 .js .train circle { opacity: 0; }
 .js.loaded .train circle { opacity: .7; }
 .rail-cap { margin-top: var(--sp-4); font-size: .86rem; color: var(--ink-3); text-align: center; }
-.rail-pause { margin-left: 8px; padding: 2px 10px; min-height: 28px; font: inherit; font-size: .74rem; letter-spacing: .02em; color: var(--ink-3); background: none; border: 1px solid var(--hair-strong); border-radius: var(--radius-pill); cursor: pointer; vertical-align: middle; transition: color var(--d-fast) var(--ease-out), border-color var(--d-fast) var(--ease-out); }
+.rail-pause { position: relative; margin-left: 8px; padding: 0 12px; min-height: var(--control-sm); font: inherit; font-size: .74rem; letter-spacing: .02em; color: var(--ink-3); background: none; border: 1px solid var(--hair-strong); border-radius: var(--radius-pill); cursor: pointer; vertical-align: middle; transition: color var(--d-fast) var(--ease-out), border-color var(--d-fast) var(--ease-out), transform var(--d-fast) var(--ease-out); }
+.rail-pause::after { content: ""; position: absolute; inset: -4px; border-radius: inherit; }
 .rail-pause[aria-pressed="true"] { color: var(--ink); border-color: var(--ink-3); }
 @media (hover: hover) { .rail-pause:hover { color: var(--ink); border-color: var(--ink-3); } }
 .rail-pause[hidden] { display: none; }
@@ -425,7 +425,8 @@ main { overflow: clip; position: relative; z-index: 1; }
    ST.02 MAP
    ========================================================================== */
 .map-layout { display: grid; gap: 20px; align-items: center; }
-@media (min-width: 960px) { .map-layout { grid-template-columns: minmax(0, 1fr) 320px; column-gap: 40px; } }
+/* 노선도 두 열은 1280부터. 960–1279에서 두 열로 접으면 노선도가 514px이라 라벨이 8px대로 떨어진다 */
+@media (min-width: 1280px) { .map-layout { grid-template-columns: minmax(0, 1fr) 320px; column-gap: 40px; } }
 /* 노선도는 상자 없이 캔버스 위에, 설명은 왼쪽 헤어라인 하나의 텍스트 열 */
 .map-stage { min-width: 0; padding: clamp(8px, 1.5vw, 20px); }
 .metro { width: 100%; height: auto; overflow: visible; }
@@ -452,22 +453,23 @@ main { overflow: clip; position: relative; z-index: 1; }
 .metro.drawn .station:nth-of-type(1) { transition-delay: 1350ms; }
 .st-hit { fill: none; pointer-events: all; }
 .st-mask { fill: var(--canvas); }
-.st-ring { fill: var(--canvas); stroke-width: 2.5; transition: stroke var(--d-fast) var(--ease-out), stroke-width var(--d-fast) var(--ease-out); }
+.st-ring { fill: var(--canvas); stroke-width: 2.5; transform-box: fill-box; transform-origin: center; transition: stroke var(--d-fast) var(--ease-out), stroke-width var(--d-fast) var(--ease-out), transform var(--d-fast) var(--ease-out); }
 .st-ring.hub { fill: var(--s3); stroke-width: 2.5; }
 .st-ring.dashed { stroke-dasharray: 4 4; }
 .st-core { fill: var(--ink); }
 .st-name { font-family: var(--font-body); font-size: 17px; font-weight: 600; fill: var(--ink-2); paint-order: stroke fill; stroke: var(--canvas); stroke-width: 6px; stroke-linejoin: round; transition: fill var(--d-fast) var(--ease-out); }
 .st-name.big { font-family: var(--font-display); font-weight: 500; font-size: 23px; }
-.st-sub { font-family: var(--font-body); font-size: 15px; fill: var(--ink-3); paint-order: stroke fill; stroke: var(--canvas); stroke-width: 5px; stroke-linejoin: round; }
+.st-sub { font-family: var(--font-body); font-size: 16px; fill: var(--ink-3); paint-order: stroke fill; stroke: var(--canvas); stroke-width: 5px; stroke-linejoin: round; }
 .station:focus-visible .st-name, .station.is-active .st-name { fill: var(--ink); }
 @media (hover: hover) { .station:hover .st-name { fill: var(--ink); } .station:hover .st-ring { stroke-width: 3.5; } }
 .station.is-active .st-ring { stroke: var(--accent); stroke-width: 3; }
+.station:active .st-ring { transform: scale(.9); }
 .station:focus { outline: none; box-shadow: none; }
 .station:focus-visible .st-hit { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 2; }
 .station:focus-visible .st-ring { stroke: var(--accent); stroke-width: 4; }
 .map-hint { display: none; }
 @media (max-width: 719.98px) {
-  .map-stage { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .map-stage { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: thin; scrollbar-color: var(--ink-4) transparent; }
   .metro { min-width: 700px; }
   .st-name { font-size: 21px; } .st-name.big { font-size: 26px; } .st-sub { font-size: 16px; } .mline { stroke-width: 4; }
   .map-hint { display: block; margin: 8px 4px 0; font-size: .74rem; color: var(--ink-3); }
@@ -506,7 +508,7 @@ main { overflow: clip; position: relative; z-index: 1; }
 .roles-store small { color: var(--ink-2); font-size: .74rem; }
 .roles-list { display: grid; gap: 0 32px; border-bottom: 1px solid var(--hair); }
 @media (min-width: 640px) { .roles-list { grid-template-columns: repeat(2, 1fr); } }
-.role { position: relative; display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; gap: 1px 10px; align-items: center; padding: 14px 0; border-top: 1px solid var(--hair); min-width: 0; }
+.role { position: relative; display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; gap: 1px 10px; align-items: center; align-content: start; padding: 14px 0; border-top: 1px solid var(--hair); min-width: 0; }
 .role .dot { grid-row: span 3; }
 .role-k { font-family: var(--font-mono); font-size: .7rem; letter-spacing: .04em; color: var(--ink-3); text-transform: uppercase; }
 .role b { font-size: .95rem; line-height: 1.4; }
@@ -517,7 +519,7 @@ main { overflow: clip; position: relative; z-index: 1; }
 .nb { white-space: nowrap; }
 .glossary { display: grid; gap: 8px 24px; margin-top: clamp(28px, 4vw, 40px); padding-top: 18px; border-top: 1px solid var(--hair); }
 @media (min-width: 720px) { .glossary { grid-template-columns: repeat(5, auto); justify-content: start; } }
-.glossary div { display: grid; gap: 2px; }
+.glossary div { display: grid; gap: 2px; align-content: start; }
 .glossary dt { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .04em; color: var(--ink); text-transform: uppercase; }
 .glossary dd { font-size: .8rem; color: var(--ink-3); line-height: 1.5; }
 
@@ -533,7 +535,7 @@ main { overflow: clip; position: relative; z-index: 1; }
 .chat-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 16px; border-bottom: 1px solid var(--hair); }
 .chat-room { font-weight: 500; font-size: .92rem; color: var(--ink); display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
 .dot-live { width: 6px; height: 6px; border-radius: 50%; background: var(--state-ok); }
-.chat-body { display: flex; flex-direction: column; gap: 10px; padding: 18px 16px; min-height: 420px; max-height: 560px; overflow-y: auto; scroll-behavior: smooth; }
+.chat-body { display: flex; flex-direction: column; gap: 10px; padding: 18px 16px; min-height: 420px; max-height: 560px; overflow-y: auto; scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--ink-4) transparent; }
 /* 한 열 배치(<960)에서는 채팅을 페이지 흐름에 풀어 둔다 — 중첩 스크롤러가 터치 스와이프를 가로채지 않도록 */
 @media (max-width: 959.98px) { .chat-body { max-height: none; overflow-y: visible; } }
 .chat-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 12px; border-top: 1px solid var(--hair); }
@@ -579,7 +581,7 @@ main { overflow: clip; position: relative; z-index: 1; }
 
 .tabs { margin-top: 4px; }
 .tablist { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-bottom: 16px; }
-.tab { position: relative; display: inline-flex; align-items: center; gap: 10px; min-height: var(--control-sm); padding: 0 16px; line-height: 1.2; border-radius: var(--radius-pill); border: 1px solid var(--hair); background: transparent; cursor: pointer; font-size: .86rem; font-weight: 500; color: var(--ink-3); transition: background-color var(--d-fast) var(--ease-out), color var(--d-fast) var(--ease-out), border-color var(--d-fast) var(--ease-out); }
+.tab { position: relative; display: inline-flex; align-items: center; gap: 10px; min-height: var(--control-sm); padding: 0 16px; line-height: 1.2; border-radius: var(--radius-pill); border: 1px solid var(--hair); background: transparent; cursor: pointer; font-size: .86rem; font-weight: 500; color: var(--ink-3); transition: background-color var(--d-fast) var(--ease-out), color var(--d-fast) var(--ease-out), border-color var(--d-fast) var(--ease-out), transform var(--d-fast) var(--ease-out); }
 .tab::after { content: ""; position: absolute; inset: -4px; border-radius: inherit; }
 .tab .code { padding: 1px 6px; }
 @media (hover: hover) { .tab:hover { color: var(--ink); border-color: var(--hair-strong); } }
@@ -595,7 +597,9 @@ main { overflow: clip; position: relative; z-index: 1; }
 .tabpanel[hidden] { display: none; }
 html:not(.js) .tabpanel + .tabpanel { margin-top: 14px; }
 .chain { display: flex; flex-wrap: wrap; gap: 8px 26px; counter-reset: step; margin-bottom: 18px; clip-path: inset(-20px -20px -20px 0); }
-.chain li { counter-increment: step; position: relative; display: flex; align-items: center; gap: 10px; padding: 8px 12px 8px 8px; border-radius: var(--radius-sm); background: var(--s2); border: 1px solid var(--hair); font-size: .86rem; font-weight: 500; color: var(--ink); min-width: 0; opacity: 0; transform: translateX(-8px); animation: chainIn var(--d-base) var(--ease-out) forwards; animation-delay: calc(var(--i, 0) * 60ms); }
+.chain li { counter-increment: step; position: relative; display: flex; align-items: center; gap: 10px; padding: 8px 12px 8px 8px; border-radius: var(--radius-sm); background: var(--s2); border: 1px solid var(--hair); font-size: .86rem; font-weight: 500; color: var(--ink); min-width: 0; opacity: 0; transform: translateX(-8px); animation: chainIn var(--d-base) var(--ease-out) forwards; animation-delay: calc(min(var(--i, 0), 5) * 60ms); }
+/* 체인 스태거는 패널의 첫 등장에만. 다시 돌아온 패널은 노선도 설명과 같은 --d-base 교체 */
+.tabpanel[data-shown] .chain li { opacity: 1; transform: none; animation: panelIn var(--d-base) var(--ease-out); animation-delay: 0ms; }
 .chain li::before { content: counter(step); flex: none; width: 20px; height: 20px; border-radius: 50%; border: 1px solid var(--hair-strong); color: var(--ink-3); font-family: var(--font-mono); font-size: .7rem; display: inline-flex; align-items: center; justify-content: center; }
 .chain li + li::after { content: "\2192"; content: "\2192" / ""; position: absolute; left: -26px; top: 50%; width: 26px; transform: translateY(-50%); text-align: center; line-height: 1; font-size: .9rem; color: var(--ink-3); }
 @media (max-width: 719.98px) { .chain { flex-direction: column; gap: 6px; } .chain li + li::after { display: none; } }
@@ -613,7 +617,7 @@ html:not(.js) .tabpanel + .tabpanel { margin-top: 14px; }
 .rules li::before { content: ""; position: absolute; left: 0; top: .7em; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
 .modes { display: grid; gap: 10px; margin-bottom: 16px; }
 @media (min-width: 640px) { .modes { grid-template-columns: 1fr 1fr; } }
-.mode { display: grid; gap: 4px; padding: 14px 16px; border-radius: var(--radius-sm); border: 1px solid var(--hair); background: var(--s2); font-size: .86rem; color: var(--ink-2); min-width: 0; }
+.mode { display: grid; gap: 4px; align-content: start; padding: 14px 16px; border-radius: var(--radius-sm); border: 1px solid var(--hair); background: var(--s2); font-size: .86rem; color: var(--ink-2); min-width: 0; }
 .mode .code { justify-self: start; margin-bottom: 4px; }
 
 /* ==========================================================================
@@ -628,13 +632,13 @@ html:not(.js) .tabpanel + .tabpanel { margin-top: 14px; }
 .rules-grid { display: grid; gap: 0 32px; counter-reset: r; }
 @media (min-width: 640px) { .rules-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 960px) { .rules-grid { grid-template-columns: repeat(3, 1fr); } }
-.rules-grid li { counter-increment: r; display: grid; grid-template-columns: auto 1fr; gap: 2px 14px; padding: 16px 0; border-top: 1px solid var(--hair); min-width: 0; }
+.rules-grid li { counter-increment: r; display: grid; grid-template-columns: auto 1fr; gap: 2px 14px; align-content: start; padding: 16px 0; border-top: 1px solid var(--hair); min-width: 0; }
 .rules-grid li::before { content: counter(r, decimal-leading-zero); grid-row: span 2; font-family: var(--font-mono); font-size: .7rem; letter-spacing: .04em; color: var(--accent); padding-top: 4px; }
 .rules-grid b { font-size: .95rem; }
 .rules-grid span { font-size: .86rem; color: var(--ink-2); line-height: 1.6; }
 .steps { display: grid; gap: 10px; counter-reset: s; margin-bottom: 24px; position: relative; }
 @media (min-width: 960px) { .steps { grid-template-columns: repeat(7, 1fr); gap: 8px; } .steps::before { content: ""; position: absolute; left: 20px; right: 20px; top: 15px; height: 1px; background: var(--hair-strong); } }
-.step { position: relative; display: grid; gap: 4px; padding: 30px 0 0; min-width: 0; counter-increment: s; }
+.step { position: relative; display: grid; gap: 4px; align-content: start; padding: 30px 0 0; min-width: 0; counter-increment: s; }
 .step::before { content: counter(s, decimal-leading-zero); position: absolute; top: 0; left: 0; height: 30px; padding: 0 8px; display: inline-flex; align-items: center; background: var(--canvas); border: 1px solid var(--hair-strong); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: .7rem; letter-spacing: .04em; color: var(--ink-3); }
 @media (max-width: 959.98px) { .step { padding: 0 0 0 52px; min-height: 30px; } .step::before { left: 0; top: 0; } }
 .step-dev { font-family: var(--font-mono); font-size: .7rem; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-3); }
@@ -663,9 +667,10 @@ html:not(.js) .tabpanel + .tabpanel { margin-top: 14px; }
    ========================================================================== */
 .road-layout { display: grid; gap: 24px; align-items: start; margin-top: clamp(32px, 4vw, 56px); }
 @media (min-width: 960px) { .road-layout { grid-template-columns: 1.1fr 1fr; } }
-.road { --p: 0%; position: relative; isolation: isolate; display: grid; gap: 4px; padding-left: 44px; }
+.road { --pf: 0; position: relative; isolation: isolate; display: grid; gap: 4px; padding-left: 44px; }
 .road::before { content: ""; position: absolute; left: 13px; top: 14px; bottom: 14px; width: 1px; background: var(--hair-strong); }
-.road::after { content: ""; position: absolute; left: 13px; top: 14px; width: 1px; height: var(--p); background: var(--accent); transition: height var(--d-slow) var(--ease-std); }
+/* 진행선은 레일(::before)과 같은 구간을 scaleY로 채운다 — 레이아웃 속성 대신 transform만 움직인다 */
+.road::after { content: ""; position: absolute; left: 13px; top: 14px; bottom: 14px; width: 1px; background: var(--accent); transform: scaleY(var(--pf)); transform-origin: top; transition: transform var(--d-slow) var(--ease-std); }
 .stage { position: relative; padding: 16px 0; border-top: 1px solid var(--hair); min-width: 0; }
 .stage:first-child { border-top: 0; }
 .stage-no { position: absolute; z-index: 1; left: -44px; top: 14px; width: 27px; height: 27px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: var(--canvas); border: 1px solid var(--hair-strong); color: var(--ink-3); font-family: var(--font-mono); font-size: .7rem; transition: border-color var(--d-base) var(--ease-std), color var(--d-base) var(--ease-std), background-color var(--d-base) var(--ease-std); }
@@ -717,7 +722,7 @@ html:not(.js) .tabpanel + .tabpanel { margin-top: 14px; }
 .footer .wrap > p { max-width: 72ch; }
 .footer b { color: var(--ink); }
 .kbd-hint { display: flex; align-items: center; gap: 6px; }
-kbd { font-family: var(--font-mono); font-size: .7rem; min-width: 22px; text-align: center; border: 1px solid var(--hair-strong); border-radius: 5px; padding: 2px 6px; color: var(--ink-2); background: linear-gradient(var(--s3), var(--s1)); box-shadow: inset 0 1px 0 var(--edge-hi); }
+kbd { font-family: var(--font-mono); font-size: .7rem; min-width: 22px; text-align: center; border: 1px solid var(--hair-strong); border-radius: 5px; padding: 2px 6px; color: var(--ink-2); background: var(--s2); }
 @media (hover: none) { .kbd-hint { display: none; } }
 
 /* ---------- reduced motion + print ---------- */
@@ -734,12 +739,12 @@ kbd { font-family: var(--font-mono); font-size: .7rem; min-width: 22px; text-ali
   .chain li { opacity: 1; transform: none; animation: none; }
 }
 @media print {
-  :root { color-scheme: light; --canvas: #FFFFFF; --s1: #FFFFFF; --s2: #F4F3EF; --s3: #ECEAE4; --hair: rgba(21, 22, 26, .12); --hair-strong: rgba(21, 22, 26, .24); --edge-hi: rgba(255, 255, 255, 0); --ink: #15161A; --ink-2: #3E414A; --ink-3: #6B6E76; --ink-4: #A3A6AD; --accent: #8C6A2A; --accent-ink: #FFFFFF; --cta: #15161A; --cta-ink: #FFFFFF; --rail-consumer: #C4634F; --rail-business: #B5842B; --rail-work: #3F8A63; --rail-hub: #3C6DB5; --chart-a: #8C6A2A; --chart-b: #6B6E76; --shadow-float: none; }
+  :root { color-scheme: light; --canvas: #FFFFFF; --s1: #FFFFFF; --s2: #F4F3EF; --s3: #ECEAE4; --hair: rgba(21, 22, 26, .12); --hair-strong: rgba(21, 22, 26, .24); --ink: #15161A; --ink-2: #3E414A; --ink-3: #6B6E76; --ink-4: #A3A6AD; --accent: #8C6A2A; --accent-ink: #FFFFFF; --cta: #15161A; --cta-ink: #FFFFFF; --rail-consumer: #C4634F; --rail-business: #B5842B; --rail-work: #3F8A63; --rail-hub: #3C6DB5; --chart-a: #8C6A2A; --chart-b: #6B6E76; --shadow-float: none; }
   body { background: #fff; }
   .band, .band-soft { --canvas: #FFFFFF; --s1: #FFFFFF; --s2: #F4F3EF; --s3: #ECEAE4; --hair: rgba(21, 22, 26, .12); --hair-strong: rgba(21, 22, 26, .24); --ink: #15161A; --ink-2: #3E414A; --ink-3: #6B6E76; --accent: #8C6A2A; --cta: #15161A; --cta-ink: #FFFFFF; background: #fff; }
   .device { box-shadow: none; border-color: var(--hair); background: none; }
   main { overflow: visible; }
-  .grain, .progress, .topbar, .dots, .kbd-hint, .skip, .rail-pause, .closing-bg, .chat-foot, .map-hint, .concept-cap { display: none; }
+  .progress, .topbar, .dots, .kbd-hint, .skip, .rail-pause, .closing-bg, .chat-foot, .map-hint, .concept-cap { display: none; }
   .chat-body { max-height: none; overflow: visible; }
   .section { padding-block: 32px; }
   .tabpanel[hidden] { display: block; margin-top: 14px; }
