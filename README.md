@@ -23,6 +23,7 @@ GitHub Pages, Vercel, Netlify 등 정적 호스팅에 폴더째 올리면 동작
 | `assets/css/style.css` | 디자인 토큰(`:root` 라이트, `[data-theme="dark"]`·`.band` 다크), 섹션별 스타일, 애니메이션, 인쇄 |
 | `assets/js/main.js` | 노선도 상호작용, 채팅 시연(재생·멈춤), 스크롤 등장, 키보드 섹션 이동, 테마 전환, 열차 불빛 일시정지 |
 | `DESIGN.md` | 디자인 시스템(토큰·타이포·컴포넌트·모션 규칙) |
+| `backline/` | 자매 사이트: 음악장비(기타) 플랫폼 「백라인 생태계」 투자자 소개. 사업 방향·가치관은 같고 분야만 다릅니다. 이름 후보와 수정 방법은 `backline/README.md` |
 
 ## 프레젠테이션 조작
 

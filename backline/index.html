@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>백라인 생태계</title>
+<meta name="description" content="연주자·리페어맨·악기점·공방이 자기 이름을 지킨 채 검증된 중고장터·출장 리페어·업무 도구·AI를 함께 쓰는 음악장비 생태계. 통합 검색·위탁 등록·보증 리페어맨·멤버십 라운지·파트너 허브 투자 소개.">
+<meta property="og:title" content="백라인 생태계 · 사람을 잇는 무대를 세웁니다">
+<meta property="og:description" content="장비를 하나씩 파는 회사가 아니라, 기타 치는 사람들이 모이는 곳을 만듭니다. 음악장비 생태계 투자 소개.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230B0B0A'/%3E%3Crect x='6' y='9' width='5' height='14' rx='2.5' fill='%23FAFAF8'/%3E%3Crect x='13.5' y='6' width='5' height='20' rx='2.5' fill='%23FAFAF8'/%3E%3Crect x='21' y='9' width='5' height='14' rx='2.5' fill='%23FAFAF8'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+/* ==========================================================================
+   백라인 생태계 — 투자자 소개 사이트 (BEST 생태계 v4 "한 화면, 한 문장"을 음악장비 분야로 옮긴 판)
+   막(act)마다 문장 하나 + 시각물 하나. 흑백 두 막이 교차하고, 크롬에는 유채색이 없다.
+   서체는 Noto Sans KR 하나(본문 400 · 강조 500 · 디스플레이 700).
+   ========================================================================== */
+
+:root {
+  --font: 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
+  --wrap: 1120px;
+  --gutter: clamp(20px, 4vw, 48px);
+  --topbar-h: 56px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --radius: 20px;
+  --radius-lg: 28px;
+  --radius-device: 36px;
+  --pill: 999px;
+  --control-sm: 36px;
+  --control: 44px;
+  --control-lg: 54px;
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+  --ease-std: cubic-bezier(.2, 0, 0, 1);
+  --d-fast: 160ms;
+  --d-base: 320ms;
+  --d-slow: 600ms;
+  --d-reveal: 760ms;
+  --d-draw: 1400ms;
+  --rail-consumer: #D4796B;
+  --rail-business: #D9AD64;
+  --rail-work: #6FAE8A;
+  --rail-hub: #7A9FD6;
+  --rail-planned: #6B7079;
+  --state-ok: #6FAE8A;
+  --state-warn: #D4796B;
+  /* 어두운 막(기본) */
+  --bg: #0B0B0A;
+  --bg-2: #151514;
+  --bg-3: #1E1E1C;
+  --ink: #FAFAF8;
+  --ink-2: rgba(250, 250, 248, .74);
+  --ink-3: rgba(250, 250, 248, .5);
+  --hair: rgba(250, 250, 248, .14);
+  --hair-strong: rgba(250, 250, 248, .28);
+  --accent: #D9AD64;
+  --cta: #FAFAF8;
+  --cta-ink: #0B0B0A;
+  --cta-hover: #FFFFFF;
+  --focus: #D9AD64;
+  --shadow-float: 0 40px 90px -20px rgba(0, 0, 0, .8);
+  color-scheme: dark;
+}
+/* 밝은 막 */
+.act-light, .footer {
+  --bg: #FAFAF8;
+  --bg-2: #F1F0EB;
+  --bg-3: #E7E5DE;
+  --ink: #0B0B0A;
+  --ink-2: #4A4A47;
+  --ink-3: #75746E;
+  --hair: rgba(11, 11, 10, .12);
+  --hair-strong: rgba(11, 11, 10, .26);
+  --accent: #8A6520;
+  --cta: #0B0B0A;
+  --cta-ink: #FAFAF8;
+  --cta-hover: #2A2A28;
+  --focus: #8A6520;
+  --rail-consumer: #C4634F;
+  --rail-business: #B5842B;
+  --rail-work: #3F8A63;
+  --rail-hub: #3C6DB5;
+  --rail-planned: #85888F;
+  --shadow-float: 0 30px 70px -16px rgba(11, 11, 10, .22);
+  color-scheme: light;
+}
+.act-soft { --bg: #F1F0EB; --bg-2: #FAFAF8; --bg-3: #E7E5DE; }
+
+/* ---------- base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; font-size: 106.25%; scroll-padding-top: calc(var(--topbar-h) + var(--safe-top)); }
+body {
+  margin: 0; background: #0B0B0A; color: var(--ink-2);
+  font-family: var(--font); font-weight: 400; line-height: 1.7;
+  word-break: keep-all; overflow-wrap: anywhere; overflow-x: hidden;
+  font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased;
+}
+img, svg { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+p, dl, dd, figure { margin: 0; }
+h1, h2, h3, h4 { margin: 0; }
+strong, b { font-weight: 700; color: var(--ink); }
+:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--focus); border-radius: 6px; }
+::selection { background: var(--accent); color: #0B0B0A; }
+main { overflow: clip; position: relative; }
+.wrap { width: min(var(--wrap), 100% - 2 * var(--gutter)); margin-inline: auto; }
+.skip { position: fixed; top: 8px; left: 8px; z-index: 70; padding: 10px 16px; border-radius: var(--pill); background: #FAFAF8; color: #0B0B0A; font-size: .9rem; font-weight: 500; opacity: 0; transform: translateY(-200%); transition: transform var(--d-fast) var(--ease-out), opacity var(--d-fast) var(--ease-out); }
+.skip:focus-visible { opacity: 1; transform: none; }
+.progress { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 60; }
+.progress span { display: block; height: 100%; width: 0; background: var(--accent); }
+
+/* ---------- 타이포그래피 (디스플레이 3단 + 부제 + 각주) ---------- */
+.say {
+  font-weight: 700; color: var(--ink);
+  font-size: clamp(2.4rem, 4.6vw, 4.25rem); line-height: 1.08; letter-spacing: -.03em;
+  text-wrap: balance; max-width: 18em;
+}
+.say em { font-style: normal; color: var(--accent); }
+.say-xl { font-size: clamp(2.6rem, 5.4vw, 5rem); }
+.say-md { font-size: clamp(2rem, 3.8vw, 3.4rem); max-width: 14em; }
+.say-sm { font-size: clamp(1.8rem, 2.8vw, 2.6rem); }
+.sub { font-size: clamp(1.05rem, 1.3vw, 1.3rem); line-height: 1.6; color: var(--ink-2); max-width: 34em; margin-top: clamp(20px, 2.6vw, 32px); text-wrap: pretty; }
+.note { font-size: .85rem; line-height: 1.6; color: var(--ink-3); max-width: 60ch; text-wrap: pretty; }
+.tag { display: inline-flex; align-items: center; font-size: .78rem; font-weight: 500; letter-spacing: .02em; color: var(--ink-3); padding: 4px 11px; border: 1px solid var(--hair); border-radius: var(--pill); line-height: 1.3; white-space: nowrap; }
+
+/* ---------- 막(act) ---------- */
+.act { position: relative; background: var(--bg); color: var(--ink-2); min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; justify-content: center; gap: clamp(72px, 11vh, 136px); padding-block: clamp(96px, 12vh, 160px); }
+.act-in { width: min(var(--wrap), 100% - 2 * var(--gutter)); margin-inline: auto; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.act-in--tight { }
+.act-in--tall { }
+.act-in--read { align-items: stretch; text-align: left; max-width: 780px; }
+.act-in--read .sub { max-width: none; }
+.act-in .note { margin-top: clamp(28px, 4vw, 48px); }
+
+/* 분할 배치(업무 도구): 문장 왼쪽, 디바이스 오른쪽 */
+.act-in--split { display: grid; gap: clamp(40px, 6vw, 72px); align-items: center; text-align: left; }
+.act-in--split .split-text { display: flex; flex-direction: column; align-items: flex-start; }
+.act-in--split .say { max-width: 12em; }
+@media (min-width: 960px) { .act-in--split { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); } }
+
+/* ---------- 상단바 ---------- */
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  height: calc(var(--topbar-h) + var(--safe-top)); padding-top: var(--safe-top);
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding-inline: max(var(--gutter), env(safe-area-inset-left, 0px)) max(var(--gutter), env(safe-area-inset-right, 0px));
+  color: var(--ink); transition: color var(--d-base) var(--ease-std), background-color var(--d-base) var(--ease-std);
+}
+.topbar[data-tone="light"] { --ink: #0B0B0A; --ink-2: #4A4A47; --ink-3: #75746E; --hair: rgba(11, 11, 10, .12); --hair-strong: rgba(11, 11, 10, .26); --bg: #FAFAF8; --cta: #0B0B0A; --cta-ink: #FAFAF8; --focus: #8A6520; color-scheme: light; }
+.topbar::before { content: ""; position: absolute; inset: 0; background: var(--bg); opacity: 0; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); transition: opacity var(--d-base) var(--ease-std); z-index: -1; }
+.topbar.scrolled::before { opacity: .78; }
+.topbar.scrolled { box-shadow: inset 0 -1px 0 var(--hair); }
+.brand { display: inline-flex; align-items: center; gap: 10px; min-width: 0; overflow: hidden; }
+.brand-mark { display: inline-flex; gap: 2.5px; align-items: center; }
+.brand-mark i { width: 4px; height: 14px; border-radius: 2px; background: currentColor; display: block; }
+.brand-mark i:nth-child(2) { height: 18px; }
+.brand-text { font-weight: 700; font-size: .95rem; letter-spacing: .02em; color: var(--ink); display: inline-flex; align-items: baseline; gap: 6px; min-width: 0; white-space: nowrap; }
+.brand-sub { font-weight: 400; font-size: .8rem; color: var(--ink-3); letter-spacing: 0; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.nav { display: none; gap: 0; }
+.nav a { padding: 10px 9px; font-size: .84rem; font-weight: 500; color: var(--ink-2); transition: color var(--d-fast) var(--ease-out); }
+.nav a.is-active { color: var(--ink); }
+@media (hover: hover) { .nav a:hover { color: var(--ink); } }
+.topbar-actions { display: flex; align-items: center; gap: 8px; }
+.icon-btn { position: relative; width: var(--control-sm); height: var(--control-sm); border-radius: var(--pill); border: 1px solid var(--hair); background: transparent; color: var(--ink); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: background-color var(--d-fast) var(--ease-out), border-color var(--d-fast) var(--ease-out), transform var(--d-fast) var(--ease-out); }
+.icon-btn::after { content: ""; position: absolute; inset: -4px; border-radius: inherit; }
+@media (hover: hover) { .icon-btn:hover { border-color: var(--hair-strong); } }
+.ic-close { display: none; }
+.menu-btn[aria-expanded="true"] .ic-menu { display: none; }
+.menu-btn[aria-expanded="true"] .ic-close { display: block; }
+@media (min-width: 1080px) { .nav { display: flex; } .menu-btn { display: none; } }
+@media (max-width: 1079.98px) {
+  .nav {
+    position: fixed; top: calc(var(--topbar-h) + var(--safe-top)); left: 0; right: 0;
+    flex-direction: column; gap: 0; padding: 8px var(--gutter) 16px;
+    background: var(--bg); color: var(--ink); box-shadow: 0 1px 0 var(--hair), var(--shadow-float);
+    display: flex; visibility: hidden; opacity: 0; pointer-events: none; transform: translateY(-6px);
+    transition: opacity var(--d-fast) var(--ease-out), transform var(--d-fast) var(--ease-out), visibility 0s linear var(--d-fast);
+    max-height: calc(100vh - var(--topbar-h) - var(--safe-top)); max-height: calc(100svh - var(--topbar-h) - var(--safe-top)); overflow-y: auto; overscroll-behavior: contain;
+  }
+  .nav.open { visibility: visible; opacity: 1; transform: none; pointer-events: auto; transition-delay: 0s; }
+  .nav a { font-size: 1.05rem; padding: 14px 4px; border-bottom: 1px solid var(--hair); color: var(--ink); }
+  .nav a.is-active { color: var(--accent); }
+}
+
+/* ---------- 점 내비 ---------- */
+.dots { position: fixed; right: 12px; top: 50%; transform: translateY(-50%); z-index: 40; display: none; flex-direction: column; gap: 2px; color: var(--ink); }
+.dots a { position: relative; width: 24px; height: 24px; display: grid; place-items: center; }
+.dots a::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: .35; transition: opacity var(--d-fast) var(--ease-std), transform var(--d-fast) var(--ease-std); }
+.dots a.is-active::before { opacity: 1; transform: scale(1.35); }
+.dots a span { position: absolute; right: 30px; top: 50%; transform: translateY(-50%); font-size: .78rem; white-space: nowrap; color: currentColor; opacity: 0; pointer-events: none; transition: opacity var(--d-fast) var(--ease-out); }
+.dots a:focus-visible span { opacity: 1; }
+@media (hover: hover) { .dots a:hover::before { opacity: .7; } .dots a:hover span { opacity: 1; } }
+@media (min-width: 1280px) { .dots { display: flex; } }
+
+/* ---------- 버튼 ---------- */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: var(--control); padding: 0 22px; border-radius: var(--pill); font-weight: 500; font-size: .95rem; line-height: 1.2; cursor: pointer; border: 1px solid transparent; white-space: nowrap; transition: background-color var(--d-fast) var(--ease-out), border-color var(--d-fast) var(--ease-out), color var(--d-fast) var(--ease-out), transform var(--d-fast) var(--ease-out); }
+.btn-primary { background: var(--cta); color: var(--cta-ink); }
+.btn-ghost { background: transparent; color: var(--ink); border-color: var(--hair-strong); }
+@media (hover: hover) { .btn-primary:hover { background: var(--cta-hover); } .btn-ghost:hover { border-color: var(--ink); } }
+.btn:active, .icon-btn:active, .rail-pause:active { transform: scale(.97); }
+.btn:disabled, .btn[aria-disabled="true"] { opacity: .45; cursor: default; pointer-events: none; transform: none; }
+.btn-lg { min-height: var(--control-lg); padding: 0 28px; font-size: 1.05rem; }
+.btn-small, .btn-nav { position: relative; min-height: var(--control-sm); padding: 0 14px; font-size: .85rem; }
+.btn-small::after, .btn-nav::after { content: ""; position: absolute; inset: -4px; border-radius: inherit; }
+.btn-nav { background: transparent; color: var(--ink); border-color: var(--hair-strong); }
+
+/* ---------- 등장 모션 ---------- */
+.js [data-reveal] { opacity: 0; transform: translateY(20px); transition: opacity var(--d-reveal) var(--ease-out), transform var(--d-reveal) var(--ease-out), filter var(--d-reveal) var(--ease-out); }
+.js .say[data-reveal] { filter: blur(10px); }
+.js [data-reveal].in { opacity: 1; transform: none; filter: none; }
+.js [data-stagger] > * { opacity: 0; transform: translateY(16px); transition: opacity var(--d-reveal) var(--ease-out), transform var(--d-reveal) var(--ease-out); transition-delay: calc(min(var(--i, 0), 5) * 70ms + 80ms); }
+.js [data-stagger].in > * { opacity: 1; transform: none; }
+.js [data-reveal][data-stagger] { opacity: 1; transform: none; transition: none; }
+
+/* ==========================================================================
+   ST.00 HERO
+   ========================================================================== */
+.hero { gap: clamp(40px, 7vh, 88px); padding-top: calc(var(--topbar-h) + var(--safe-top) + clamp(40px, 8vh, 96px)); }
+.hero .say { max-width: 16em; }
+.hero-sub { max-width: 34em; }
+.hero-cta { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: clamp(28px, 4vh, 44px); }
+.js .hero-sub, .js .hero-cta, .js .rail { opacity: 0; transform: translateY(14px); transition: opacity var(--d-reveal) var(--ease-out), transform var(--d-reveal) var(--ease-out); }
+.js.loaded .hero-sub, .js.loaded .hero-cta, .js.loaded .rail { opacity: 1; transform: none; }
+.js .hero-sub { transition-delay: 640ms; }
+.js .hero-cta { transition-delay: 760ms; }
+.js .rail { transition-delay: 900ms; }
+.hero .say .line { display: block; overflow: hidden; padding-bottom: .1em; margin-bottom: -.1em; }
+.hero .say .w { display: inline-block; }
+.js .hero .say .w { opacity: 0; transform: translateY(.5em); filter: blur(8px); transition: opacity 900ms var(--ease-out), transform 900ms var(--ease-out), filter 900ms var(--ease-out); transition-delay: calc(var(--i, 0) * 70ms + 120ms); }
+.js.loaded .hero .say .w { opacity: 1; transform: none; filter: none; }
+
+.rail { width: 100%; margin: 0; }
+.rail svg { width: 100%; height: auto; overflow: visible; }
+.rail-path { stroke-dasharray: 1; transition: stroke-dashoffset var(--d-draw) var(--ease-std) 500ms; }
+.js .rail-path { stroke-dashoffset: 1; }
+.js.loaded .rail-path { stroke-dashoffset: 0; }
+.rail-stations .st circle { fill: var(--bg); stroke: var(--ink); stroke-width: 2; transform-box: fill-box; transform-origin: center; transition: transform var(--d-fast) var(--ease-out), opacity var(--d-fast) var(--ease-out); transition-delay: calc(500ms + var(--d) * var(--d-draw)); }
+.js .rail-stations .st circle { transform: scale(.6); opacity: 0; }
+.js.loaded .rail-stations .st circle { transform: scale(1); opacity: 1; }
+.rail-stations .st text { font-family: var(--font); font-size: 23px; font-weight: 500; fill: var(--ink-2); transition: opacity var(--d-base) var(--ease-out); transition-delay: calc(600ms + var(--d) * var(--d-draw)); }
+.js .rail-stations .st text { opacity: 0; }
+.js.loaded .rail-stations .st text { opacity: 1; }
+.train circle { opacity: .85; transition: opacity var(--d-slow) var(--ease-std) 2000ms; }
+.js .train circle { opacity: 0; }
+.js.loaded .train circle { opacity: .85; }
+.rail-cap { margin-top: 20px; font-size: .88rem; color: var(--ink-3); text-align: center; }
+.rail-pause { position: relative; margin-left: 8px; padding: 0 12px; min-height: var(--control-sm); font: inherit; font-size: .78rem; color: var(--ink-3); background: none; border: 1px solid var(--hair); border-radius: var(--pill); cursor: pointer; vertical-align: middle; transition: color var(--d-fast) var(--ease-out), border-color var(--d-fast) var(--ease-out), transform var(--d-fast) var(--ease-out); }
+.rail-pause::after { content: ""; position: absolute; inset: -4px; border-radius: inherit; }
+.rail-pause[aria-pressed="true"] { color: var(--ink); border-color: var(--hair-strong); }
+@media (hover: hover) { .rail-pause:hover { color: var(--ink); border-color: var(--hair-strong); } }
+.rail-pause[hidden] { display: none; }
+.rail-list { display: none; }
+@media (max-width: 719.98px) {
+  .rail svg, .rail-pause { display: none; }
+  .rail-list { position: relative; display: grid; gap: 12px; padding: 4px 0 4px 30px; width: min(100% - 2 * var(--gutter), 420px); margin-inline: auto; text-align: left; }
+  .rail-list::before { content: ""; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 2px; border-radius: 1px; background: linear-gradient(var(--rail-consumer), var(--rail-business), var(--rail-work)); }
+  .rail-list li { position: relative; font-weight: 500; color: var(--ink-2); font-size: 1rem; line-height: 1.3; }
+  .rail-list li::before { content: ""; position: absolute; left: -27px; top: 3px; width: 8px; height: 8px; border-radius: 50%; background: var(--bg); border: 2px solid var(--ink); }
+  .rail-cap { width: min(100% - 2 * var(--gutter), 420px); margin-inline: auto; text-align: left; padding-left: 30px; }
+}
+
+/* ==========================================================================
+   ST.01 WHY — 개념도 + 세 문장
+   ========================================================================== */
+.concept { width: 100%; margin-top: clamp(40px, 7vh, 80px); }
+.concept svg { width: 100%; height: auto; overflow: visible; }
+.concept .axis line { stroke: var(--hair-strong); stroke-width: 1.5; }
+.concept .axis text { font-family: var(--font); font-size: 19px; fill: var(--ink-3); }
+.concept .now { stroke: var(--hair-strong); stroke-width: 1.5; stroke-dasharray: 4 6; }
+.concept .curve { fill: none; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 1; transition: stroke-dashoffset var(--d-draw) var(--ease-std) 300ms; }
+.js .concept:not(.in) .curve { stroke-dashoffset: 1; }
+.concept.in .curve { stroke-dashoffset: 0; }
+.curve-cost { stroke: var(--ink-3); stroke-dasharray: .018 .012; }
+.js .concept:not(.in) .curve-cost { stroke-dasharray: 1; }
+.js .concept.in .curve-cost { stroke-dasharray: .018 .012; stroke-dashoffset: 0; transition: stroke-dashoffset var(--d-draw) var(--ease-std) 300ms, stroke-dasharray 0s linear 1700ms; }
+.curve-value { stroke: var(--ink); }
+.curve-label text { font-family: var(--font); font-size: 22px; font-weight: 700; fill: var(--ink); transition: opacity var(--d-base) var(--ease-std) 1600ms; }
+.curve-label circle { transition: opacity var(--d-base) var(--ease-std) 1600ms; }
+.js .concept:not(.in) .curve-label text, .js .concept:not(.in) .curve-label circle { opacity: 0; }
+.concept.in .curve-label text, .concept.in .curve-label circle { opacity: 1; }
+.label-cost circle { fill: var(--ink-3); }
+.label-value circle { fill: var(--ink); }
+.concept .note { margin-top: 14px; text-align: center; }
+@media (max-width: 640px) { .concept .axis text { font-size: 30px; } .curve-label text { font-size: 32px; } .concept .curve { stroke-width: 5; } }
+
+.three { display: grid; gap: 0 48px; width: 100%; text-align: left; }
+.sub + .three { margin-top: clamp(40px, 7vh, 72px); }
+.say + .three { margin-top: clamp(36px, 6vh, 64px); }
+@media (min-width: 720px) { .three { grid-template-columns: repeat(3, 1fr); } }
+.three li { display: grid; gap: 10px; align-content: start; padding: 28px 0 8px; border-top: 1px solid var(--hair-strong); min-width: 0; }
+.three b { font-size: clamp(1.2rem, 1.6vw, 1.5rem); line-height: 1.3; letter-spacing: -.015em; }
+.three span { font-size: .98rem; line-height: 1.65; color: var(--ink-2); }
+
+/* ==========================================================================
+   ST.02 MAP
+   ========================================================================== */
+.map-stage { width: min(1040px, 100% - 2 * var(--gutter)); margin-inline: auto; }
+.metro { width: 100%; height: auto; overflow: visible; }
+.mline { fill: none; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 1; transition: stroke-dashoffset var(--d-draw) var(--ease-std); }
+.js .metro:not(.drawn) .mline { stroke-dashoffset: 1; }
+.metro.drawn .mline { stroke-dashoffset: 0; }
+.metro path.l-business:not(.dashed) { transition-delay: 150ms; }
+.metro .mline.l-work { transition-delay: 300ms; }
+.mline.dashed { stroke-dasharray: .03 .025; stroke-dashoffset: 0 !important; opacity: .8; transition: opacity var(--d-slow) var(--ease-std) 1400ms; }
+.js .metro:not(.drawn) .mline.dashed { opacity: 0; }
+.metro.drawn .mline.dashed { opacity: .8; }
+.l-consumer { stroke: var(--rail-consumer); }
+.l-business { stroke: var(--rail-business); }
+.l-work { stroke: var(--rail-work); }
+.l-hub { stroke: var(--rail-hub); }
+.l-planned { stroke: var(--rail-planned); }
+.station { cursor: pointer; transition: opacity var(--d-base) var(--ease-std); }
+.js .metro:not(.drawn) .station { opacity: 0; }
+.metro.drawn .station { opacity: 1; }
+.metro.drawn .station:nth-of-type(2), .metro.drawn .station:nth-of-type(3) { transition-delay: 900ms; }
+.metro.drawn .station:nth-of-type(4), .metro.drawn .station:nth-of-type(8) { transition-delay: 1050ms; }
+.metro.drawn .station:nth-of-type(5), .metro.drawn .station:nth-of-type(6), .metro.drawn .station:nth-of-type(7) { transition-delay: 1200ms; }
+.metro.drawn .station:nth-of-type(1) { transition-delay: 1350ms; }
+.st-hit { fill: none; pointer-events: all; }
+.st-mask { fill: var(--bg); }
+.st-ring { fill: var(--bg); stroke-width: 2.5; transform-box: fill-box; transform-origin: center; transition: stroke var(--d-fast) var(--ease-out), stroke-width var(--d-fast) var(--ease-out), transform var(--d-fast) var(--ease-out); }
+.st-ring.hub { fill: var(--bg-3); }
+.st-ring.dashed { stroke-dasharray: 4 4; }
+.st-core { fill: var(--ink); }
+.st-name { font-family: var(--font); font-size: 18px; font-weight: 700; fill: var(--ink-2); paint-order: stroke fill; stroke: var(--bg); stroke-width: 6px; stroke-linejoin: round; transition: fill var(--d-fast) var(--ease-out); }
+.st-name.big { font-size: 24px; }
+.st-sub { font-family: var(--font); font-size: 16px; fill: var(--ink-3); paint-order: stroke fill; stroke: var(--bg); stroke-width: 5px; stroke-linejoin: round; }
+.station:focus-visible .st-name, .station.is-active .st-name { fill: var(--ink); }
+@media (hover: hover) { .station:hover .st-name { fill: var(--ink); } .station:hover .st-ring { stroke-width: 3.5; } }
+.station.is-active .st-ring { stroke: var(--accent); stroke-width: 3; }
+.station:active .st-ring { transform: scale(.9); }
+.station:focus { outline: none; box-shadow: none; }
+.station:focus-visible .st-hit { fill: rgba(217, 173, 100, .12); stroke: var(--accent); stroke-width: 2; }
+.station:focus-visible .st-ring { stroke: var(--accent); stroke-width: 4; }
+.map-hint { display: none; }
+@media (max-width: 719.98px) {
+  .map-stage { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: thin; scrollbar-color: var(--ink-3) transparent; padding-inline: var(--gutter); }
+  .metro { min-width: 720px; }
+  .st-name { font-size: 21px; } .st-name.big { font-size: 26px; } .st-sub { font-size: 17px; }
+  .map-hint { display: block; margin: 10px 0 0; font-size: .8rem; color: var(--ink-3); position: sticky; left: var(--gutter); width: max-content; }
+}
+.map-caption { display: grid; gap: 10px; justify-items: center; }
+.cap-head { font-size: 1.05rem; color: var(--ink-2); }
+.cap-head b { font-size: 1.3rem; }
+.cap-sep { margin: 0 10px; color: var(--ink-3); }
+.cap-body { font-size: .98rem; line-height: 1.65; color: var(--ink-2); max-width: 46em; }
+.map-caption .note { margin-top: 8px; }
+.map-caption.swap .map-caption-live > * { animation: swapIn var(--d-base) var(--ease-out); }
+@keyframes swapIn { from { opacity: 0; transform: translateY(6px); } }
+
+/* ==========================================================================
+   ST.03 SERVICES — 역할 4 + 타일 4
+   ========================================================================== */
+.roles { width: 100%; margin-top: clamp(44px, 7vh, 80px); display: grid; gap: clamp(28px, 4vw, 48px); justify-items: center; }
+.roles-center { display: grid; justify-items: center; gap: 4px; color: var(--ink); }
+.roles-center svg { margin-bottom: 6px; }
+.roles-center b { font-size: 1.15rem; }
+.roles-center span { font-size: .85rem; color: var(--ink-3); }
+.roles-list { display: grid; gap: 24px 40px; width: 100%; text-align: left; }
+@media (min-width: 640px) { .roles-list { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 960px) { .roles-list { grid-template-columns: repeat(4, 1fr); } }
+.roles-list li { display: grid; gap: 6px; align-content: start; padding-top: 20px; border-top: 1px solid var(--hair-strong); min-width: 0; }
+.roles-list b { font-size: clamp(1.4rem, 2vw, 1.9rem); line-height: 1.2; letter-spacing: -.02em; }
+.roles-list span { font-size: .95rem; color: var(--ink-2); line-height: 1.5; }
+.roles-list small { font-size: .8rem; color: var(--ink-3); }
+
+.tiles { display: grid; gap: 16px; width: 100%; text-align: left; }
+@media (min-width: 720px) { .tiles { grid-template-columns: repeat(2, 1fr); } }
+.tile { background: var(--bg-2); border-radius: var(--radius-lg); padding: clamp(28px, 3vw, 40px); display: grid; align-content: start; gap: 12px; min-width: 0; }
+.tile h3 { font-size: clamp(1.35rem, 1.8vw, 1.7rem); font-weight: 700; line-height: 1.25; letter-spacing: -.02em; color: var(--ink); }
+.tile h3 small { font-size: .8rem; font-weight: 400; color: var(--ink-3); margin-left: 6px; letter-spacing: 0; }
+.tile p { font-size: .95rem; line-height: 1.65; color: var(--ink-2); }
+.line-tag { display: inline-flex; align-items: center; gap: 8px; font-size: .8rem; color: var(--ink-3); }
+.dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; flex: none; }
+.dot.l-consumer { background: var(--rail-consumer); }
+.dot.l-business { background: var(--rail-business); }
+.dot.l-pass { background: var(--ink-3); }
+
+/* ==========================================================================
+   ST.04 MARKET — 통합 검색 · 위탁 등록 · 검수 보증 · 결제
+   ========================================================================== */
+.fan { width: 100%; margin-top: clamp(40px, 7vh, 72px); }
+.fan svg { width: 100%; height: auto; overflow: visible; }
+.fan-line { fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: 1; transition: stroke-dashoffset var(--d-draw) var(--ease-std); }
+.fan-line.in-l { stroke: var(--rail-consumer); }
+.fan-line.out-l { stroke: var(--rail-business); transition-delay: 500ms; }
+.js .fan:not(.in) .fan-line { stroke-dashoffset: 1; }
+.fan.in .fan-line { stroke-dashoffset: 0; }
+.fan-node rect { fill: var(--bg-2); stroke: var(--hair-strong); stroke-width: 1.5; }
+.fan-node text { font-family: var(--font); font-size: 20px; font-weight: 500; fill: var(--ink); }
+.fan-core rect { fill: var(--ink); }
+.fan-core text { font-family: var(--font); fill: var(--bg); font-weight: 700; font-size: 30px; }
+.fan-core .fan-core-sub { font-size: 17px; font-weight: 400; opacity: .78; }
+.fan-head text { font-family: var(--font); font-size: 19px; font-weight: 500; fill: var(--ink-3); }
+.fan-end { fill: var(--ink-3); transition: opacity var(--d-base) var(--ease-std) 1500ms; }
+.js .fan:not(.in) .fan-end { opacity: 0; }
+.fan.in .fan-end { opacity: 1; }
+.fan-list { display: none; }
+@media (max-width: 719.98px) {
+  .fan svg { display: none; }
+  .fan-list { display: grid; gap: 16px; text-align: left; }
+  .fan-list div { display: grid; gap: 6px; padding-top: 14px; border-top: 1px solid var(--hair-strong); min-width: 0; }
+  .fan-list dt { font-weight: 700; color: var(--ink); }
+  .fan-list dd { font-size: .95rem; color: var(--ink-2); line-height: 1.6; }
+}
+.four { display: grid; gap: 0 40px; width: 100%; text-align: left; margin-top: clamp(40px, 7vh, 72px); }
+@media (min-width: 640px) { .four { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 960px) { .four { grid-template-columns: repeat(4, 1fr); } }
+.four li { display: grid; gap: 10px; align-content: start; padding: 24px 0 8px; border-top: 1px solid var(--hair-strong); min-width: 0; }
+.four b { font-size: clamp(1.15rem, 1.5vw, 1.4rem); line-height: 1.3; letter-spacing: -.015em; }
+.four span { font-size: .95rem; line-height: 1.65; color: var(--ink-2); }
+.pay { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin-top: clamp(28px, 4vw, 44px); }
+.pay-label { font-size: .85rem; color: var(--ink-3); margin-right: 4px; }
+.pay .tag { color: var(--ink-2); border-color: var(--hair-strong); }
+
+/* ==========================================================================
+   ST.05 REPAIR — 출장 · 보증 · 장비 이력부
+   ========================================================================== */
+.passport { width: 100%; margin-top: clamp(36px, 5vh, 56px); display: grid; justify-items: center; gap: 18px; }
+.passport .ccard { max-width: 440px; }
+.passport .note { margin-top: 0; text-align: center; }
+
+/* ==========================================================================
+   ST.06 TOOLS — 디바이스 시연
+   ========================================================================== */
+.trio { display: grid; gap: 0; width: 100%; margin-top: clamp(28px, 4vh, 44px); text-align: left; }
+.trio li { display: grid; grid-template-columns: 6.2rem 1fr; gap: 4px 16px; padding: 16px 0; border-top: 1px solid var(--hair); align-items: start; }
+.trio b { font-size: 1.05rem; }
+.trio span { font-size: .95rem; line-height: 1.6; color: var(--ink-2); }
+.split-text .note { margin-top: 28px; }
+.device { position: relative; width: 100%; max-width: 540px; margin-inline: auto; padding: 10px; border-radius: var(--radius-device); background: var(--bg-2); border: 1px solid var(--hair); box-shadow: var(--shadow-float); }
+.chat { border-radius: calc(var(--radius-device) - 10px); background: var(--bg); border: 1px solid var(--hair); overflow: hidden; min-width: 0; }
+.chat-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 18px; border-bottom: 1px solid var(--hair); }
+.chat-room { font-weight: 500; font-size: .95rem; color: var(--ink); display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+.dot-live { width: 6px; height: 6px; border-radius: 50%; background: var(--state-ok); }
+.chat-body { display: flex; flex-direction: column; gap: 10px; padding: 18px 16px; min-height: 420px; max-height: 560px; overflow-y: auto; scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--hair-strong) transparent; }
+@media (max-width: 959.98px) { .chat-body { max-height: none; overflow-y: visible; } }
+.chat-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 12px; border-top: 1px solid var(--hair); }
+.chat-foot .btn { flex: none; }
+.chat-input { flex: 1; min-width: 0; height: var(--control-sm); display: block; line-height: calc(var(--control-sm) - 2px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 14px; border-radius: var(--pill); background: var(--bg-3); border: 1px solid var(--hair); color: var(--ink-3); font-size: .82rem; }
+.msg { max-width: 88%; display: grid; gap: 5px; animation: msgIn var(--d-base) var(--ease-out); }
+@keyframes msgIn { from { opacity: 0; transform: translateY(8px); } }
+.msg.me { align-self: flex-end; justify-items: end; }
+.msg .who { font-size: .74rem; color: var(--ink-3); display: inline-flex; align-items: center; gap: 6px; }
+.msg .who i { width: 14px; height: 14px; border-radius: 50%; background: var(--accent); color: #0B0B0A; display: inline-flex; align-items: center; justify-content: center; font-style: normal; font-size: .6rem; font-weight: 700; }
+.bubble { padding: 10px 14px; border-radius: 16px; background: var(--bg-2); font-size: .92rem; line-height: 1.55; color: var(--ink-2); }
+.msg.me .bubble { background: var(--bg-3); color: var(--ink); border-bottom-right-radius: 5px; }
+.msg:not(.me) .bubble { border-bottom-left-radius: 5px; }
+.typing { display: inline-flex; gap: 4px; padding: 12px 14px; }
+.typing i { width: 5px; height: 5px; border-radius: 50%; background: var(--ink-3); animation: blink 1.2s infinite; }
+.typing i:nth-child(2) { animation-delay: .2s; }
+.typing i:nth-child(3) { animation-delay: .4s; }
+@keyframes blink { 0%, 80%, 100% { opacity: .25; } 40% { opacity: 1; } }
+.ccard { width: 100%; max-width: 360px; border-radius: 16px; border: 1px solid var(--hair-strong); background: var(--bg-2); overflow: hidden; font-size: .88rem; text-align: left; }
+.ccard-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; padding: 10px 14px; border-bottom: 1px solid var(--hair); font-weight: 500; color: var(--ink); }
+.ccard-head .tag { font-size: .72rem; padding: 2px 9px; }
+.ccard-body { padding: 10px 14px; display: grid; }
+.ccard-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; padding: 6px 0; border-bottom: 1px solid var(--hair); color: var(--ink-3); }
+.ccard-row:last-child { border-bottom: 0; }
+.ccard-row b { color: var(--ink); text-align: right; font-weight: 500; }
+.ccard-row > :first-child { flex: none; }
+.ccard-warn { display: flex; gap: 8px; align-items: center; color: var(--state-warn); font-weight: 500; padding-top: 8px; }
+.ccard-warn::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--state-warn); flex: none; }
+.ccard-ok { display: flex; gap: 8px; align-items: center; color: var(--state-ok); font-weight: 500; padding-top: 8px; }
+.ccard-ok::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--state-ok); flex: none; }
+.ccard-actions { display: flex; gap: 8px; padding: 8px 14px 14px; }
+.ccard-actions .btn { flex: 1; min-height: var(--control-sm); padding: 0 12px; font-size: .88rem; }
+.ccard.pending .ccard-head .tag { color: var(--accent); border-color: rgba(217, 173, 100, .5); }
+.ccard.approved .ccard-head .tag { color: var(--state-ok); }
+.ccard.rejected .ccard-head .tag { color: var(--state-warn); }
+.sys { align-self: center; font-size: .78rem; color: var(--ink-3); text-align: center; padding: 4px 10px; animation: msgIn var(--d-base) var(--ease-out); }
+.sys.ok { color: var(--state-ok); }
+.sys.no { color: var(--state-warn); }
+
+/* ==========================================================================
+   ST.07 TRUST — 중립 규칙 9 · 끊기지 않는 거래 · 검수 목표
+   ========================================================================== */
+.rules { display: grid; gap: 0 40px; width: 100%; margin-top: clamp(40px, 7vh, 72px); text-align: left; counter-reset: r; }
+@media (min-width: 640px) { .rules { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 960px) { .rules { grid-template-columns: repeat(3, 1fr); } }
+.rules li { counter-increment: r; display: grid; gap: 6px; align-content: start; padding: 22px 0 26px; border-top: 1px solid var(--hair); min-width: 0; }
+.rules li::before { content: counter(r, decimal-leading-zero); font-size: .8rem; color: var(--ink-3); letter-spacing: .04em; }
+.rules b { font-size: 1.1rem; line-height: 1.35; }
+.rules span { font-size: .92rem; line-height: 1.6; color: var(--ink-2); }
+
+.steps { display: grid; gap: 12px; width: 100%; margin-top: clamp(40px, 7vh, 72px); text-align: left; counter-reset: s; position: relative; }
+@media (min-width: 960px) { .steps { grid-template-columns: repeat(7, 1fr); gap: 16px; } .steps::before { content: ""; position: absolute; left: 14px; right: 14px; top: 14px; height: 1px; background: var(--hair-strong); } }
+.steps li { position: relative; display: grid; gap: 4px; align-content: start; padding: 42px 8px 0 0; min-width: 0; counter-increment: s; }
+.steps li::before { content: counter(s); position: absolute; top: 0; left: 0; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: var(--bg); border: 1px solid var(--hair-strong); font-size: .78rem; font-weight: 500; color: var(--ink); }
+.steps span { font-size: .78rem; color: var(--ink-3); }
+.steps b { font-size: .95rem; line-height: 1.4; font-weight: 500; }
+@media (max-width: 959.98px) { .steps li { padding: 0 0 0 44px; min-height: 28px; } }
+
+.targets { display: grid; gap: 24px 40px; width: 100%; margin-top: clamp(40px, 7vh, 72px); text-align: left; }
+@media (min-width: 720px) { .targets { grid-template-columns: repeat(4, 1fr); } }
+.targets li { display: grid; gap: 6px; align-content: start; padding-top: 18px; border-top: 1px solid var(--hair-strong); min-width: 0; }
+.targets b { font-size: clamp(2.4rem, 3.6vw, 3.4rem); line-height: 1; letter-spacing: -.03em; }
+.targets b small { font-size: .45em; font-weight: 500; margin-left: 2px; color: var(--ink-2); letter-spacing: 0; }
+.targets span { font-size: .92rem; color: var(--ink-2); line-height: 1.5; }
+
+/* ==========================================================================
+   ST.09 JOIN · ST.10 ROADMAP
+   ========================================================================== */
+.tiers { display: grid; gap: 24px 32px; width: 100%; margin-top: clamp(40px, 7vh, 72px); text-align: left; }
+@media (min-width: 600px) { .tiers { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 960px) { .tiers { grid-template-columns: repeat(4, 1fr); } }
+.tiers li { display: grid; gap: 14px; align-content: start; padding-top: 20px; border-top: 1px solid var(--hair-strong); min-width: 0; }
+.tiers h3 { font-size: 1.2rem; font-weight: 700; letter-spacing: -.015em; color: var(--ink); line-height: 1.3; }
+.tiers dl { display: grid; grid-template-columns: auto 1fr; gap: 10px 12px; font-size: .92rem; }
+.tiers dt { font-size: .78rem; color: var(--accent); padding-top: 3px; font-weight: 500; }
+.tiers dt + dd + dt { color: var(--ink-3); }
+.tiers dd { color: var(--ink-2); line-height: 1.55; }
+
+.road { display: grid; width: 100%; margin-top: clamp(40px, 7vh, 72px); text-align: left; counter-reset: st; max-width: 880px; }
+.road li { counter-increment: st; display: grid; grid-template-columns: 4.5rem 1fr; gap: 6px 24px; align-items: start; padding: 26px 0; border-top: 1px solid var(--hair); min-width: 0; }
+.road li::before { content: counter(st, decimal-leading-zero); grid-row: span 2; font-size: clamp(1.8rem, 2.6vw, 2.4rem); font-weight: 700; letter-spacing: -.03em; line-height: 1; color: var(--ink-3); }
+.road b { font-size: 1.2rem; line-height: 1.3; }
+.road span { font-size: .95rem; line-height: 1.6; color: var(--ink-2); }
+
+/* ==========================================================================
+   ST.11 CLOSING
+   ========================================================================== */
+.closing { overflow: hidden; }
+.closing-bg { position: absolute; inset: 0; pointer-events: none; -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, transparent 36%, #000 76%); mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, transparent 36%, #000 76%); }
+.converge { width: 100%; height: 100%; }
+.cv-lines path { fill: none; stroke-width: 1.5; stroke: var(--hair-strong); opacity: .7; stroke-dasharray: 1; transition: stroke-dashoffset calc(var(--d-draw) * 1.5) var(--ease-std); }
+.js .closing:not(.in) .cv-lines path { stroke-dashoffset: 1; }
+.cv-lines path:nth-child(1), .cv-lines path:nth-child(4) { stroke: var(--rail-consumer); }
+.cv-lines path:nth-child(2), .cv-lines path:nth-child(5) { stroke: var(--rail-business); }
+.cv-lines path:nth-child(3), .cv-lines path:nth-child(6) { stroke: var(--rail-work); }
+.closing.in .cv-lines path { stroke-dashoffset: 0; }
+.closing .act-in { position: relative; }
+.contact { display: grid; gap: 12px; justify-items: center; margin-top: clamp(36px, 5vh, 56px); }
+.contact-v { font-size: 1.1rem; font-weight: 500; color: var(--ink); -webkit-user-select: all; user-select: all; }
+
+/* ==========================================================================
+   상세 설계 (부록)
+   ========================================================================== */
+.detail { min-height: 0; }
+.acc { margin-top: clamp(32px, 5vh, 56px); border-top: 1px solid var(--hair); }
+.acc details { border-bottom: 1px solid var(--hair); }
+.acc summary { cursor: pointer; list-style: none; padding: 20px 44px 20px 0; font-size: 1.1rem; font-weight: 700; color: var(--ink); position: relative; transition: color var(--d-fast) var(--ease-out); }
+.acc summary::-webkit-details-marker { display: none; }
+.acc summary::after { content: ""; position: absolute; right: 10px; top: 50%; width: 9px; height: 9px; border-right: 1.5px solid var(--ink-3); border-bottom: 1.5px solid var(--ink-3); transform: translateY(-70%) rotate(45deg); transition: transform var(--d-fast) var(--ease-out), border-color var(--d-fast) var(--ease-out); }
+.acc details[open] summary::after { transform: translateY(-30%) rotate(225deg); border-color: var(--ink); }
+@media (hover: hover) { .acc summary:hover::after { border-color: var(--ink); } }
+.acc details > :not(summary) { font-size: .95rem; line-height: 1.7; color: var(--ink-2); }
+.acc details > p, .acc details > ul, .acc details > ol, .acc details > dl, .acc details > div { margin: 0 0 20px; }
+.acc h4 { font-size: 1rem; font-weight: 700; color: var(--ink); margin: 22px 0 10px; }
+.acc .plain li { padding: 8px 0; border-top: 1px solid var(--hair); }
+.acc .plain li b { font-weight: 500; margin-right: 6px; }
+.compare { display: grid; gap: 6px; }
+.compare .old { color: var(--ink-3); }
+.compare .new { color: var(--ink); font-weight: 500; }
+.glossary { display: grid; gap: 12px 24px; }
+@media (min-width: 720px) { .glossary { grid-template-columns: repeat(5, auto); } }
+.glossary div { display: grid; gap: 2px; align-content: start; }
+.glossary dt { font-weight: 700; color: var(--ink); font-size: .9rem; }
+.glossary dd { font-size: .88rem; color: var(--ink-3); }
+.chain { display: flex; flex-wrap: wrap; gap: 8px; counter-reset: c; }
+.chain li { counter-increment: c; display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px 6px 6px; border-radius: var(--pill); background: var(--bg-2); font-size: .88rem; font-weight: 500; color: var(--ink); }
+.chain li::before { content: counter(c); width: 20px; height: 20px; border-radius: 50%; border: 1px solid var(--hair-strong); color: var(--ink-3); font-size: .72rem; display: inline-flex; align-items: center; justify-content: center; flex: none; }
+.two-col { display: grid; gap: 24px 40px; }
+@media (min-width: 720px) { .two-col { grid-template-columns: 1fr 1fr; } }
+.two-col h4 { margin-top: 0; }
+.numbered { display: grid; counter-reset: n; }
+.numbered li { counter-increment: n; display: grid; grid-template-columns: 2.2em 1fr; padding: 8px 0; border-top: 1px solid var(--hair); }
+.numbered li::before { content: counter(n, decimal-leading-zero); color: var(--accent); font-size: .85rem; padding-top: 2px; }
+.faq dt { font-weight: 700; color: var(--ink); padding-top: 14px; }
+.faq dd { padding: 6px 0 14px; border-bottom: 1px solid var(--hair); }
+
+/* ---------- 푸터 ---------- */
+.footer { background: var(--bg); color: var(--ink-3); padding-block: 48px 56px; font-size: .8rem; border-top: 1px solid var(--hair); }
+.footer .wrap { display: grid; gap: 8px; }
+.footer .wrap > p { max-width: 72ch; }
+.footer b { color: var(--ink); }
+.kbd-hint { display: flex; align-items: center; gap: 6px; }
+kbd { font-family: var(--font); font-size: .72rem; min-width: 22px; text-align: center; border: 1px solid var(--hair-strong); border-radius: 5px; padding: 2px 6px; color: var(--ink-2); background: var(--bg-2); }
+@media (hover: none) { .kbd-hint { display: none; } }
+
+/* ---------- 동작 줄이기 · 인쇄 ---------- */
+@media (prefers-reduced-motion: reduce), print {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; transition-delay: 0ms !important; }
+  .js [data-reveal], .js [data-stagger] > * { opacity: 1; transform: none; filter: none; }
+  .js .hero .say .w, .js .hero-sub, .js .hero-cta, .js .rail { opacity: 1; transform: none; filter: none; }
+  .rail-path, .concept .curve, .mline, .cv-lines path, .fan-line { stroke-dashoffset: 0 !important; }
+  .rail-stations .st circle { transform: none; opacity: 1; }
+  .rail-stations .st text, .curve-label text, .curve-label circle, .mline.dashed, .fan-end { opacity: 1 !important; }
+  .train { display: none; }
+  .station { opacity: 1; }
+}
+@media print {
+  .act, .act-light, .footer { --bg: #FFFFFF; --bg-2: #F4F3EF; --bg-3: #ECEAE4; --ink: #15161A; --ink-2: #3E414A; --ink-3: #6B6E76; --hair: rgba(21, 22, 26, .12); --hair-strong: rgba(21, 22, 26, .24); --accent: #8C6A2A; --cta: #15161A; --cta-ink: #FFFFFF; --shadow-float: none; background: #fff; min-height: 0; }
+  body { background: #fff; }
+  main { overflow: visible; }
+  .progress, .topbar, .dots, .kbd-hint, .skip, .rail-pause, .closing-bg, .chat-foot, .map-hint { display: none; }
+  .act { padding-block: 32px; gap: 32px; }
+  .device { box-shadow: none; }
+  .chat-body { max-height: none; overflow: visible; }
+  .msg, .map-caption.swap .map-caption-live > * { animation: none; }
+  .tile, .rules li, .tiers li, .road li, .acc details { break-inside: avoid; }
+}
+
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main">본문으로 건너뛰기</a>
+<div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+
+<header class="topbar" id="topbar" data-tone="dark">
+  <a class="brand" href="#hero" aria-label="백라인 생태계 처음으로">
+    <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+    <span class="brand-text">BACKLINE<span class="brand-sub">생태계</span></span>
+  </a>
+  <nav class="nav" id="nav" aria-label="섹션 이동">
+    <a href="#why">왜 지금</a>
+    <a href="#map">생태계</a>
+    <a href="#market">장터</a>
+    <a href="#repair">리페어</a>
+    <a href="#tools">업무 도구</a>
+    <a href="#model">수익</a>
+    <a href="#roadmap">로드맵</a>
+    <a href="#detail">상세 설계</a>
+  </nav>
+  <div class="topbar-actions">
+    <a class="btn btn-nav" href="#contact">문의</a>
+    <button class="icon-btn menu-btn" id="menuBtn" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="nav">
+      <svg class="ic-menu" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 8h16M4 16h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <svg class="ic-close" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<nav class="dots" id="dots" aria-label="섹션 바로가기"></nav>
+
+<main id="main">
+
+<!-- ═══════════ ST.00 HERO ═══════════ -->
+<section class="section act act-dark hero" id="hero" data-title="시작" data-tone="dark">
+  <div class="act-in">
+    <h1 class="say say-xl" data-hero>
+      <span class="line"><span class="w">장비를</span> <span class="w">팔지</span> <span class="w">않습니다.</span></span>
+      <span class="line"><span class="w">사람을</span> <span class="w">잇는</span> <span class="w"><em>무대</em>를</span> <span class="w">세웁니다.</span></span>
+    </h1>
+    <p class="sub hero-sub">연주자·리페어맨·악기점·공방이 자기 이름을 지킨 채 검증된 장터·출장 리페어·업무 도구·AI를 함께 씁니다. 그 공통 기반이 백라인입니다.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary btn-lg" href="#tools">출장 리페어 시연 보기</a>
+      <a class="btn btn-ghost btn-lg" href="#map">생태계 노선도 보기</a>
+    </div>
+  </div>
+  <figure class="rail" aria-label="참여자를 잇는 신호선 그림">
+    <svg viewBox="-200 0 1800 170" preserveAspectRatio="xMidYMid meet" role="img" aria-labelledby="railTitle" focusable="false">
+      <title id="railTitle">첫 기타를 산 사람부터 악기점까지 하나의 신호선으로 이어지는 그림</title>
+      <defs>
+        <linearGradient id="railGrad" x1="0" x2="1" y1="0" y2="0">
+          <stop offset="0" stop-color="var(--rail-consumer)" stop-opacity="0"/>
+          <stop offset=".12" stop-color="var(--rail-consumer)"/>
+          <stop offset=".5" stop-color="var(--rail-business)"/>
+          <stop offset=".88" stop-color="var(--rail-work)"/>
+          <stop offset="1" stop-color="var(--rail-work)" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <path id="railPath" class="rail-path" d="M-200 110 H160 L240 50 H460 L540 110 H760 L840 50 H1060 L1140 110 H1600" fill="none" stroke="url(#railGrad)" stroke-width="4" stroke-linejoin="round" stroke-linecap="round" pathLength="1"/>
+      <g class="rail-stations">
+        <g class="st" style="--d:.15"><circle cx="80" cy="110" r="9"/><text x="80" y="150" text-anchor="middle">첫 기타 입문자</text></g>
+        <g class="st" style="--d:.3"><circle cx="350" cy="50" r="9"/><text x="350" y="26" text-anchor="middle">취미 연주자</text></g>
+        <g class="st" style="--d:.5"><circle cx="650" cy="110" r="9"/><text x="650" y="150" text-anchor="middle">전문 연주자·강사</text></g>
+        <g class="st" style="--d:.68"><circle cx="950" cy="50" r="9"/><text x="950" y="26" text-anchor="middle">개인 리페어맨</text></g>
+        <g class="st" style="--d:.86"><circle cx="1210" cy="110" r="9"/><text x="1210" y="150" text-anchor="middle">공방·리페어샵</text></g>
+        <g class="st" style="--d:.97"><circle cx="1400" cy="110" r="9"/><text x="1400" y="150" text-anchor="middle">악기점·장비 판매점</text></g>
+      </g>
+      <g class="train">
+        <circle r="5" fill="var(--accent)">
+          <animateMotion dur="16s" repeatCount="indefinite" rotate="auto" begin="2s"><mpath href="#railPath"/></animateMotion>
+        </circle>
+      </g>
+    </svg>
+    <ul class="rail-list" aria-label="참여자 유형" role="list">
+      <li>첫 기타 입문자</li><li>취미 연주자</li><li>전문 연주자·강사</li><li>개인 리페어맨</li><li>공방·리페어샵</li><li>악기점·장비 판매점</li>
+    </ul>
+    <figcaption class="rail-cap">각자 자기 악기와 이름을 지킨 채, 필요한 기능 하나로 올라탑니다. <button class="rail-pause" id="railPause" type="button" aria-pressed="false">신호 멈춤</button></figcaption>
+  </figure>
+</section>
+
+<!-- ═══════════ ST.01 WHY ═══════════ -->
+<section class="section act act-light" id="why" data-title="왜 지금" data-tone="light">
+  <div class="act-in">
+    <h2 class="say" data-reveal>매물을 찾는 비용은 내려갑니다.<br>남는 것은 신뢰와 연결입니다.</h2>
+    <p class="sub" data-reveal>게시판은 이미 충분히 많고, 검색은 누구나 만듭니다. 그런데 이 기타의 상태를 믿어도 되는지, 누가 고쳐 줄지, 돈을 먼저 보내도 되는지는 여전히 아는 사람에게 묻습니다. 그 신뢰가 모이는 곳에 시장이 열립니다.</p>
+    <figure class="concept" data-reveal>
+      <svg viewBox="0 0 1200 420" role="img" aria-labelledby="conceptTitle">
+        <title id="conceptTitle">시간이 지날수록 매물을 찾는 비용은 내려가고 검증과 연결의 가치는 올라가는 개념도</title>
+        <g class="axis">
+          <line x1="40" y1="360" x2="1160" y2="360"/>
+          <text x="40" y="400" text-anchor="start">게시판 시대</text>
+          <text x="600" y="400" text-anchor="middle">지금</text>
+          <text x="1160" y="400" text-anchor="end">AI 이후</text>
+        </g>
+        <line class="now" x1="600" y1="60" x2="600" y2="360"/>
+        <path class="curve curve-cost" d="M48 70 C 320 90, 480 220, 600 270 S 960 350, 1152 352" pathLength="1"/>
+        <path class="curve curve-value" d="M48 340 C 320 330, 480 230, 600 170 S 960 60, 1152 44" pathLength="1"/>
+        <g class="curve-label label-cost"><circle cx="1152" cy="352" r="6"/><text x="1136" y="318" text-anchor="end">매물을 찾는 비용</text></g>
+        <g class="curve-label label-value"><circle cx="1152" cy="44" r="6"/><text x="1136" y="26" text-anchor="end">검증·연결의 가치</text></g>
+      </svg>
+      <figcaption class="note">개념도 · 수치가 아닌 방향</figcaption>
+    </figure>
+  </div>
+  <div class="act-in act-in--tight">
+    <ol class="three" role="list" data-reveal data-stagger>
+      <li><b>백라인을 먼저 세웁니다</b><span>계정·장비 이력·검수 기준·결제·메신저·승인 같은 공통 기반을 먼저 만들고, 서비스는 그 위에 올라탑니다.</span></li>
+      <li><b>사람을 먼저 모읍니다</b><span>매물 한 건, 수리 한 번으로 시작하는 연주자부터 모읍니다. 연주자와 거래가 모이면, 오래 닫혀 있던 샵도 스스로 문을 열고 들어옵니다.</span></li>
+      <li><b>사람이 사람을 연결합니다</b><span>검색과 결제는 복제되지만, 검수·수리·거래로 쌓인 신뢰의 기록은 복제되지 않습니다. 우리는 장비가 아니라 그 관계망을 만듭니다.</span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ═══════════ ST.02 MAP ═══════════ -->
+<section class="section act act-dark" id="map" data-title="생태계" data-tone="dark">
+  <div class="act-in">
+    <h2 class="say" data-reveal>서비스는 나누고,<br>기반은 함께 씁니다.</h2>
+    <p class="sub" data-reveal>브랜드·고객·거래 방식은 서비스마다 다르게, 계정·장비 이력·결제·메신저·업무 연결은 하나로. 새 서비스는 복제가 아니라 이 노선도의 역으로 추가됩니다.</p>
+  </div>
+  <div class="map-stage" data-reveal>
+    <svg class="metro" id="metro" viewBox="0 0 1000 680" role="group" aria-label="생태계 노선도">
+      <path class="mline l-consumer" d="M40 350 H960" pathLength="1"/>
+      <path class="mline l-business" d="M500 40 V500" pathLength="1"/>
+      <path class="mline l-business dashed" d="M500 500 V650" pathLength="1"/>
+      <circle class="mline l-work" cx="500" cy="350" r="150" pathLength="1"/>
+
+      <g class="station is-active" data-id="base" tabindex="0" role="button" aria-pressed="true" aria-label="공통 기반 환승역">
+        <circle class="st-hit" cx="500" cy="350" r="44"/>
+        <circle class="st-ring hub l-hub" cx="500" cy="350" r="24"/>
+        <circle class="st-core" cx="500" cy="350" r="8"/>
+        <rect class="st-mask" x="493" y="382" width="14" height="48" aria-hidden="true"/>
+        <text class="st-name big" x="500" y="404" text-anchor="middle">공통 기반</text>
+        <text class="st-sub" x="500" y="424" text-anchor="middle">계정 · 장비 이력 · 결제 · 거래 · 권한 · 알림</text>
+      </g>
+      <g class="station" data-id="market" tabindex="0" role="button" aria-pressed="false" aria-label="검증 중고장터">
+        <circle class="st-hit" cx="180" cy="350" r="44"/>
+        <circle class="st-ring l-consumer" cx="180" cy="350" r="14"/>
+        <text class="st-name" x="180" y="316" text-anchor="middle">검증 중고장터</text>
+        <text class="st-sub" x="180" y="390" text-anchor="middle">통합 검색 · 위탁 등록 · 검수 보증</text>
+      </g>
+      <g class="station" data-id="repair" tabindex="0" role="button" aria-pressed="false" aria-label="출장·보증 리페어">
+        <circle class="st-hit" cx="820" cy="350" r="44"/>
+        <circle class="st-ring l-consumer" cx="820" cy="350" r="14"/>
+        <text class="st-name" x="820" y="316" text-anchor="middle">출장·보증 리페어</text>
+        <text class="st-sub" x="820" y="390" text-anchor="middle">인증 리페어맨 · 출장 · 수리 보증</text>
+      </g>
+      <g class="station" data-id="hub" tabindex="0" role="button" aria-pressed="false" aria-label="파트너 허브">
+        <circle class="st-hit" cx="500" cy="110" r="44"/>
+        <circle class="st-ring l-business" cx="500" cy="110" r="14"/>
+        <text class="st-name" x="476" y="106" text-anchor="end">파트너 허브</text>
+        <text class="st-sub" x="476" y="128" text-anchor="end">샵·공방 간 거래 · 위탁 · 공동구매</text>
+      </g>
+      <g class="station" data-id="roadie" tabindex="0" role="button" aria-pressed="false" aria-label="로디">
+        <circle class="st-hit" cx="500" cy="200" r="44"/>
+        <circle class="st-ring l-work" cx="500" cy="200" r="14"/>
+        <text class="st-name" x="528" y="176" text-anchor="start">로디</text>
+        <text class="st-sub" x="528" y="196" text-anchor="start">서비스·AI 에이전트 조정</text>
+      </g>
+      <g class="station" data-id="tools" tabindex="0" role="button" aria-pressed="false" aria-label="샵 운영 도구">
+        <circle class="st-hit" cx="394" cy="456" r="44"/>
+        <circle class="st-ring l-work" cx="394" cy="456" r="14"/>
+        <text class="st-name" x="370" y="492" text-anchor="end">샵 운영 도구</text>
+        <text class="st-sub" x="370" y="514" text-anchor="end">접수 · 작업 · 재고 · 정산 기록</text>
+      </g>
+      <g class="station" data-id="messenger" tabindex="0" role="button" aria-pressed="false" aria-label="메신저">
+        <circle class="st-hit" cx="606" cy="456" r="44"/>
+        <circle class="st-ring l-work" cx="606" cy="456" r="14"/>
+        <text class="st-name" x="630" y="492" text-anchor="start">메신저</text>
+        <text class="st-sub" x="630" y="514" text-anchor="start">상담 · 견적 · 명령 · 승인</text>
+      </g>
+      <g class="station" data-id="next" tabindex="0" role="button" aria-pressed="false" aria-label="다음 서비스">
+        <circle class="st-hit" cx="500" cy="600" r="44"/>
+        <circle class="st-ring l-planned dashed" cx="500" cy="600" r="14"/>
+        <text class="st-name" x="528" y="596" text-anchor="start">다음 서비스</text>
+        <text class="st-sub" x="528" y="618" text-anchor="start">렌탈 · 레슨 연결 · 백라인 렌탈 · …</text>
+      </g>
+    </svg>
+    <p class="map-hint" aria-hidden="true">좌우로 밀어 전체 노선도를 보세요</p>
+  </div>
+  <div class="act-in act-in--tight">
+    <div class="map-caption" id="mapPanel" aria-label="선택한 역 설명">
+      <div class="map-caption-live" aria-live="polite" aria-atomic="true">
+        <p class="cap-head"><b id="panelTitle">공통 기반</b><span class="cap-sep" aria-hidden="true">·</span><span id="panelWho">모든 서비스가 함께 쓰는 무대</span></p>
+        <p class="cap-body" id="panelBody">계정·사업자·장비 이력(시리얼·검수·수리·소유 이전)·결제·거래 연결·권한·알림·감사기록. 하나의 로그인으로 들어오지만, 어떤 샵·개인의 자료를 볼 수 있는지는 요청마다 따로 검사합니다.</p>
+      </div>
+      <p class="note">역을 눌러 하나씩 살펴보세요.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ ST.03 SERVICES ═══════════ -->
+<section class="section act act-light" id="services" data-title="서비스" data-tone="light">
+  <div class="act-in">
+    <h2 class="say" data-reveal>한 사람이<br>네 가지 역할을 가집니다.</h2>
+    <p class="sub" data-reveal>가입을 네 번 하지 않습니다. 하나의 계정에 참여 역할과 연결된 서비스를 더합니다. 연주자도, 공방도 마찬가지입니다.</p>
+    <div class="roles" data-reveal>
+      <div class="roles-center">
+        <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M12 2.5c4.2 0 7.5 2.8 7.5 6.6 0 5.6-5.6 11.2-7.5 12.4C10.1 20.3 4.5 14.7 4.5 9.1 4.5 5.3 7.8 2.5 12 2.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        <b>동네 기타공방</b>
+        <span>하나의 사업자 · 하나의 계정</span>
+      </div>
+      <ol class="roles-list" role="list" data-stagger>
+        <li><b>판매자</b><span>내 재고와 위탁 매물을 장터에서 판매</span><small>검증 중고장터</small></li>
+        <li><b>리페어맨</b><span>출장 수리·검수·보증 리페어 제공</span><small>출장·보증 리페어</small></li>
+        <li><b>구매자</b><span>파트너 허브에서 부품·중고 매입</span><small>파트너 허브</small></li>
+        <li><b>위탁 접수처</b><span>개인 매물을 받아 검수·보관·전달</span><small>검증 중고장터</small></li>
+      </ol>
+    </div>
+  </div>
+  <div class="act-in act-in--tight">
+    <ul class="tiles" role="list" data-reveal data-stagger>
+      <li class="tile">
+        <span class="line-tag"><i class="dot l-consumer"></i>소비자선</span>
+        <h3>검증 중고장터 <small>장터</small></h3>
+        <p>연주자 ↔ 연주자·샵. 모든 채널의 매물을 한 화면에서 찾고, 위탁 등록 한 번으로 모든 채널에 올립니다. 인증 리페어맨의 검수서, 카드 할부·간편결제·안전결제.</p>
+      </li>
+      <li class="tile">
+        <span class="line-tag"><i class="dot l-consumer"></i>소비자선</span>
+        <h3>출장·보증 리페어 <small>리페어</small></h3>
+        <p>연주자 ↔ 인증 리페어맨. 집·합주실·공연장으로 찾아가는 수리. 결과는 플랫폼이 보증하고, 수리 이력은 장비 이력부에 남습니다.</p>
+      </li>
+      <li class="tile">
+        <span class="line-tag"><i class="dot l-pass"></i>모든 노선</span>
+        <h3>멤버십 라운지 <small>패스</small></h3>
+        <p>무료로 시작하고, 원하면 올라탑니다. 라운지, 무료 출장 리페어, 검수·위탁 수수료 할인, 우선 예약. 역이 아니라 모든 노선을 더 편하게 타는 패스입니다.</p>
+      </li>
+      <li class="tile">
+        <span class="line-tag"><i class="dot l-business"></i>사업자선</span>
+        <h3>파트너 허브 <small>가칭</small></h3>
+        <p>샵·공방 ↔ 다른 샵·공방·리페어맨. 위탁 매물 공유·부품 공동구매·밀린 작업 의뢰·재고 교환. 간판과 가격은 그대로입니다.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════ ST.04 MARKET ═══════════ -->
+<section class="section act act-dark" id="market" data-title="장터" data-tone="dark">
+  <div class="act-in">
+    <h2 class="say" data-reveal>한 번 검색하면 모든 장터가 보이고,<br>한 번 등록하면 모든 장터에 올라갑니다.</h2>
+    <p class="sub" data-reveal>통앤통·뮬·당근마켓·인스타그램·네이버 스마트스토어·개인 거래에 흩어진 매물을 한곳에서 찾습니다. 우리 장터에 위탁 등록하면 판매글은 모든 채널에 한 번에 올라가고, 문의와 거래 상태는 한 대화로 돌아옵니다.</p>
+    <figure class="fan" data-reveal>
+      <svg viewBox="0 0 1200 560" role="img" aria-labelledby="fanTitle">
+        <title id="fanTitle">여러 채널의 매물이 백라인 한 화면으로 모이고, 백라인에 한 번 등록한 매물이 여러 채널로 퍼지는 그림</title>
+        <g class="fan-head">
+          <text x="140" y="30" text-anchor="middle">모든 채널의 매물을 한 화면에</text>
+          <text x="1060" y="30" text-anchor="middle">한 번 등록, 모든 채널에 게시</text>
+        </g>
+        <g>
+          <path class="fan-line in-l" d="M240 70 C 340 70, 340 280, 440 280" pathLength="1"/>
+          <path class="fan-line in-l" d="M240 154 C 340 154, 340 280, 440 280" pathLength="1"/>
+          <path class="fan-line in-l" d="M240 238 C 340 238, 340 280, 440 280" pathLength="1"/>
+          <path class="fan-line in-l" d="M240 322 C 340 322, 340 280, 440 280" pathLength="1"/>
+          <path class="fan-line in-l" d="M240 406 C 340 406, 340 280, 440 280" pathLength="1"/>
+          <path class="fan-line in-l" d="M240 490 C 340 490, 340 280, 440 280" pathLength="1"/>
+          <path class="fan-line out-l" d="M760 280 C 860 280, 860 70, 960 70" pathLength="1"/>
+          <path class="fan-line out-l" d="M760 280 C 860 280, 860 154, 960 154" pathLength="1"/>
+          <path class="fan-line out-l" d="M760 280 C 860 280, 860 238, 960 238" pathLength="1"/>
+          <path class="fan-line out-l" d="M760 280 C 860 280, 860 322, 960 322" pathLength="1"/>
+          <path class="fan-line out-l" d="M760 280 C 860 280, 860 406, 960 406" pathLength="1"/>
+          <path class="fan-line out-l" d="M760 280 C 860 280, 860 490, 960 490" pathLength="1"/>
+        </g>
+        <g>
+          <path class="fan-end" d="M428 273 L442 280 L428 287 Z"/>
+          <path class="fan-end" d="M948 63 L962 70 L948 77 Z"/>
+          <path class="fan-end" d="M948 147 L962 154 L948 161 Z"/>
+          <path class="fan-end" d="M948 231 L962 238 L948 245 Z"/>
+          <path class="fan-end" d="M948 315 L962 322 L948 329 Z"/>
+          <path class="fan-end" d="M948 399 L962 406 L948 413 Z"/>
+          <path class="fan-end" d="M948 483 L962 490 L948 497 Z"/>
+        </g>
+        <g class="fan-node">
+          <rect x="40" y="46" width="200" height="48" rx="24"/><text x="140" y="77" text-anchor="middle">통앤통</text>
+          <rect x="40" y="130" width="200" height="48" rx="24"/><text x="140" y="161" text-anchor="middle">뮬</text>
+          <rect x="40" y="214" width="200" height="48" rx="24"/><text x="140" y="245" text-anchor="middle">당근마켓</text>
+          <rect x="40" y="298" width="200" height="48" rx="24"/><text x="140" y="329" text-anchor="middle">인스타그램</text>
+          <rect x="40" y="382" width="200" height="48" rx="24"/><text x="140" y="413" text-anchor="middle">스마트스토어</text>
+          <rect x="40" y="466" width="200" height="48" rx="24"/><text x="140" y="497" text-anchor="middle">개인 거래 · 샵</text>
+          <rect x="960" y="46" width="200" height="48" rx="24"/><text x="1060" y="77" text-anchor="middle">통앤통</text>
+          <rect x="960" y="130" width="200" height="48" rx="24"/><text x="1060" y="161" text-anchor="middle">뮬</text>
+          <rect x="960" y="214" width="200" height="48" rx="24"/><text x="1060" y="245" text-anchor="middle">당근마켓</text>
+          <rect x="960" y="298" width="200" height="48" rx="24"/><text x="1060" y="329" text-anchor="middle">인스타그램</text>
+          <rect x="960" y="382" width="200" height="48" rx="24"/><text x="1060" y="413" text-anchor="middle">스마트스토어</text>
+          <rect x="960" y="466" width="200" height="48" rx="24"/><text x="1060" y="497" text-anchor="middle">우리 장터</text>
+        </g>
+        <g class="fan-core">
+          <rect x="440" y="215" width="320" height="130" rx="28"/>
+          <text x="600" y="272" text-anchor="middle">백라인 장터</text>
+          <text class="fan-core-sub" x="600" y="309" text-anchor="middle">검수 · 보증 · 안전결제 · 장비 이력</text>
+        </g>
+      </svg>
+      <dl class="fan-list">
+        <div><dt>한 번 검색</dt><dd>통앤통·뮬·당근마켓·인스타그램·스마트스토어·개인 거래·샵 재고의 매물을 백라인 한 화면에서 봅니다.</dd></div>
+        <div><dt>한 번 등록</dt><dd>백라인에 위탁 등록하면 같은 채널 모두와 우리 장터에 판매글이 한 번에 올라가고, 팔리면 한 번에 내려갑니다.</dd></div>
+      </dl>
+    </figure>
+  </div>
+  <div class="act-in act-in--tight">
+    <ol class="four" role="list" data-reveal data-stagger>
+      <li><b>통합 검색</b><span>모든 채널의 공개 매물을 한 화면에. 원문으로 보내고, 판매자가 원하면 뺍니다. 매물이 모이면 시세가 보입니다. 운영사는 가격에 개입하지 않고 참고 정보만 보여 줍니다.</span></li>
+      <li><b>위탁 등록</b><span>사진·모델·희망가를 한 번 입력합니다. 채널별 양식에 맞춘 판매글을 만들어 동시에 올리고, 팔리면 모든 채널에서 한 번에 내립니다.</span></li>
+      <li><b>검수·보증</b><span>인증 리페어맨이 검수한 매물에는 검수서(사진·측정값·수리 이력)가 붙습니다. 보증 매물은 공개된 기준에 따라 반품·수리를 보증합니다.</span></li>
+      <li><b>결제 편의</b><span>카드 할부·네이버페이·카카오페이·토스·계좌이체. 안전결제로 수령 확인 뒤 정산합니다. 할부는 중고 거래에서 가장 아쉬웠던 선택지입니다.</span></li>
+    </ol>
+    <div class="pay" data-reveal>
+      <span class="pay-label">결제</span>
+      <span class="tag">카드 할부</span><span class="tag">네이버페이</span><span class="tag">카카오페이</span><span class="tag">토스</span><span class="tag">계좌이체</span><span class="tag">안전결제(에스크로)</span>
+    </div>
+    <p class="note" data-reveal>검색 대상은 각 채널의 공개 매물이며 채널별 약관을 따릅니다. 자동 등록이 허용되지 않는 채널은 글 생성과 원클릭 복사로 반자동 처리합니다. 결제 수단은 각 사의 심사·계약 뒤 순차 적용하며, 타 서비스 이름은 각 사의 상표입니다.</p>
+  </div>
+</section>
+
+<!-- ═══════════ ST.05 REPAIR ═══════════ -->
+<section class="section act act-light" id="repair" data-title="리페어" data-tone="light">
+  <div class="act-in">
+    <h2 class="say" data-reveal>수리는 찾아갑니다.<br>결과는 보증합니다.</h2>
+    <p class="sub" data-reveal>들고 가지 않아도 됩니다. 인증 리페어맨이 집·합주실·공연장으로 갑니다. 중고차의 헤이딜러·엔카보증이 차를 진단하고 보증하듯, 플랫폼이 수리 결과를 보증합니다.</p>
+    <ol class="three" role="list" data-reveal data-stagger>
+      <li><b>출장 리페어</b><span>셋업·현 교체·너트·프렛·전장(픽업·포트·잭)까지. 예약하면 동선이 맞는 인증 리페어맨이 배정됩니다. 공방이 필요한 작업은 픽업과 반납까지 맡습니다.</span></li>
+      <li><b>보증 리페어맨</b><span>자격·작업 기록·거래 완료 고객의 평가로 인증합니다. 보증 기간 안의 재발은 공개된 기준으로 재수리·환불하고, 기준에 못 미치면 인증을 거둡니다.</span></li>
+      <li><b>공연 전 점검·정기 세팅</b><span>멤버십은 무료 출장 리페어와 우선 예약을 포함합니다. 공연·녹음 전 점검도 같은 대화에서 예약하고, 기록하고, 보증합니다.</span></li>
+    </ol>
+  </div>
+  <div class="act-in act-in--tight">
+    <div class="passport" data-reveal>
+      <div class="ccard">
+        <div class="ccard-head"><span>장비 이력부</span><span class="tag">시연용 가상 데이터</span></div>
+        <div class="ccard-body">
+          <div class="ccard-row"><span>장비</span><b>일렉 기타 · 2021년식 · 시리얼 ••••1042</b></div>
+          <div class="ccard-row"><span>2024.03</span><b>검수 · 검수서 발급 · 인증 리페어맨</b></div>
+          <div class="ccard-row"><span>2024.07</span><b>프렛 드레싱 · 수리 보증 6개월</b></div>
+          <div class="ccard-row"><span>2025.02</span><b>소유 이전 · 안전결제 · 검수 매물</b></div>
+          <div class="ccard-ok">검수·수리·소유 이전이 한 기록으로 이어집니다.</div>
+        </div>
+      </div>
+      <p class="note">검수서를 쓰는 사람이 수리하는 사람입니다. 단, 자기 매물은 자기가 검수하지 못합니다. 수리·검수·소유 이전은 장비 이력부에 쌓여 다음 거래의 신뢰가 됩니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ ST.06 TOOLS ═══════════ -->
+<section class="section act act-dark" id="tools" data-title="업무 도구" data-tone="dark">
+  <div class="act-in act-in--split">
+    <div class="split-text">
+      <h2 class="say say-md" data-reveal>대화가 곧<br>업무가 됩니다.</h2>
+      <p class="sub" data-reveal>조회 → 요청 → 수락 → 실행 → 결과 확인까지 한 대화에서. 샵 운영 도구에서 열든 로디에서 열든 같은 대화, 같은 승인함입니다.</p>
+      <ul class="trio" role="list" data-reveal data-stagger>
+        <li><b>샵 운영 도구</b><span>실제 업무 기록과 처리. 접수·작업·부품·정산·보증. 거래 상대와 연결돼도 각 샵의 기록은 각자의 장부에 남습니다.</span></li>
+        <li><b>메신저</b><span>사람이 쓰는 공통 창구. 상담·견적·사진은 그냥 쌓이지 않고 접수·작업·결제·보증 기록과 연결됩니다.</span></li>
+        <li><b>로디</b><span>서비스와 AI 에이전트의 조정. 허용된 범위에서 상태를 모으고, 확인할 사항을 제안하며, 승인된 실행을 연결합니다.</span></li>
+      </ul>
+      <p class="note" data-reveal>AI는 승인 전에 중요 데이터를 바꾸지 않습니다. 승인 후에도 공식 업무 API로만 실행하고, 권한은 서버가 요청마다 검사합니다.</p>
+    </div>
+    <div class="device" data-reveal>
+      <div class="chat" id="chat">
+        <div class="chat-head">
+          <span class="chat-room"><i class="dot-live" aria-hidden="true"></i>리페어 데스크 · 출장팀</span>
+          <span class="tag">시연용 가상 데이터</span>
+        </div>
+        <div class="chat-body" id="chatBody" role="log" aria-live="polite" aria-label="업무 대화 시연">
+          <div class="msg me"><span class="who">출장팀 코디</span><div class="bubble">오늘 출장 리페어 일정 확인해줘.</div></div>
+          <div class="msg"><span class="who"><i>R</i>로디</span><div class="bubble">예약 기록에서 오늘 일정을 조회하겠습니다.</div></div>
+        </div>
+        <div class="chat-foot">
+          <span class="chat-input" aria-hidden="true">메시지를 입력하세요</span>
+          <button class="btn btn-ghost btn-small" id="chatStop" type="button">멈춤</button>
+          <button class="btn btn-ghost btn-small" id="chatReplay" type="button">다시 보기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ ST.07 TRUST ═══════════ -->
+<section class="section act act-light" id="trust" data-title="원칙" data-tone="light">
+  <div class="act-in">
+    <h2 class="say" data-reveal>연결하는 플랫폼,<br>편들지 않는 운영사.</h2>
+    <p class="sub" data-reveal>연결하는 플랫폼과 매물을 사고파는 상인은 다른 사업입니다. 운영사가 검수·보증·결제에 직접 관여하기 때문에 중립 기준을 더 엄격하게 두고, 약관이 아니라 제품 구조로 지킵니다.</p>
+    <ol class="rules" role="list" data-reveal data-stagger>
+      <li><b>판매자의 선택권</b><span>가격·판매 채널·거래 방식·거래 상대는 판매자가 정합니다. 시세는 참고로만 보여 줍니다.</span></li>
+      <li><b>검수자 독립</b><span>검수자는 그 거래의 판매자·구매자·중개 수익과 이해관계가 없어야 합니다. 검수 항목·등급 기준·검수자를 공개합니다.</span></li>
+      <li><b>동등 노출</b><span>어느 채널에서 왔든, 운영사 매물이든, 멤버십이든 검색 순서는 같은 기준입니다. 운영사가 파는 매물은 그렇게 표시합니다.</span></li>
+      <li><b>평가는 거래한 사람만</b><span>리페어맨·판매자 평가는 거래 완료자만 남기고, 운영사도 지우거나 올리지 않습니다.</span></li>
+      <li><b>비공개 자료 이용 금지</b><span>샵·리페어맨의 매입가·고객·매출 데이터를 운영사의 직영 사업에 쓰지 않습니다.</span></li>
+      <li><b>권한 분리</b><span>플랫폼 운영 권한과 직영 검수·직영 판매 권한을 분리합니다. 관리자라는 이유로 참여자의 대화를 상시 열람하지 않습니다.</span></li>
+      <li><b>승인 후 실행</b><span>AI(로디)는 승인 전에 데이터를 바꾸지 않고, 승인 후에도 공식 업무 API로만 실행합니다.</span></li>
+      <li><b>끝까지 격리</b><span>데이터베이스뿐 아니라 검색·파일·임시 저장소·대기열·백업·AI 범위까지 샵·개인별로 분리하고, 한 샵의 대량 작업이 이웃을 늦추지 않게 자원을 나눕니다.</span></li>
+      <li><b>떠날 자유</b><span>장비 이력·거래 기록·평가는 본인 소유입니다. 언제든 내려받아 나갈 수 있어야, 머무는 이유가 종속이 아니라 가치가 됩니다.</span></li>
+    </ol>
+  </div>
+  <div class="act-in act-in--tall">
+    <h2 class="say say-md" data-reveal>앱의 연결이 아니라,<br>사람의 거래가 끊기지 않는 것.</h2>
+    <p class="sub" data-reveal>카페와 앱을 오가며 같은 글을 다시 올리고, 같은 질문에 다시 답하고, 송금 전에 또 불안해하는 일을 없앱니다. 사진 한 장은 올리는 순간 장비 이력·판매글 초안·검수 요청으로 이어집니다.</p>
+    <ol class="steps" id="steps" role="list" data-reveal data-stagger>
+      <li><span>휴대전화</span><b>기타 사진·시리얼 촬영, 장비 이력부 생성</b></li>
+      <li><span>휴대전화</span><b>위탁 등록 선택, 희망가 입력 (시세 참고 표시)</b></li>
+      <li><span>로디</span><b>검수 예약·채널별 판매글 초안 제안</b></li>
+      <li><span>리페어맨</span><b>검수 · 검수서 발급</b></li>
+      <li><span>판매자</span><b>승인 · 모든 채널 동시 게시</b></li>
+      <li><span>구매자</span><b>안전결제 (카드 할부·네이버페이·카카오페이·토스)</b></li>
+      <li><span>같은 대화</span><b>수령 확인 · 정산 · 이력부 소유 이전</b></li>
+    </ol>
+    <ul class="targets" aria-label="개발 검수 목표" role="list" data-reveal data-stagger>
+      <li><b>0.5<small>초</small></b><span>통합 검색 첫 결과 표시</span></li>
+      <li><b>1<small>회</small></b><span>한 번 입력으로 모든 채널 게시</span></li>
+      <li><b>0<small>건</small></b><span>버튼 연타·재전송 시 중복 등록·중복 결제</span></li>
+      <li><b>95<small>%</small></b><span>온라인 상대에게 1초 이내 메시지 도착</span></li>
+    </ul>
+    <p class="note" data-reveal>개발 검수 목표입니다. '빠르게 보임'과 '안전하게 처리됨'을 따로 검증하며, 95%는 양쪽 앱이 열려 있고 정상 통신 중일 때의 기준입니다.</p>
+  </div>
+</section>
+
+<!-- ═══════════ ST.08 MODEL ═══════════ -->
+<section class="section act act-dark" id="model" data-title="수익" data-tone="dark">
+  <div class="act-in">
+    <h2 class="say" data-reveal>장비 한 대를 팔아<br>버는 회사가 아닙니다.</h2>
+    <p class="sub" data-reveal>기능 하나하나를 팔거나 매물마다 마진을 얹어 매출을 만드는 회사가 아닙니다. 특정 기능을 참여 조건으로 걸지 않고, 연결망 위에서 실제로 생긴 가치의 일부를 나눕니다.</p>
+    <ol class="three three--dark" role="list" data-reveal data-stagger>
+      <li><b>거래 서비스 비용</b><span>검수·보증·안전결제·배송. 이용한 거래에만 붙고, 사기·분쟁·반품까지 포함한 실제 비용이 줄었는지 확인합니다.</span></li>
+      <li><b>멤버십</b><span>라운지, 무료 출장 리페어, 검수·위탁 수수료 할인, 우선 예약. 참여 조건이 아니라 선택지입니다. 무료로도 끝까지 쓸 수 있습니다.</span></li>
+      <li><b>파트너 도구·현장 도입 지원</b><span>샵 운영 도구의 고급 기능과 위탁 대행. 첫 매물 등록부터 첫 거래까지 함께합니다. 소프트웨어 제공으로 끝나지 않는 지원이 참여를 만듭니다.</span></li>
+    </ol>
+    <p class="note" data-reveal>세 가지를 한꺼번에 부과하지 않고, 참여자에게 실제 가치가 생겼다고 확인된 항목부터 적용합니다. 수수료율과 수익성은 근거가 쌓인 뒤 정합니다.</p>
+  </div>
+  <div class="act-in act-in--tight">
+    <h2 class="say say-md" data-reveal>플랫폼이 커질수록,<br>각자의 몫도 커져야 합니다.</h2>
+    <ol class="three three--dark" role="list" data-reveal data-stagger>
+      <li><b>판매자</b><span>구매자가 많아질수록 더 빨리, 제값에 팝니다. 수수료는 성사된 거래에만 붙습니다.</span></li>
+      <li><b>리페어맨</b><span>의뢰가 많아질수록 동선이 짧아지고 보증 비용이 내려갑니다. 평가는 거래한 사람만 남깁니다.</span></li>
+      <li><b>샵·공방</b><span>위탁·부품·밀린 작업 거래가 늘수록 재고가 돌고 손이 빕니다. 간판과 가격은 그대로입니다.</span></li>
+    </ol>
+    <p class="note" data-reveal>노출은 동등하게, 수수료는 거래에만, 이력은 본인 소유로. 커지는 플랫폼이 개인의 몫을 줄이는 순간 생태계는 끝납니다.</p>
+  </div>
+</section>
+
+<!-- ═══════════ ST.09 JOIN ═══════════ -->
+<section class="section act act-light" id="join" data-title="참여" data-tone="light">
+  <div class="act-in">
+    <h2 class="say" data-reveal>사진 한 장으로<br>시작합니다.</h2>
+    <p class="sub" data-reveal>가입 조건은 멤버십도, 샵 계약도 아닙니다. 기타 사진 한 장과 모델명만 등록해도 통합 검색·장비 이력부·리페어 예약을 쓸 수 있습니다. 멤버십은 그다음의 선택입니다.</p>
+    <ol class="tiers" role="list" data-reveal data-stagger>
+      <li><h3>입문·취미 연주자</h3><dl><dt>처음</dt><dd>통합 검색, 내 장비 등록(이력부), 출장 셋업 예약</dd><dt>이후</dt><dd>위탁 판매, 멤버십 라운지, 단골 리페어맨</dd></dl></li>
+      <li><h3>전문 연주자·강사</h3><dl><dt>처음</dt><dd>긴급 출장 수리, 공연·녹음 전 점검</dd><dt>이후</dt><dd>정기 세팅, 장비 렌탈·레슨 연결</dd></dl></li>
+      <li><h3>개인 리페어맨·소규모 공방</h3><dl><dt>처음</dt><dd>인증 등록, 출장 의뢰 받기, 작업 기록</dd><dt>이후</dt><dd>검수 의뢰, 보증 리페어, 부품 공동구매</dd></dl></li>
+      <li><h3>악기점·리페어샵·장비 판매점</h3><dl><dt>처음</dt><dd>재고 게시, 위탁 접수, 고객 상담</dd><dt>이후</dt><dd>샵 운영 도구, 밀린 작업 의뢰, 공동구매</dd></dl></li>
+    </ol>
+    <p class="note" data-reveal>검수되지 않은 매물은 검수 매물처럼 보여주지 않습니다. '검수 전'과 '마지막 갱신 시각'을 표시하고, 결제 전에 판매자가 확인합니다.</p>
+  </div>
+</section>
+
+<!-- ═══════════ ST.10 ROADMAP ═══════════ -->
+<section class="section act act-light act-soft" id="roadmap" data-title="로드맵" data-tone="light">
+  <div class="act-in">
+    <h2 class="say" data-reveal>크게 설계하고,<br>연결이 필요한 순서로 짓습니다.</h2>
+    <p class="sub" data-reveal>한 지역의 연주자와 협력 가능한 공방·악기점에서 시작해, 하나의 생활권에서 하나의 거래 흐름을 반복해 검증합니다. 사람이 먼저, 샵은 뒤따릅니다.</p>
+    <ol class="road" id="road" role="list" data-reveal data-stagger>
+      <li><b>공통 기반</b><span>같은 계정으로 여러 서비스를 쓰되, 샵·개인별 자료는 분리됩니다. 장비 이력부·결제·권한이 여기 있습니다.</span></li>
+      <li><b>검증 장터 연결</b><span>통합 검색 → 위탁 등록 → 검수·보증 → 안전결제가 한 흐름으로 이어집니다.</span></li>
+      <li><b>리페어 네트워크 연결</b><span>출장 예약 → 인증 리페어맨 배정 → 수리 보증 → 이력 기록. 검수와 수리가 같은 사람, 같은 기준으로 묶입니다.</span></li>
+      <li><b>파트너 허브 연결</b><span>샵·공방 간 위탁·부품·밀린 작업 거래가 소비자 거래와 구분된 채 연결됩니다.</span></li>
+      <li><b>멤버십·신규 서비스 검증</b><span>라운지와 무료 출장 리페어를 열고, 렌탈·레슨·백라인 렌탈 같은 새 역을 기존 기반 위에 더합니다.</span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ═══════════ ST.11 CONTACT ═══════════ -->
+<section class="section act act-dark closing" id="contact" data-title="문의" data-tone="dark">
+  <div class="closing-bg" aria-hidden="true">
+    <svg class="converge" viewBox="0 0 1200 400" preserveAspectRatio="xMidYMid slice">
+      <g class="cv-lines">
+        <path d="M-50 60 C 300 60, 500 200, 600 200" pathLength="1"/>
+        <path d="M-50 206 C 300 206, 500 200, 600 200" pathLength="1"/>
+        <path d="M-50 340 C 300 340, 500 200, 600 200" pathLength="1"/>
+        <path d="M1250 60 C 900 60, 700 200, 600 200" pathLength="1"/>
+        <path d="M1250 206 C 900 206, 700 200, 600 200" pathLength="1"/>
+        <path d="M1250 340 C 900 340, 700 200, 600 200" pathLength="1"/>
+      </g>
+    </svg>
+  </div>
+  <div class="act-in">
+    <h2 class="say say-xl" data-reveal>결국, 사람과 사람을<br>연결하는 것은 <em>사람</em>입니다.</h2>
+    <p class="sub" data-reveal>우리는 그 사람들이 모이는 무대를 만듭니다. 함께 백라인을 세울 파트너를 찾습니다.</p>
+    <div class="contact" data-reveal>
+      <span class="tag">투자 · 파트너십 문의</span>
+      <p class="contact-v" id="contactValue">담당자 연락처는 발표 자리에서 안내합니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 상세 설계 (부록) ═══════════ -->
+<section class="section act act-light detail" id="detail" data-title="상세 설계" data-tone="light">
+  <div class="act-in act-in--read">
+    <h2 class="say say-sm" data-reveal>상세 설계</h2>
+    <p class="sub" data-reveal>발표에서 다 말하지 않은 부분입니다. 필요한 항목만 펼쳐 보세요.</p>
+    <div class="acc" data-reveal>
+      <details>
+        <summary>지금 기타 치는 사람의 하루</summary>
+        <ul class="plain" role="list">
+          <li><b>거래망</b> 같은 기타를 통앤통·뮬·당근마켓·인스타그램에 따로 올리고, 네 곳의 쪽지에 따로 답합니다. 팔리면 네 곳에서 따로 내립니다.</li>
+          <li><b>신뢰</b> 사진과 말만 믿고 송금합니다. 넥 상태·전장·수리 이력은 받아 보고야 압니다. 분쟁은 각자 알아서 합니다.</li>
+          <li><b>리페어</b> 아는 사람 소개로 찾고, 들고 가고, 기다립니다. 결과가 마음에 안 들어도 기준이 없습니다.</li>
+          <li><b>샵</b> 오래된 상권은 단골과 소개로 돌아갑니다. 밖에서는 가격도 수리 품질도 보이지 않고, 온라인은 스마트스토어 한 칸입니다.</li>
+        </ul>
+        <p class="compare"><span class="old">기존의 답: 큰 커뮤니티 한 곳에 모이거나, 샵이 직접 매입해 마진을 얹는 것</span><span class="new">우리의 답: 채널은 그대로, 가격과 판매 방식은 판매자가, 검수·결제·이력은 공통 기반으로</span></p>
+      </details>
+      <details>
+        <summary>다섯 가지를 처음부터 따로 관리합니다</summary>
+        <dl class="glossary">
+          <div><dt>서비스</dt><dd>어떤 목적의 제품인가</dd></div>
+          <div><dt>사업자</dt><dd>누가 거래하고 책임지는가 (개인·공방·샵)</dd></div>
+          <div><dt>장비</dt><dd>시리얼과 이력을 가진 물건</dd></div>
+          <div><dt>판매채널</dt><dd>어느 경로에서 파는가</dd></div>
+          <div><dt>참여 역할</dt><dd>구매자·판매자·리페어맨·검수자·위탁 접수처</dd></div>
+        </dl>
+        <p>이 다섯을 처음부터 따로 관리해야, 새로운 거래 형태가 생겨도 구조를 다시 바꾸지 않습니다. 특히 '장비'를 사람과 별개의 축으로 두어야 주인이 바뀌어도 이력이 따라갑니다.</p>
+      </details>
+      <details>
+        <summary>거래 흐름 예시 A · B · C: 연결하되 섞지 않습니다</summary>
+        <p>세 서비스(장터·리페어·파트너 허브)를 오가는 거래는 하나의 로그인과 공통 장비 기준 위에서 이어집니다. 다만 소비자 거래와 샵 간 거래, 판매자와 위탁 접수처의 기록은 각각 남깁니다. 구현 목표를 보여 주는 예시입니다.</p>
+        <h4>A. 위탁 등록 → 검수 → 모든 채널 게시 → 안전결제</h4>
+        <ol class="chain" role="list"><li>판매자가 사진·모델·희망가 등록</li><li>로디가 시세 참고·채널별 초안 제안</li><li>인증 리페어맨 검수·검수서 발급</li><li>판매자 승인</li><li>모든 채널 동시 게시</li><li>구매자 안전결제 (카드 할부·간편결제)</li><li>수령 확인·정산</li><li>이력부 소유 이전</li></ol>
+        <ul class="plain" role="list"><li>검수자는 그 매물의 판매자·구매자가 아니어야 합니다. 같은 사람이 리페어맨이자 판매자일 수 있지만, 자기 매물은 자기가 검수하지 못합니다.</li><li>다른 채널에서 성사된 거래도 판매자가 알리면 모든 채널에서 글을 내리고 이력을 남깁니다. 강제하지 않습니다.</li></ul>
+        <h4>B. 출장 리페어 → 보증</h4>
+        <ol class="chain" role="list"><li>고객 예약 (증상·사진)</li><li>로디가 동선 맞는 인증 리페어맨 제안</li><li>리페어맨 수락</li><li>방문·작업 기록 (사진·측정값)</li><li>결제</li><li>보증 기간 등록</li><li>이력부 기록</li></ol>
+        <ul class="plain" role="list"><li>수리비는 리페어맨이 정하고, 플랫폼은 참고 범위만 보여 줍니다.</li><li>보증 기간 안의 재발은 공개된 기준으로 재수리·환불합니다. 분쟁 시 작업 기록이 근거입니다.</li></ul>
+        <h4>C. 샵이 위탁 접수처로 참여</h4>
+        <ol class="chain" role="list"><li>개인이 샵에 기타를 맡김</li><li>샵이 검수·보관</li><li>장터·모든 채널 게시</li><li>판매·안전결제</li><li>샵이 전달</li><li>정산 (판매자·샵·플랫폼)</li></ol>
+        <ul class="plain" role="list"><li>판매자는 개인, 샵은 보관·전달 대행입니다. 기타가 샵에 있다고 샵의 매입·매출로 기록하지 않습니다. 대행 비용은 별도 약정과 정산 규칙으로 연결합니다.</li><li>밀린 작업은 파트너 허브에서 다른 공방·인증 리페어맨에게 의뢰할 수 있고, 고객에게는 누가 작업했는지 알립니다.</li></ul>
+      </details>
+      <details>
+        <summary>공통으로 쓰는 것 · 절대 섞지 않는 것</summary>
+        <div class="two-col">
+          <div><h4>공통으로 쓰는 것</h4><ul class="plain" role="list"><li>하나의 로그인과 본인 확인</li><li>장비 품목 기준(브랜드·모델·연식·시리얼 규칙)과 검수 항목</li><li>메시징 기술, 업무카드, 승인 처리 규칙</li><li>파일 업로드·미리보기·공유 기술</li><li>결제·정산 기술, 검색·분석 기술</li></ul></div>
+          <div><h4>절대 섞지 않는 것</h4><ul class="plain" role="list"><li>서비스 이용 권한, 샵·개인 소속, 관리자 권한</li><li>판매자별 가격, 비공개 매입가, 재고 소유자</li><li>샵 내부 대화 · 샵 간 거래 · 고객 상담</li><li>파일 열람 권한, 외부 공유 허용 범위, 증빙의 소속</li><li>AI가 접근·실행할 수 있는 범위</li></ul></div>
+        </div>
+      </details>
+      <details>
+        <summary>생태계가 만들어지고 있는지 판단하는 기준</summary>
+        <ol class="numbered" role="list"><li>연주자가 다시 사용하는가</li><li>문의가 실제 거래로 이어지는가</li><li>매물과 장비 이력이 계속 갱신되는가</li><li>사기·분쟁·반품이 줄었는가</li><li>리페어 재의뢰율과 보증 청구율은 어떤가</li><li>샵이 먼저 참여를 요청하는가</li><li>새 서비스를 더했을 때 재등록·재입력·재전송이 줄었는가</li><li>그 과정에서도 속도와 안정성이 유지되는가</li></ol>
+        <p>가입자 수만으로 판단하지 않습니다. 참여자별 지원·운영 비용도 함께 보아, 사람이 늘수록 유지하기 어려운 서비스가 되지 않게 합니다.</p>
+      </details>
+      <details>
+        <summary>첫 검증과 지금 하지 않는 것</summary>
+        <p><b>첫 검증</b> 한 지역(예: 홍대·합정 권역)의 연주자와 협력 가능한 공방·악기점에서 '매물 등록 → 검수 → 거래 → 이력 기록'과 '출장 예약 → 수리 → 보증'을 반복합니다. 첫 매물 등록, 첫 거래, 첫 보증 청구까지 현장에서 함께 검증합니다. 현장 도입 지원은 제품의 일부입니다.</p>
+        <h4>지금 하지 않는 것</h4>
+        <ul class="plain" role="list"><li>모든 악기 카테고리의 동시 확장: 기타·베이스·이펙터·앰프부터 시작합니다</li><li>자체 결제 엔진, 자체 메신저 엔진, 전용 앱 마켓의 동시 개발</li><li>광범위한 물류·보관 창고·자체 보험은 책임과 운영비가 확인된 뒤</li><li>채널 자동 등록은 채널별 약관·API 허용 범위를 확인한 뒤, 그 전까지는 반자동</li><li>운영사의 직영 매입·판매 확대는 중립 기준이 검증된 뒤</li></ul>
+      </details>
+      <details>
+        <summary>예상 질문</summary>
+        <dl class="faq">
+          <dt>통앤통·뮬 같은 커뮤니티와 무엇이 다른가요?</dt><dd>게시판을 하나 더 만드는 것이 아닙니다. 그 게시판들의 매물을 한 화면에 모으고, 한 번 등록으로 모든 곳에 올리며, 검수·보증·안전결제·이력을 붙입니다. 기존 커뮤니티는 계속 쓰고, 거래의 신뢰 층을 더합니다.</dd>
+          <dt>당근마켓·번개장터 같은 중고 앱과는요?</dt><dd>범용 중고 앱은 기타의 넥 상태·전장·수리 이력을 검수하지 않습니다. 우리는 인증 리페어맨의 검수서와 수리 보증, 장비 이력부로 '이 기타가 어떤 상태인지'를 거래의 일부로 만듭니다.</dd>
+          <dt>다른 채널의 글을 가져와도 되나요?</dt><dd>각 채널의 공개 매물 정보를 검색 결과로 보여 주고 원문으로 보냅니다. 판매자가 원하면 제외하고, 채널별 약관과 API 허용 범위를 따릅니다. 허용되지 않는 채널은 자동이 아니라 반자동으로 처리합니다.</dd>
+          <dt>샵이 왜 들어오나요? 오래된 상권은 자기들끼리 잘 돌아가는데요.</dt><dd>억지로 열지 않습니다. 연주자와 거래가 먼저 모이면, 밖에 있는 비용이 안에 있는 비용보다 커집니다. 간판·가격·거래처 선택권은 그대로이고, 수수료는 이용한 거래에만 붙으며, 언제든 기록을 들고 나갈 수 있기 때문에 들어오는 결정이 가볍습니다.</dd>
+          <dt>리페어맨은 어떻게 인증하고, 보증은 누가 책임지나요?</dt><dd>자격·작업 기록·거래 완료 고객의 평가로 인증하고, 기준에 못 미치면 거둡니다. 보증 기간 안의 재발은 플랫폼이 공개된 기준으로 재수리·환불을 처리하고, 작업 기록을 근거로 리페어맨과 정산합니다.</dd>
+          <dt>무료로도 쓸 수 있나요? 멤버십은 무엇이 다른가요?</dt><dd>통합 검색·장비 이력부·매물 등록·리페어 예약은 무료입니다. 멤버십은 라운지, 무료 출장 리페어, 검수·위탁 수수료 할인, 우선 예약 같은 추가 서비스입니다. 무료 이용자를 검색에서 뒤로 미루지 않습니다.</dd>
+          <dt>플랫폼이 커지면 개인과 샵이 손해 보지 않나요?</dt><dd>노출은 동등하게, 수수료는 성사된 거래에만, 이력·평가·거래 기록은 본인 소유로 두고 언제든 내려받을 수 있게 합니다. 커지는 플랫폼이 개인의 몫을 줄이기 시작하면 사람이 떠나고, 사람이 떠나면 이 사업은 끝납니다.</dd>
+          <dt>생태계가 실제로 만들어지고 있는지 어떻게 판단하나요?</dt><dd>제품 개수나 가입자 수가 아니라 위의 여덟 가지 기준으로 봅니다. 특히 샵이 먼저 참여를 요청하는지, 새 서비스를 더했을 때 재등록·재입력이 줄었는지를 가장 먼저 봅니다.</dd>
+        </dl>
+      </details>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <p><b>백라인 생태계</b> <span>· 상위 브랜드명 '백라인(BACKLINE)'은 가칭입니다.</span></p>
+    <p>본 사이트의 서비스 구성·업무 흐름·수치는 설계 목표이며, 구현이 완료되었거나 성과가 검증되었다는 뜻이 아닙니다. 속도 기준은 개발 검수 목표이고, 채팅 시연과 장비 이력부는 가상 데이터입니다.</p>
+    <p>통앤통·뮬·당근마켓·번개장터·인스타그램·네이버 스마트스토어·네이버페이·카카오페이·토스·헤이딜러·엔카는 각 사의 상표이며, 제휴 관계를 뜻하지 않습니다.</p>
+    <p class="kbd-hint"><kbd>←</kbd><kbd>→</kbd> 섹션 이동</p>
+    <p>© 2026 백라인 생태계. 모든 권리 보유.</p>
+  </div>
+</footer>
+
+<script>
+/* 백라인 생태계 — 사이트 인터랙션
+   모든 동작은 점진적 향상입니다. JS가 꺼져 있어도 내용은 전부 보입니다. */
+(function () {
+  'use strict';
+
+  var root = document.documentElement;
+  root.classList.add('js');
+
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var $ = function (s, c) { return (c || document).querySelector(s); };
+  var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
+
+  function onVisible(el, cb, opts) {
+    if (!el) return;
+    if (!('IntersectionObserver' in window)) { cb(el); return; }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { io.unobserve(e.target); cb(e.target); } });
+    }, opts || { threshold: 0.25 });
+    io.observe(el);
+  }
+
+  /* ---------- 히어로 로드 시퀀스 ---------- */
+  $$('.hero .say .w').forEach(function (w, i) { w.style.setProperty('--i', i); });
+  function markLoaded() {
+    requestAnimationFrame(function () { requestAnimationFrame(function () { root.classList.add('loaded'); }); });
+  }
+  if (document.fonts && document.fonts.ready) {
+    var done = false;
+    var go = function () { if (!done) { done = true; markLoaded(); } };
+    document.fonts.ready.then(go);
+    setTimeout(go, 400); /* 폰트가 늦어도 0.4초 뒤에는 시작 */
+  } else { markLoaded(); }
+
+  /* ---------- 상단바: 스크롤 상태 · 아래 막의 톤 따라가기 · 진행 바 ---------- */
+  var topbar = $('#topbar');
+  var progressBar = $('#progressBar');
+  var sections = $$('main > .section');
+  function toneAt() {
+    /* 상단바 바로 아래 1px에 있는 막의 톤을 따른다(앵커 이동 뒤 상단바가 이전 막의 끝자락을 덮고 있어도 새 막의 톤) */
+    var probe = (topbar ? topbar.getBoundingClientRect().height : 56) + 1;
+    for (var i = sections.length - 1; i >= 0; i--) {
+      var r = sections[i].getBoundingClientRect();
+      if (r.top <= probe && r.bottom > probe) return sections[i].getAttribute('data-tone') || 'dark';
+    }
+    return sections.length ? (sections[sections.length - 1].getAttribute('data-tone') || 'dark') : 'dark';
+  }
+  function onScroll() {
+    var y = window.scrollY || window.pageYOffset;
+    if (topbar) {
+      topbar.classList.toggle('scrolled', y > 10);
+      var t = toneAt();
+      if (topbar.getAttribute('data-tone') !== t) topbar.setAttribute('data-tone', t);
+    }
+    if (progressBar) {
+      var max = root.scrollHeight - window.innerHeight;
+      progressBar.style.width = (max > 0 ? Math.min(100, (y / max) * 100) : 0) + '%';
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
+
+  /* ---------- 모바일 메뉴 ---------- */
+  var menuBtn = $('#menuBtn');
+  var nav = $('#nav');
+  function closeMenu(returnFocus) {
+    if (!nav) return;
+    var wasOpen = nav.classList.contains('open');
+    nav.classList.remove('open');
+    if (menuBtn) {
+      menuBtn.setAttribute('aria-expanded', 'false'); menuBtn.setAttribute('aria-label', '메뉴 열기');
+      if (returnFocus && wasOpen) menuBtn.focus();
+    }
+  }
+  if (menuBtn && nav) {
+    menuBtn.addEventListener('click', function () {
+      var open = !nav.classList.contains('open');
+      nav.classList.toggle('open', open);
+      menuBtn.setAttribute('aria-expanded', String(open));
+      menuBtn.setAttribute('aria-label', open ? '메뉴 닫기' : '메뉴 열기');
+      if (open) { var first = nav.querySelector('a'); if (first) first.focus(); }
+    });
+    nav.addEventListener('click', function (e) { if (e.target.closest('a')) closeMenu(false); });
+    nav.addEventListener('focusout', function (e) {
+      var to = e.relatedTarget;
+      if (nav.classList.contains('open') && to && !nav.contains(to) && to !== menuBtn) closeMenu(false);
+    });
+    /* 메뉴 밖을 탭하면 닫기만 한다: 그 탭의 click은 한 번 삼켜 아래 버튼이 눌리지 않게 (상단바 안은 통과) */
+    var dismissTap = false;
+    document.addEventListener('pointerdown', function (e) {
+      dismissTap = false;
+      if (nav.classList.contains('open') && !nav.contains(e.target) && !menuBtn.contains(e.target)) {
+        closeMenu(false);
+        dismissTap = !(topbar && topbar.contains(e.target));
+      }
+    });
+    document.addEventListener('pointercancel', function () { dismissTap = false; });
+    document.addEventListener('click', function (e) { if (dismissTap) { dismissTap = false; e.preventDefault(); e.stopPropagation(); } }, true);
+  }
+
+  /* ---------- 점 내비 · 활성 링크 ---------- */
+  var dots = $('#dots');
+  if (dots) {
+    sections.forEach(function (s, i) {
+      var a = document.createElement('a');
+      a.href = '#' + s.id;
+      a.innerHTML = '<span>' + (s.getAttribute('data-title') || s.id) + '</span>';
+      a.setAttribute('aria-label', s.getAttribute('data-title') || s.id);
+      a.tabIndex = -1;
+      dots.appendChild(a);
+    });
+  }
+  var navIds = $$('.nav a').map(function (a) { return a.getAttribute('href').slice(1); });
+  function setActive(id) {
+    var navId = id, idx = sections.map(function (s) { return s.id; }).indexOf(id);
+    while (idx > 0 && navIds.indexOf(navId) < 0) { idx -= 1; navId = sections[idx].id; }
+    $$('.nav a').forEach(function (a) { a.classList.toggle('is-active', a.getAttribute('href') === '#' + navId); });
+    $$('.dots a').forEach(function (a) { a.classList.toggle('is-active', a.getAttribute('href') === '#' + id); });
+  }
+  if ('IntersectionObserver' in window) {
+    var secIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) setActive(e.target.id); });
+    }, { rootMargin: '-40% 0px -50% 0px', threshold: 0 });
+    sections.forEach(function (s) { secIO.observe(s); });
+  }
+
+  /* ---------- 스크롤 등장 (1회) ---------- */
+  $$('[data-stagger]').forEach(function (g) {
+    Array.prototype.forEach.call(g.children, function (c, i) { c.style.setProperty('--i', i); });
+  });
+  var revealEls = $$('[data-reveal], [data-stagger]');
+  if (reduced || !('IntersectionObserver' in window)) {
+    revealEls.forEach(function (el) { el.classList.add('in'); });
+  } else {
+    var revIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); revIO.unobserve(e.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    revealEls.forEach(function (el) { revIO.observe(el); });
+    window.setTimeout(function () {
+      revealEls.forEach(function (el) { var r = el.getBoundingClientRect(); if (r.top < window.innerHeight && r.bottom > 0) el.classList.add('in'); });
+    }, 1200);
+  }
+  onVisible($('#contact'), function (el) { el.classList.add('in'); }, { threshold: 0.2 });
+
+  /* ---------- 노선도 ---------- */
+  var STATIONS = {
+    base: { title: '공통 기반', who: '모든 서비스가 함께 쓰는 무대',
+      body: '계정·사업자·장비 이력(시리얼·검수·수리·소유 이전)·결제·거래 연결·권한·알림·감사기록. 하나의 로그인으로 들어오지만, 어떤 샵·개인의 자료를 볼 수 있는지는 요청마다 따로 검사합니다.' },
+    market: { title: '검증 중고장터', who: '연주자 ↔ 연주자 · 샵',
+      body: '통앤통·뮬·당근마켓·인스타그램·스마트스토어·개인 거래에 흩어진 매물을 한 화면에서 찾고, 위탁 등록 한 번으로 모든 채널에 올립니다. 인증 리페어맨의 검수서가 붙은 매물은 보증 매물로 표시하고, 카드 할부·네이버페이·카카오페이·토스로 안전결제합니다.' },
+    repair: { title: '출장·보증 리페어', who: '연주자 ↔ 인증 리페어맨',
+      body: '집·합주실·공연장으로 찾아가는 수리. 인증 리페어맨의 작업은 플랫폼이 결과를 보증하고, 보증 기간 안의 재발은 공개된 기준으로 재수리·환불합니다. 수리 이력은 장비 이력부에 남아 다음 거래의 신뢰가 됩니다.' },
+    hub: { title: '파트너 허브 (가칭)', who: '샵·공방 ↔ 다른 샵·공방·리페어맨',
+      body: '악기점·리페어샵·장비 판매점이 거래하는 공간. 위탁 매물 공유·부품 공동구매·밀린 작업 의뢰·재고 교환을 다루며, 샵은 자기 간판과 가격을 유지합니다. 운영사 직원만 쓰는 관리자 화면이 아닙니다.' },
+    tools: { title: '샵 운영 도구', who: '각 샵·리페어맨의 내부 업무 기록',
+      body: '접수·작업 기록(사진·측정값)·부품 재고·정산·보증 기간 같은 확정된 정보를 관리합니다. 거래 상대와 연결되더라도 샵의 매출과 고객의 결제는 각자의 기록에 따로 남습니다.' },
+    messenger: { title: '메신저', who: '사람이 쓰는 공통 창구',
+      body: '고객 상담, 견적, 출장 일정, 명령·승인. 샵 내부 대화, 샵·리페어맨 간 대화, 고객 상담은 같은 기술 위에서도 접근 범위와 AI 권한을 다르게 둡니다.' },
+    roadie: { title: '로디', who: '서비스와 AI 에이전트의 조정',
+      body: '무대 뒤에서 장비를 나르고 점검하고 건네는 로디처럼, 허용된 범위에서 여러 서비스의 상태를 모으고, 확인할 사항을 제안하며, 승인된 실행을 연결합니다. 승인 전에는 데이터를 바꾸지 않습니다.' },
+    next: { title: '다음 서비스', who: '기존 무대 위에 역을 추가',
+      body: '장비 렌탈, 레슨·세션 연결, 공연용 백라인 렌탈 같은 새 서비스는 계정·장비·결제를 처음부터 만들지 않고 기존 기반을 연결받아 고유한 업무 규칙과 화면만 개발합니다. 서비스 정의서로 이용자·역할·책임·연결 규칙을 먼저 정합니다.' }
+  };
+  var metro = $('#metro');
+  var panel = $('#mapPanel');
+  function showStation(id) {
+    var d = STATIONS[id];
+    if (!d || !panel) return;
+    $$('.station', metro).forEach(function (s) { var on = s.getAttribute('data-id') === id; s.classList.toggle('is-active', on); s.setAttribute('aria-pressed', String(on)); });
+    $('#panelTitle').textContent = d.title;
+    $('#panelWho').textContent = d.who;
+    $('#panelBody').textContent = d.body;
+    panel.classList.remove('swap');
+    void panel.offsetWidth;
+    panel.classList.add('swap');
+    /* 설명이 화면 밖이면 최소한만 끌어올린다 */
+    var t = $('#panelTitle');
+    if (t && t.getBoundingClientRect().bottom > window.innerHeight) t.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'nearest' });
+  }
+  if (metro) {
+    /* 노선도는 무대 등장이 거의 끝난 뒤에 긋는다 */
+    onVisible(metro, function () { setTimeout(function () { metro.classList.add('drawn'); }, reduced ? 0 : 300); }, { threshold: 0.3 });
+    var stage = $('.map-stage');
+    function centerStage() { if (stage && stage.scrollWidth > stage.clientWidth) stage.scrollLeft = (stage.scrollWidth - stage.clientWidth) / 2; }
+    centerStage();
+    window.addEventListener('resize', centerStage);
+    $$('.station', metro).forEach(function (s) {
+      s.addEventListener('click', function () { showStation(s.getAttribute('data-id')); });
+      s.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showStation(s.getAttribute('data-id')); }
+      });
+    });
+  }
+
+  /* ---------- 채팅 시연 ---------- */
+  var chatBody = $('#chatBody');
+  var chatRun = 0;
+  var chatTimers = [];
+  function el(tag, cls, html) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (html != null) n.innerHTML = html;
+    return n;
+  }
+  /* 수락 카드가 나타난 뒤에는 카드 상단을 기준으로 고정해, 시연이 끝났을 때 수락 장면이 온전히 보이게 한다 (안쪽 스크롤이 있는 폭에서만 의미) */
+  var chatPin = null;
+  function scrollChat() {
+    if (!chatBody) return;
+    if (chatPin) chatBody.scrollTop += (chatPin.getBoundingClientRect().top - chatBody.getBoundingClientRect().top) - 48;
+    else chatBody.scrollTop = chatBody.scrollHeight;
+  }
+  function addMsg(kind, html) {
+    var m = el('div', 'msg' + (kind === 'me' ? ' me' : ''));
+    m.appendChild(el('span', 'who', kind === 'me' ? '출장팀 코디' : '<i>R</i>로디'));
+    m.appendChild(el('div', 'bubble', html));
+    chatBody.appendChild(m); scrollChat();
+    return m;
+  }
+  function addSys(cls, text) {
+    var s = el('div', 'sys' + (cls ? ' ' + cls : ''), text);
+    chatBody.appendChild(s); scrollChat();
+    return s;
+  }
+  function addTyping() {
+    var m = el('div', 'msg');
+    m.setAttribute('aria-hidden', 'true');
+    m.appendChild(el('span', 'who', '<i>R</i>로디'));
+    m.appendChild(el('div', 'bubble typing', '<i></i><i></i><i></i>'));
+    chatBody.appendChild(m); scrollChat();
+    return m;
+  }
+  function dataCard() {
+    var m = el('div', 'msg');
+    m.appendChild(el('span', 'who', '<i>R</i>로디'));
+    var c = el('div', 'ccard');
+    c.innerHTML =
+      '<div class="ccard-head"><span>출장팀 · 오늘 일정</span><span class="tag">조회 결과</span></div>' +
+      '<div class="ccard-body">' +
+      '<div class="ccard-row"><span>14:00 마포</span><b>셋업 · 현 교체</b></div>' +
+      '<div class="ccard-row"><span>16:30 서대문</span><b>너트 교체</b></div>' +
+      '<div class="ccard-row"><span>19:00 합정</span><b>공연 전 점검 · 미배정</b></div>' +
+      '<div class="ccard-warn">19:00 합정 건은 인증 리페어맨 배정이 없습니다.</div>' +
+      '</div>';
+    m.appendChild(c);
+    chatBody.appendChild(m); scrollChat();
+  }
+  function approveCard(run) {
+    var m = el('div', 'msg');
+    chatPin = m;
+    m.appendChild(el('span', 'who', '<i>R</i>로디'));
+    addSys('', '시연: 여기부터 리페어맨 화면입니다');
+    var c = el('div', 'ccard pending');
+    c.innerHTML =
+      '<div class="ccard-head"><span>출장 배정 요청</span><span class="tag">수락 대기</span></div>' +
+      '<div class="ccard-body">' +
+      '<div class="ccard-row"><span>건</span><b>합정 19:00 · 공연 전 점검</b></div>' +
+      '<div class="ccard-row"><span>대상</span><b>강서 공방 · 인증 리페어맨</b></div>' +
+      '<div class="ccard-row"><span>승인권자</span><b>리페어맨 본인</b></div>' +
+      '<div class="ccard-row"><span>실행</span><span>수락하면 고객에게 일정 확정 알림</span></div>' +
+      '</div>' +
+      '<div class="ccard-actions"><button type="button" class="btn btn-primary ok">수락</button><button type="button" class="btn btn-ghost no">거절</button></div>';
+    m.appendChild(c);
+    chatBody.appendChild(m); scrollChat();
+    var ok = $('.ok', c), no = $('.no', c), done = false, auto;
+    function finish(approved) {
+      if (done || run !== chatRun) return;
+      done = true; clearTimeout(auto);
+      ok.disabled = true; no.disabled = true;
+      c.classList.remove('pending');
+      c.classList.add(approved ? 'approved' : 'rejected');
+      $('.ccard-head .tag', c).textContent = approved ? '수락됨' : '거절됨';
+      if (approved) {
+        addSys('ok', '수락자·시각 기록 → 고객에게 일정 확정 알림 → 작업 기록 생성');
+        setTimeout(function () { if (run === chatRun) addMsg('bot', '강서 공방이 수락했습니다. 고객에게 확정 알림을 보냈고, 작업 결과는 이 대화로 알려드립니다.'); }, reduced ? 0 : 600);
+      } else {
+        addSys('no', '거절 기록 · 일정 변경 없음');
+        setTimeout(function () { if (run === chatRun) addMsg('bot', '배정 요청이 거절되었습니다. 일정은 바뀌지 않았고, 다음 후보를 제안하겠습니다.'); }, reduced ? 0 : 600);
+      }
+    }
+    ok.addEventListener('click', function () { finish(true); });
+    no.addEventListener('click', function () { finish(false); });
+    auto = setTimeout(function () {
+      if (done || run !== chatRun) return;
+      addSys('', '시연: 리페어맨이 수락을 누릅니다');
+      setTimeout(function () { finish(true); }, 600);
+    }, 6000);
+  }
+  function playChat() {
+    if (!chatBody) return;
+    var run = ++chatRun;
+    chatTimers.forEach(clearTimeout); chatTimers = [];
+    if (chatBody.offsetHeight) chatBody.style.minHeight = chatBody.offsetHeight + 'px'; /* 재생 중 높이 유지 */
+    chatBody.innerHTML = '';
+    chatPin = null;
+    var t = 0;
+    var d = function (ms) { return reduced ? 0 : ms; };
+    function at(ms, fn) { t += d(ms); chatTimers.push(setTimeout(function () { if (run === chatRun) fn(); }, t)); }
+    var typing;
+    at(200, function () { addMsg('me', '오늘 출장 리페어 일정 확인해줘.'); });
+    at(500, function () { typing = addTyping(); });
+    at(700, function () { typing.remove(); addMsg('bot', '예약 기록에서 오늘 일정을 조회하겠습니다.'); });
+    at(500, function () { typing = addTyping(); });
+    at(800, function () { typing.remove(); dataCard(); });
+    at(1100, function () { addMsg('me', '합정 19시 건, 강서 공방에 배정 요청해.'); });
+    at(500, function () { typing = addTyping(); });
+    at(700, function () { typing.remove(); approveCard(run); });
+  }
+  var chat = $('#chat');
+  function stopChat() { chatRun++; chatTimers.forEach(clearTimeout); chatTimers = []; $$('.typing', chatBody).forEach(function (t) { t.parentNode.remove(); }); }
+  if (chat && chatBody) {
+    onVisible(chat, function () { playChat(); }, { threshold: 0.35 });
+    var replay = $('#chatReplay');
+    if (replay) replay.addEventListener('click', playChat);
+    window.addEventListener('resize', function () { chatBody.style.minHeight = ''; });
+    var stopBtn = $('#chatStop');
+    if (stopBtn) stopBtn.addEventListener('click', stopChat);
+  }
+
+  /* ---------- 키보드 섹션 이동 (프레젠테이션) ---------- */
+  var targetIdx = null, settleTimer = 0;
+  function clearTarget() { targetIdx = null; }
+  function currentIndex() {
+    if (targetIdx !== null) return targetIdx;
+    var y = (window.scrollY || window.pageYOffset) + 80;
+    var idx = 0;
+    sections.forEach(function (s, i) { if (s.offsetTop <= y) idx = i; });
+    return idx;
+  }
+  function goTo(i) {
+    i = Math.max(0, Math.min(sections.length - 1, i));
+    targetIdx = i;
+    sections[i].scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+    clearTimeout(settleTimer);
+    settleTimer = setTimeout(clearTarget, 1200);
+  }
+  window.addEventListener('scroll', function () {
+    if (targetIdx === null) return;
+    clearTimeout(settleTimer);
+    settleTimer = setTimeout(clearTarget, 160);
+  }, { passive: true });
+  ['wheel', 'touchstart', 'pointerdown'].forEach(function (ev) { window.addEventListener(ev, clearTarget, { passive: true }); });
+  document.addEventListener('keydown', function (e) {
+    if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.altKey) return;
+    var t = e.target;
+    var tag = t && t.tagName;
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || (t && t.isContentEditable)) return;
+    var onControl = t && t.closest && t.closest('button, a, summary, [role="button"]');
+    if ((e.key === ' ' || e.key === 'Enter') && onControl) return;
+    switch (e.key) {
+      case 'PageDown': case ' ': {
+        if (e.shiftKey) return;
+        var cur = sections[currentIndex()];
+        if (targetIdx === null && cur && cur.getBoundingClientRect().bottom > window.innerHeight + 8) return;
+        e.preventDefault(); goTo(currentIndex() + 1); break;
+      }
+      case 'ArrowRight':
+        e.preventDefault(); goTo(currentIndex() + 1); break;
+      case 'PageUp': {
+        var prevCur = sections[currentIndex()];
+        if (targetIdx === null && prevCur && prevCur.getBoundingClientRect().top < -8) return;
+        e.preventDefault(); goTo(currentIndex() - 1); break;
+      }
+      case 'ArrowLeft':
+        e.preventDefault(); goTo(currentIndex() - 1); break;
+      case 'Escape':
+        closeMenu(true); break;
+    }
+  });
+
+  /* ---------- 인쇄: 접힌 항목을 펼치고 등장 상태를 모두 보이게 ---------- */
+  var printOpened = [];
+  window.addEventListener('beforeprint', function () {
+    root.classList.add('loaded');
+    revealEls.forEach(function (el) { el.classList.add('in'); });
+    if (metro) metro.classList.add('drawn');
+    $$('.acc details').forEach(function (d) { if (!d.open) { d.open = true; printOpened.push(d); } });
+  });
+  window.addEventListener('afterprint', function () {
+    printOpened.forEach(function (d) { d.open = false; });
+    printOpened = [];
+  });
+
+  /* ---------- 히어로 신호선 불빛 일시정지 ---------- */
+  var railSvg = $('.rail svg'), railPause = $('#railPause');
+  if (railPause && railSvg) {
+    if (reduced || typeof railSvg.pauseAnimations !== 'function') railPause.hidden = true;
+    railPause.addEventListener('click', function () {
+      var paused = railSvg.animationsPaused();
+      if (paused) railSvg.unpauseAnimations(); else railSvg.pauseAnimations();
+      railPause.setAttribute('aria-pressed', String(!paused));
+      railPause.textContent = paused ? '신호 멈춤' : '신호 재생';
+    });
+  }
+
+  /* ---------- 동작 줄이기 환경 ---------- */
+  if (reduced) {
+    root.classList.add('loaded');
+    $$('animateMotion').forEach(function (a) { a.parentNode.removeChild(a); });
+  }
+})();
+
+</script>
+
+</body>
+</html>
