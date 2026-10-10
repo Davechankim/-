@@ -1,0 +1,13 @@
+{
+  "name": "design-toolbox-runtime",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@playwright/mcp": "0.0.83",
+    "@21st-dev/magic": "0.2.3",
+    "motion": "14.0.0",
+    "framer-motion": "14.0.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  }
+}

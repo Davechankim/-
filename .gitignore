@@ -6,3 +6,14 @@ Thumbs.db
 .idea/
 # node
 node_modules/
+
+# Design Toolbox generated files and private configuration
+__pycache__/
+*.pyc
+.env
+.env.*
+!.env.example
+.claude/settings.local.json
+.claude/skills/design-toolbox/preferences.json
+.claude/skills/design-toolbox/runtime/.*.lock
+.claude/skills/design-toolbox/library/impeccable/impeccable/scripts/bin/

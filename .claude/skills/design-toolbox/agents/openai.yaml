@@ -1,0 +1,6 @@
+interface:
+  display_name: "Design Toolbox · 선택형 도구함"
+  short_description: "디자인·모션·개발·글쓰기 도구를 작업에 맞게 선택하는 통합 스킬"
+  default_prompt: "$design-toolbox 작업에 맞는 모듈을 골라 적용해줘. 필요한 경우 목록을 보여줘."
+policy:
+  allow_implicit_invocation: true

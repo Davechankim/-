@@ -1,0 +1,27 @@
+name: Design Toolbox
+on:
+  pull_request:
+    paths:
+      - '.claude/**'
+      - '.mcp.json'
+      - '.github/workflows/design-toolbox.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  ubuntu-runtime:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate guide selection, integrity and cloud lifecycle
+        run: python3 -m unittest discover -s .claude/skills/design-toolbox/tests -v
+      - name: Prepare pinned runtime and browser
+        run: python3 .claude/skills/design-toolbox/scripts/cloud.py setup --browser
+      - name: Install Linux browser libraries
+        run: node .claude/skills/design-toolbox/runtime/node_modules/playwright/cli.js install-deps chromium
+      - name: Exercise the actual project MCP and browser
+        run: python3 .claude/skills/design-toolbox/scripts/check-playwright.py
