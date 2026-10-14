@@ -1,5 +1,6 @@
 ---
 name: 10k-websites
+disable-model-invocation: true
 description: Build and deploy a cinematic scroll-driven website for any business or idea. Use when the user asks to build a website, landing page, cinematic site, scroll site, one-page site, or hero-video site for any business, product, brand, place, portfolio, or concept (plumber, lawyer, hotel, SaaS, coffee shop, design studio, anything). Also use when the user wants to set up the tools this workflow needs, including the Higgsfield connector for AI image and video, the Hostinger connector for hosting and deploy, ffmpeg, or Node.js.
 ---
 

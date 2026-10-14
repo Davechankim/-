@@ -27,7 +27,7 @@ GitHub Pages, Vercel, Netlify 등 정적 호스팅에 폴더째 올리면 동작
 
 ## 스킬
 
-- `/10k-websites`: 업로드된 10K Websites 스킬. Higgsfield(이미지·영상)와 Hostinger(호스팅) 커넥터, ffmpeg, Node.js가 필요합니다. 새 사이트는 `index.html`을 새로 만드니 별도 폴더에서 시작하세요. 자세한 내용은 [docs/10k-websites-setup.md](docs/10k-websites-setup.md).
+- `/10k-websites`: 업로드된 10K Websites 스킬. `/10k-websites`로 직접 불러야 동작합니다(자동 호출 꺼짐). Higgsfield(이미지·영상)와 Hostinger(호스팅) 커넥터, ffmpeg, Node.js가 필요합니다. 새 사이트는 `index.html`을 새로 만드니 `sites/<브랜드>/` 같은 별도 폴더에서 시작하세요. 자세한 내용은 [docs/10k-websites-setup.md](docs/10k-websites-setup.md).
 - `/design-toolbox`: 브랜치 `codex/claude-cloud-design-toolbox`에 있는 디자인 가이드 모음. 소개 사이트 개선에 씁니다.
 
 ## 프레젠테이션 조작
