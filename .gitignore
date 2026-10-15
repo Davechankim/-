@@ -6,3 +6,6 @@ Thumbs.db
 .idea/
 # node
 node_modules/
+# 10k-websites review folders (raw videos, frame extracts)
+sites/*-review/
+sites/*/review/

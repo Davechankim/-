@@ -24,9 +24,11 @@ GitHub Pages, Vercel, Netlify 등 정적 호스팅에 폴더째 올리면 동작
 | `assets/js/main.js` | 상단바 톤 전환, 노선도 상호작용, 채팅 시연(재생·멈춤), 스크롤 등장, 키보드 섹션 이동, 레일 불빛 일시정지 |
 | `DESIGN.md` | 디자인 시스템(토큰·타이포·컴포넌트·모션 규칙) |
 | `.claude/skills/10k-websites/` | 프로젝트 스킬 `/10k-websites`: AI 히어로 영상 스크롤 사이트 제작·배포. 준비 상태와 호출법은 [docs/10k-websites-setup.md](docs/10k-websites-setup.md) |
+| `.claude/skills/best-10k/` | `/best-10k`: 위 스킬에 BEST 생태계 브리프를 얹은 시작 명령 |
 
 ## 스킬
 
+- `/best-10k`: 새 세션에서 BEST 생태계 사이트를 10K Websites 스킬로 짓는 시작 명령. 브리프와 저장소 규칙(`sites/best/`에 생성, 호스팅 없음)을 담고 있습니다.
 - `/10k-websites`: 업로드된 10K Websites 스킬. `/10k-websites`로 직접 불러야 동작합니다(자동 호출 꺼짐). Higgsfield(이미지·영상)와 Hostinger(호스팅) 커넥터, ffmpeg, Node.js가 필요합니다. 새 사이트는 `index.html`을 새로 만드니 `sites/<브랜드>/` 같은 별도 폴더에서 시작하세요. 자세한 내용은 [docs/10k-websites-setup.md](docs/10k-websites-setup.md).
 - `/design-toolbox`: 브랜치 `codex/claude-cloud-design-toolbox`에 있는 디자인 가이드 모음. 소개 사이트 개선에 씁니다.
 
