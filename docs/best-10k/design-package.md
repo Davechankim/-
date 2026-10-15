@@ -243,7 +243,16 @@ A vast dark plain under low drifting night mist, seen from a slight elevation. O
 One continuous shot, no cuts, locked camera. A single thin rail of warm amber light lays itself down from the far horizon at the upper right, extending steadily straight down the right third of the frame toward the lower edge, like a railway being laid in time-lapse. As the rail passes, small distant village lights switch on one by one beside it in the mist, each with a soft bloom. The rail stays alive throughout: a gentle pulse travels along its length and its glow breathes softly. The scene stays alive: fog drifts slowly, the haze shifts, the distant lights flicker faintly. The shot ends at rest: the rail reaches the lower right of the frame and settles, glowing steadily, a scattering of village lights resting along the lower third, and the upper left two thirds of the frame a calm, deep expanse of drifting mist with soft depth. No text or lettering anywhere.
 ```
 
-### 보조 스틸 4장(6.7 점포 유형, 각 16:9, 2k, 같은 세계)
+### 보조 스틸 4장(6.7 점포 유형, 각 16:9, 2k) · 2차: 기록 사진 결
+
+사용자 피드백(2026-10-16): 1차 밤안개·영화 조명 버전은 "너무 비현실적". 2차는 흐린 낮, 휴대전화 기록 사진 결로 재생성. 공통 꼬리: "Ordinary documentary photograph taken on a phone on an overcast afternoon in Korea, flat natural daylight, slightly dull colors, nothing dramatic: no fog, no rain, no wet reflections, no cinematic lighting. [간판은 프레임 밖 / 빈 판], no readable text, no logos, no lettering anywhere, no people. Realistic, unposed, 16:9."
+
+1. 길거리 야채·과일점: "A small street-side vegetable and fruit stand in an ordinary Korean residential neighborhood: produce piled in black and blue plastic crates and red baskets on folding tables along the sidewalk under a faded parasol, a hand cart, onions in net bags, a multi-unit villa and a utility pole behind. Price tags are blank, the shop sign is out of frame."
+2. 동네 슈퍼·나들가게: "A small old corner supermarket in a Korean residential alley: a sliding glass door, an ice cream chest freezer and stacked plastic drink crates outside, a snack rack by the door, a plastic chair, a gas meter box on the wall, a scooter parked beside. The shop sign is a plain blank board."
+3. 소형마트: "A small neighborhood mart at street level in a Korean town: an open glass front with vegetables and fruit displayed outside in red plastic baskets on tiered stands, a couple of shopping carts, a row of parked bicycles, a sidewalk with a bollard, a bus stop pole, apartment buildings behind. The shop sign is cropped out of the frame."
+4. 중형 개인마트: "A mid-sized independent supermarket in a Korean suburb: a plain two-story box building with a wide glass entrance, a line of shopping carts under the awning, a small parking lot with a few ordinary cars, a white delivery truck backed up to a side loading bay with stacked pallets, low hills behind. The building sign is a plain blank panel."
+
+(1차 프롬프트, 기록용)
 
 공통 꼬리: "Night, after closing hours, the only light a warm amber glow spilling from the shopfront into thin drifting mist, deep charcoal surroundings with soft blue-grey depth, same grade as a dark cinematic film still, shot from across a quiet street at a distance, no people, no readable signage, no text, no logos, no lettering anywhere. Photorealistic, 16:9."
 
@@ -266,6 +275,12 @@ One continuous shot, no cuts, locked camera. A single thin rail of warm amber li
 | 보조 스틸 4 중형마트 | gpt_image_2_5 | 2.75 | 07cc44ce-8abf-4664-a932-aba8cf2d3c3d | https://d8j0ntlcm91z4.cloudfront.net/user_3HBN7w6JQ3Di6YOHetrFqXFswQc/hf_20261015_210318_07cc44ce-8abf-4664-a932-aba8cf2d3c3d.png | 검사 통과 | → `assets/store-4.jpg` |
 
 크레딧 합계: 2.75 + 2.75 + 96 + 11 = 112.5. 잔액 2,097.5 (2026-10-16).
+| 보조 스틸 2차 1 야채·과일점 | gpt_image_2_5 (16:9, 2k, high) | 2.75 | 5a12f042-35c2-43ad-a39c-9fd5b3119375 | https://d8j0ntlcm91z4.cloudfront.net/user_3HBN7w6JQ3Di6YOHetrFqXFswQc/hf_20261015_214753_5a12f042-35c2-43ad-a39c-9fd5b3119375.png | 통과(가격표 빈 종이, 글자 없음) | `scale=1600:-2 -q:v 4` → `assets/store-1.jpg` (1차 교체) |
+| 보조 스틸 2차 2 동네 슈퍼 | gpt_image_2_5 | 2.75 | 445d709f-d500-4217-9242-8525664518ba | https://d8j0ntlcm91z4.cloudfront.net/user_3HBN7w6JQ3Di6YOHetrFqXFswQc/hf_20261015_214758_445d709f-d500-4217-9242-8525664518ba.png | 통과(과자 봉지·창문 안내문은 읽히지 않는 가짜 글자) | → `assets/store-2.jpg` |
+| 보조 스틸 2차 3 소형마트 | gpt_image_2_5 | 2.75 | 417a6ca1-aefe-4ae3-bcd5-b6991e17e512 | https://d8j0ntlcm91z4.cloudfront.net/user_3HBN7w6JQ3Di6YOHetrFqXFswQc/hf_20261015_214800_417a6ca1-aefe-4ae3-bcd5-b6991e17e512.png | 통과(버스 정류장 표지는 픽토그램만) | → `assets/store-3.jpg` |
+| 보조 스틸 2차 4 중형마트 | gpt_image_2_5 | 2.75 | d52d3115-13b4-47d1-b98f-0d6125dfe700 | https://d8j0ntlcm91z4.cloudfront.net/user_3HBN7w6JQ3Di6YOHetrFqXFswQc/hf_20261015_214803_d52d3115-13b4-47d1-b98f-0d6125dfe700.png | SUV 뒷면 현대차 엠블럼 발견 → ffmpeg `delogo=x=246:y=948:w=34:h=32`로 제거 후 통과 | → `assets/store-4.jpg` |
+
+크레딧 합계(2차 포함): 123.5. 잔액 2,086.5 (2026-10-16).
 
 ## 12. 미리보기와 검수 결과 (2026-10-16)
 
