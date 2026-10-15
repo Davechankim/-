@@ -260,9 +260,17 @@ One continuous shot, no cuts, locked camera. A single thin rail of warm amber li
 | 시작 프레임 2차 | gpt_image_2_5 (16:9, 2k, high, 1차를 image_references로) | 2.75 | 0d889683-fd26-4fea-979e-1ec137d1ee88 | https://d8j0ntlcm91z4.cloudfront.net/user_3HBN7w6JQ3Di6YOHetrFqXFswQc/hf_20261015_205208_0d889683-fd26-4fea-979e-1ec137d1ee88.png | 검사: 같은 세계, 지평선 근처 짧은 구간만 켜짐, 아래쪽은 안개. 시작 프레임으로 적합 | 원본 `sites/best-review/start-frame.png` (2688×1520) |
 | 히어로 영상 1차 | seedance_2_5 (omni_reference, 16:9, 1080p, 6s, 무음, start_image=2차 시작 프레임, end_image=1차 그림, 프리셋 'IN THE DARK' 거절) | 96 | 5fe01dd0-2b1c-4016-9d11-4ce2001796e2 | https://d8j0ntlcm91z4.cloudfront.net/user_3HBN7w6JQ3Di6YOHetrFqXFswQc/hf_20261015_205410_5fe01dd0-2b1c-4016-9d11-4ce2001796e2.mp4 | 검사: 카메라 고정, 레일이 짧은 구간에서 아래까지 깔림, 불빛 5개 점등, 끝 프레임 일치, 모션 곡선 안정. 게이트 대기 | 원본 `sites/best-review/hero-raw.mp4` (hevc 1920×1080 24fps 145f 6.04s 2.7MB), 프레임 `frame-start/q1/mid/q3/end.jpg` |
 | 스크럽 인코딩 | ffmpeg | 0 | | `sites/best/assets/hero-scrub.mp4` 2,224,166B, h264 1920×1080, 144f(마지막 1프레임 트림), g=8 | 완료 | `ffmpeg -i hero-raw.mp4 -frames:v 144 -c:v libx264 -crf 18 -preset slow -g 8 -keyint_min 8 -pix_fmt yuv420p -movflags +faststart -an assets/hero-scrub.mp4`; 포스터 `-frames:v 1 -q:v 2`, 종료 `-sseof -0.1 -update 1 -frames:v 1 -q:v 2` |
-| 보조 스틸 1 야채·과일점 | gpt_image_2_5 (16:9, 2k, high) | 2.75 | 55e7ebbb-ab7f-44d1-b42e-515d1a7f6ada | https://d8j0ntlcm91z4.cloudfront.net/user_3HBN7w6JQ3Di6YOHetrFqXFswQc/hf_20261015_210308_55e7ebbb-ab7f-44d1-b42e-515d1a7f6ada.png | 검사 통과(글자·로고·사람 없음) | `scale=1920:-2 -q:v 2` → `assets/store-1.jpg` |
+| 보조 스틸 1 야채·과일점 | gpt_image_2_5 (16:9, 2k, high) | 2.75 | 55e7ebbb-ab7f-44d1-b42e-515d1a7f6ada | https://d8j0ntlcm91z4.cloudfront.net/user_3HBN7w6JQ3Di6YOHetrFqXFswQc/hf_20261015_210308_55e7ebbb-ab7f-44d1-b42e-515d1a7f6ada.png | 검사 통과(글자·로고·사람 없음) | `scale=1600:-2 -q:v 4` → `assets/store-1.jpg` (페이지 무게 때문에 1920/q2에서 낮춤; 원본 PNG는 검토 폴더) |
 | 보조 스틸 2 동네 슈퍼 | gpt_image_2_5 | 2.75 | 1657eb02-3bc5-4ceb-8025-0cc22b90095c | https://d8j0ntlcm91z4.cloudfront.net/user_3HBN7w6JQ3Di6YOHetrFqXFswQc/hf_20261015_210311_1657eb02-3bc5-4ceb-8025-0cc22b90095c.png | 검사 통과(모서리 노란 차양은 글자 없음) | → `assets/store-2.jpg` |
 | 보조 스틸 3 소형마트 | gpt_image_2_5 | 2.75 | 01a81ca7-4fd8-45f1-bd3b-3c8de5ed1d28 | https://d8j0ntlcm91z4.cloudfront.net/user_3HBN7w6JQ3Di6YOHetrFqXFswQc/hf_20261015_210315_01a81ca7-4fd8-45f1-bd3b-3c8de5ed1d28.png | 검사 통과 | → `assets/store-3.jpg` |
 | 보조 스틸 4 중형마트 | gpt_image_2_5 | 2.75 | 07cc44ce-8abf-4664-a932-aba8cf2d3c3d | https://d8j0ntlcm91z4.cloudfront.net/user_3HBN7w6JQ3Di6YOHetrFqXFswQc/hf_20261015_210318_07cc44ce-8abf-4664-a932-aba8cf2d3c3d.png | 검사 통과 | → `assets/store-4.jpg` |
 
 크레딧 합계: 2.75 + 2.75 + 96 + 11 = 112.5. 잔액 2,097.5 (2026-10-16).
+
+## 12. 미리보기와 검수 결과 (2026-10-16)
+
+- 아티팩트: https://claude.ai/artifact/LbLn5NScnLwnShXiqJR6QA (새 탭, 폭 720px 초과에서 스크럽. 휴대전화는 정지 히어로)
+- 로컬: `npx -y http-server sites/best -p 8765 -a 127.0.0.1 -c-1` 뒤 http://127.0.0.1:8765/
+- 자체 검수(Playwright, Chromium headless): 1280×800·1440×900·375×812·375×667. 콘솔 오류 0, 가로 넘침 0, 밴드 최악 프레임 대비 8.8:1 이상, 플릭 테스트(120/240/360px) 통과, reduced motion 양방향 통과, 영상 차단 시 포스터 위 완성, 휴대전화에서 영상·포스터 요청 없음, 44px 미만 터치 타깃 0.
+- 속도 영수증(컨테이너 localhost 기준, 네트워크 시간 아님): HTML 67.8KB, 영상 제외 페이지 무게 약 840KB(스틸 4장 포함), hero-scrub.mp4 2.22MB, loadEventEnd 621ms.
+- 라이브 주소는 이번 범위 밖. og:url·og:image는 비워 두고 `<!-- DEPLOY STEP -->` 주석만 남김.
