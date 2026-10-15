@@ -256,4 +256,6 @@ One continuous shot, no cuts, locked camera. A single thin rail of warm amber li
 
 | 단계 | 모델 | get_cost | job_id | 결과 URL | 승인 | ffmpeg |
 |---|---|---|---|---|---|---|
-| (아직 없음) | | | | | | |
+| 시작 프레임 1차 | gpt_image_2_5 (16:9, 2k, high) | 2.75 | 9b635c86-c6a4-456d-ae17-70baf2f80617 | https://d8j0ntlcm91z4.cloudfront.net/user_3HBN7w6JQ3Di6YOHetrFqXFswQc/hf_20261015_205009_9b635c86-c6a4-456d-ae17-70baf2f80617.png | 검사: 구도·톤 좋음, 다만 레일이 이미 끝까지 깔려 있음. 사용자 결정: 이 그림을 **끝 프레임**으로 씀 | 원본 `sites/best-review/end-frame.png` (2688×1520) |
+| 시작 프레임 2차 | gpt_image_2_5 (16:9, 2k, high, 1차를 image_references로) | 2.75 | 0d889683-fd26-4fea-979e-1ec137d1ee88 | https://d8j0ntlcm91z4.cloudfront.net/user_3HBN7w6JQ3Di6YOHetrFqXFswQc/hf_20261015_205208_0d889683-fd26-4fea-979e-1ec137d1ee88.png | 검사: 같은 세계, 지평선 근처 짧은 구간만 켜짐, 아래쪽은 안개. 시작 프레임으로 적합 | 원본 `sites/best-review/start-frame.png` (2688×1520) |
+| 히어로 영상 1차 | seedance_2_5 (omni_reference, 16:9, 1080p, 6s, 무음, start_image=2차 시작 프레임, end_image=1차 그림, 프리셋 'IN THE DARK' 거절) | 96 | 5fe01dd0-2b1c-4016-9d11-4ce2001796e2 | https://d8j0ntlcm91z4.cloudfront.net/user_3HBN7w6JQ3Di6YOHetrFqXFswQc/hf_20261015_205410_5fe01dd0-2b1c-4016-9d11-4ce2001796e2.mp4 | 검사: 카메라 고정, 레일이 짧은 구간에서 아래까지 깔림, 불빛 5개 점등, 끝 프레임 일치, 모션 곡선 안정. 게이트 대기 | 원본 `sites/best-review/hero-raw.mp4` (hevc 1920×1080 24fps 145f 6.04s 2.7MB), 프레임 `frame-start/q1/mid/q3/end.jpg` |
