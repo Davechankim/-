@@ -29,10 +29,11 @@
 /best-10k
 ```
 
-- `.claude/skills/best-10k/SKILL.md`가 10k-websites 스킬을 불러 그 흐름(Phase 1 체크리스트부터)을 그대로 따르게 하고, BEST 생태계 브리프(사업 설명, 철도 프리미스, 팔레트 출발점, 페이지 구성, 금지 사항)를 사전 답변으로 넘깁니다. 스킬이 묻는 질문은 그대로 나오고, 브리프의 답이 첫 번째 추천 옵션으로 올라옵니다.
+- `.claude/skills/best-10k/SKILL.md`가 10k-websites 스킬 파일(SKILL.md와 references 여섯 개)을 읽어 그 흐름(Phase 1 체크리스트부터)을 그대로 따르게 하고, BEST 생태계 브리프(사업 설명, 철도 프리미스, 팔레트 출발점, 페이지 구성, 금지 사항, 크레딧 보호 규칙)를 사전 답변으로 넘깁니다. 10k-websites는 자동 호출이 꺼져 있어 Skill 도구로는 부를 수 없으므로 파일을 직접 읽는 방식입니다. 스킬이 묻는 질문은 그대로 나오고, 브리프의 답이 1번 추천 옵션으로 올라옵니다.
+- **시작 전에 한 가지:** 이 환경의 네트워크 정책이 Higgsfield 미디어 호스트(`upload.higgsfield.ai`, 결과 CDN `d2ol7oe51mr4n9.cloudfront.net`)를 막고 있습니다(2026-10-15 확인, 403). 생성된 영상을 컨테이너로 받아 인코딩·커밋하려면 세션 제목줄의 클라우드 환경 메뉴 → Edit → Network access → Allowed domains에 이 두 호스트를 추가하고(패키지 매니저 허용은 유지) 새 세션을 여세요. 추가하지 않으면 스킬이 Phase 1에서 이를 감지해 알리고, Higgsfield의 원격 sandbox에서 처리하는 우회 경로를 씁니다(완성 mp4를 저장소에 넣으려면 결국 허용이 필요).
 - 새 사이트는 `sites/best/`에 생기고 루트의 소개 사이트는 건드리지 않습니다. 원본 영상과 검토용 프레임은 `sites/best-review/`에 두며 `.gitignore`로 커밋에서 제외됩니다.
 - 호스팅은 하지 않습니다. Phase 10은 시작하지 않고, 결과는 브랜치 커밋과 아티팩트 미리보기로 전달합니다. 나중에 올리고 싶으면 GitHub Pages(Settings → Pages)로 `sites/best/`를 공개하는 것이 가장 간단합니다.
-- 새 세션을 열 때 필요한 것: 이 저장소(기본 브랜치)와 세션에 켜 둔 Higgsfield 커넥터. 2026-10-15 점검에서 이 환경의 세션에 Higgsfield 도구가 보였고, ffmpeg·Node도 준비되어 있었습니다.
+- 새 세션을 열 때 필요한 것: 이 저장소의 **기본 브랜치**(`claude/youthful-johnson-35duig`; `main`에는 스킬이 없음)와 세션에 켜 둔 Higgsfield 커넥터. 2026-10-15 점검에서 이 환경의 세션에 Higgsfield 도구가 보였고(잔액 2,210크레딧, plus 플랜), ffmpeg·Node도 준비되어 있었습니다. 새 세션은 자기 이름의 `claude/*` 브랜치에 커밋하므로, 끝나면 그 브랜치를 기본 브랜치로 합치면 됩니다.
 - 크레딧은 생성 전마다 스킬이 가격을 말하고 사용자가 고릅니다. 시작 이미지 약 2크레딧, 6초 영상 약 10~55크레딧(모델별).
 
 ## 호출 방법 (일반)
@@ -50,7 +51,7 @@
 |---|---|---|
 | ffmpeg | ✓ 6.1.1, libx264 포함. 레시피 전부 실행 확인(아래) | `brew install ffmpeg` (Homebrew가 없으면 brew.sh의 한 줄 설치 먼저) |
 | Node.js | ✓ v22. 미리보기 서버 `npx http-server` 동작 확인 | `brew install node` 또는 nodejs.org |
-| Higgsfield 커넥터 | ✗ 계정과 연결 필요. claude.ai 커넥터 설정(https://claude.ai/customize/connectors)에서 커스텀 커넥터로 `https://mcp.higgsfield.ai/mcp`를 추가한 뒤 **새 세션**을 시작합니다(커넥터는 세션 시작 때 읽힘). 커넥터 통신은 Anthropic의 MCP 프록시를 거치므로 환경 네트워크 허용은 필요 없습니다. 다만 Claude가 컨테이너에서 Higgsfield에 직접 접속하는 경우(Tier 2 체인 작업의 사전 서명 업로드 PUT)는 현재 403으로 막혀 있어, 그때는 환경 설정 Network access의 Allowed domains에 해당 업로드 호스트를 추가해야 합니다. | 앱 UI: + → Connectors → Manage connectors → Add → Add custom connector. 이름 Higgsfield, URL `https://mcp.higgsfield.ai/mcp` → Add → Connect(브라우저 로그인 1회). 터미널(보충): `claude mcp add --transport http higgsfield https://mcp.higgsfield.ai/mcp` 후 `/mcp`에서 로그인 |
+| Higgsfield 커넥터 | ✓ 연결됨(2026-10-15, `balance` 도구로 확인). 새 세션에서 도구가 보이지 않으면 claude.ai 커넥터 설정(https://claude.ai/customize/connectors)에서 Higgsfield를 세션에 켜고 새 세션을 시작합니다(커넥터는 세션 시작 때 읽힘). 커넥터 통신은 Anthropic의 MCP 프록시를 거치므로 환경 네트워크 허용이 필요 없습니다. 다만 Claude가 컨테이너에서 Higgsfield 미디어 호스트에 직접 접속하는 경우(생성 결과 내려받기, Tier 2 체인의 업로드 PUT)는 현재 403으로 막혀 있어, 환경 설정 Network access의 Allowed domains에 `upload.higgsfield.ai`와 `d2ol7oe51mr4n9.cloudfront.net`을 추가해야 합니다. | 앱 UI: + → Connectors → Manage connectors → Add → Add custom connector. 이름 Higgsfield, URL `https://mcp.higgsfield.ai/mcp` → Add → Connect(브라우저 로그인 1회). 터미널(보충): `claude mcp add --transport http higgsfield https://mcp.higgsfield.ai/mcp` 후 `/mcp`에서 로그인 |
 | Hostinger 커넥터 | Phase 10(온라인 단계)에서만 필요. 브라우저 OAuth가 열리지 않는 클라우드에서는(보충) ① hPanel에서 API 토큰 발급 → ② 환경 설정 Secrets에 `HOSTINGER_API_TOKEN` 저장 후 새 세션 → ③ Network access의 Allowed domains에 `developers.hostinger.com`(API), `hostingersite.com`(무료 임시 주소), 그리고 고른 도메인 추가 → ④ 서버 등록: `claude mcp add --transport stdio --env HOSTINGER_API_TOKEN=$HOSTINGER_API_TOKEN hostinger -- npx -y hostinger-api-mcp` (토큰이 있으면 OAuth를 건너뜀) | 스킬 본문의 명령 `claude mcp add hostinger -- npx -y hostinger-api-mcp` 후 첫 호출 때 브라우저 로그인. 대안(보충): 커스텀 커넥터로 `https://mcp.hostinger.com` |
 | 영상 게이트·미리보기·자체 검수 | 스킬은 사용자가 같은 기기에서 영상 파일을 더블클릭하고 localhost 링크를 열고, Claude가 설치된 Chrome으로 검수한다고 가정합니다. 클라우드에서는 그 파일과 localhost가 사용자 브라우저에 닿지 않으므로(보충) Claude가 영상·미리보기를 파일 전송이나 아티팩트로 따로 전달해야 하고, 스크린샷 검수는 컨테이너의 Playwright Chromium으로 합니다. 가능하면 Phase 6~9는 Mac에서 진행하는 편이 매끄럽습니다. | 스킬 본문 그대로 |
 
