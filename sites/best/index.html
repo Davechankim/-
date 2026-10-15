@@ -1,0 +1,878 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BEST 생태계</title>
+<meta name="description" content="기능을 팔지 않습니다. 사람을 잇는 철도를 깝니다. 동네 마트와 야채가게가 자기 이름을 지킨 채 거래망, 고객 접점, 업무 도구, AI를 함께 쓰는 지역 상거래 생태계.">
+<meta name="theme-color" content="#0F1318">
+<meta property="og:type" content="website">
+<meta property="og:title" content="BEST 생태계">
+<meta property="og:description" content="기능을 팔지 않습니다. 사람을 잇는 철도를 깝니다.">
+<!-- DEPLOY STEP: og:url and og:image need the live absolute URL. Patch both when an address exists. -->
+<meta property="og:url" content="">
+<meta property="og:image" content="">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230F1318'/%3E%3Crect x='8' y='11' width='3' height='10' rx='1.5' fill='%23D9AD64'/%3E%3Crect x='14.5' y='7' width='3' height='18' rx='1.5' fill='%23D9AD64'/%3E%3Crect x='21' y='11' width='3' height='10' rx='1.5' fill='%23D9AD64'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@800&family=IBM+Plex+Sans+KR:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* ---------- tokens ---------- */
+:root{
+  --canvas:#0F1318;
+  --panel:#171C23;
+  --panel-2:#1F252E;
+  --accent:#D9AD64;
+  --accent-hover:#E6BF7C;
+  --accent-muted:rgba(217,173,100,.18);
+  --text-primary:#F4F2EC;
+  --text-secondary:rgba(244,242,236,.72);
+  --text-tertiary:rgba(244,242,236,.5);
+  --hair:rgba(244,242,236,.12);
+  --hair-strong:rgba(244,242,236,.28);
+  --rail-consumer:#D4796B;
+  --rail-business:#D9AD64;
+  --rail-work:#6FAE8A;
+  --rail-hub:#7A9FD6;
+  --tshadow:0 1px 2px rgba(5,5,10,.95),0 3px 12px rgba(5,5,10,.78),0 10px 44px rgba(5,5,10,.8);
+  --display:"Gothic A1",system-ui,sans-serif;
+  --body:"IBM Plex Sans KR",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --ease-out:cubic-bezier(.16,1,.3,1);
+  --ease-std:cubic-bezier(.2,0,0,1);
+  --gutter:clamp(20px,4vw,56px);
+  --rail-x:clamp(14px,2.2vw,30px);
+}
+*{box-sizing:border-box}
+html,body{overflow-x:hidden;overflow-x:clip}
+html{scroll-behavior:smooth;scroll-padding-top:72px;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--canvas);color:var(--text-primary);font-family:var(--body);font-size:17px;line-height:1.7;word-break:keep-all;text-wrap:pretty;opacity:0;animation:pagein 900ms var(--ease-out) forwards}
+@keyframes pagein{to{opacity:1}}
+a{color:inherit}
+img{display:block;max-width:100%;height:auto}
+h1,h2,h3{font-family:var(--display);font-weight:800;letter-spacing:-.03em;line-height:1.12;margin:0;text-wrap:balance}
+p{margin:0}
+.vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.mono{font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--text-tertiary)}
+em{font-style:normal;color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:4px}
+.skip{position:absolute;left:12px;top:-60px;z-index:100;background:var(--accent);color:#141208;padding:10px 16px;border-radius:999px;font-weight:500;text-decoration:none;transition:top 160ms}
+.skip:focus{top:12px}
+
+/* ---------- environment layer ---------- */
+.env{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.env i{position:absolute;inset:-20%;background:radial-gradient(ellipse 60% 50% at 30% 40%,rgba(120,135,160,.10),transparent 70%)}
+.env i:nth-child(2){background:radial-gradient(ellipse 55% 45% at 72% 65%,rgba(217,173,100,.05),transparent 70%)}
+.env.live i{animation:mist 90s linear infinite;animation-delay:-30s}
+.env.live i:nth-child(2){animation-duration:120s;animation-direction:reverse;animation-delay:-50s}
+@keyframes mist{0%{transform:translate3d(-3%,-2%,0)}50%{transform:translate3d(3%,2%,0)}100%{transform:translate3d(-3%,-2%,0)}}
+.env .grain{position:absolute;inset:0;opacity:.06;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.6'/%3E%3C/svg%3E")}
+
+/* ---------- topbar ---------- */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:50;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 var(--gutter);transition:background 320ms,backdrop-filter 320ms}
+.topbar.solid{background:rgba(15,19,24,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--hair)}
+.brand{display:flex;align-items:center;gap:10px;min-height:44px;text-decoration:none;font-weight:500;letter-spacing:-.01em}
+.brand-mark{display:inline-flex;align-items:center;gap:3px;height:20px}
+.brand-mark i{display:block;width:3px;height:11px;border-radius:2px;background:var(--accent)}
+.brand-mark i:nth-child(2){height:19px}
+.menu{display:flex;gap:4px;list-style:none;margin:0;padding:0}
+.menu a{text-decoration:none;color:var(--text-secondary);font-size:.92rem;padding:8px 10px;border-radius:999px;transition:color 160ms,background 160ms}
+@media(hover:hover){.menu a:hover{color:var(--text-primary);background:rgba(244,242,236,.06)}}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 22px;border-radius:999px;font:inherit;font-weight:500;text-decoration:none;cursor:pointer;border:1px solid transparent;transition:transform 160ms var(--ease-out),background 160ms,border-color 160ms,color 160ms;text-shadow:none}
+.btn-primary{background:var(--accent);color:#141208}
+.btn-primary:hover{background:var(--accent-hover)}
+.btn-ghost{background:transparent;color:var(--text-primary);border-color:var(--hair-strong)}
+.btn-ghost:hover{border-color:var(--text-primary)}
+.btn:active{transform:scale(.97)}
+.btn-sm{min-height:36px;padding:0 16px;font-size:.9rem}
+@media(pointer:coarse){.btn{min-height:44px}}
+@media(max-width:900px){.menu{display:none}}
+
+/* ---------- hero ---------- */
+.hero{position:relative;height:500vh;z-index:1}
+.stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:var(--canvas)}
+.stage video,.poster,.static-hero{position:absolute;inset:0;width:100%;height:100%}
+.stage video{object-fit:cover;opacity:0;transition:opacity 700ms var(--ease-std);will-change:transform;transform:translateZ(0)}
+.stage.video-ready video{opacity:1}
+.stage.video-failed video{display:none}
+.poster{background-size:cover;background-position:center}
+.scrim{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 120% 90% at 50% 45%,rgba(10,10,18,0) 35%,rgba(10,10,18,.62) 100%)}
+.ring{position:absolute;right:var(--gutter);bottom:28px;width:28px;height:28px;color:var(--accent);transform:rotate(-90deg);opacity:.9;transition:opacity 400ms}
+.ring circle{transition:stroke-dashoffset 120ms linear}
+.stage.video-ready .ring{opacity:0}
+.cue{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--text-tertiary);font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;opacity:1;transition:opacity 400ms}
+.cue span{display:block;width:1px;height:28px;background:linear-gradient(var(--accent),transparent);transform-origin:top}
+.live .cue span{animation:cue 2.4s var(--ease-std) infinite}
+@keyframes cue{0%{transform:scaleY(0);opacity:0}30%{opacity:1}100%{transform:scaleY(1);opacity:0}}
+.hero.past .cue{opacity:0}
+
+.band{position:absolute;left:var(--gutter);top:50%;transform:translateY(-56%);width:min(56vw,760px);opacity:0;pointer-events:none;text-shadow:var(--tshadow);--k:0}
+.band::before{content:"";position:absolute;inset:-18% -14%;pointer-events:none;opacity:calc(.25 + .75*var(--k,1));background:radial-gradient(ellipse 72% 64% at 44% 50%,rgba(5,5,10,var(--sa,.64)) 0%,rgba(5,5,10,calc(var(--sa,.64)*.66)) 46%,rgba(5,5,10,0) 76%);z-index:-1}
+.band h1,.band h2{font-size:clamp(1.9rem,3.9vw,3.9rem);line-height:1.12}
+.band .w{display:inline-block;white-space:nowrap}
+.band .c{display:inline-block}
+.band .sub{margin-top:clamp(16px,2vw,24px);font-size:clamp(1rem,1.3vw,1.25rem);color:var(--text-secondary);max-width:38ch}
+.band .cta{margin-top:clamp(22px,3vw,34px);display:flex;flex-wrap:wrap;gap:12px;pointer-events:auto}
+.band.on .cta{pointer-events:auto}
+.band:not(.on) .cta{pointer-events:none}
+.band .num{display:block;margin-bottom:14px}
+/* 1. mist clearing: blur to sharp */
+.band.fx-blur .copy{position:relative}
+.band.fx-blur .soft{position:absolute;inset:0;filter:blur(12px);opacity:calc(1 - var(--k));color:var(--text-secondary)}
+.band.fx-blur .sharp{opacity:var(--k)}
+/* 2. settling down, word by word, following the rail */
+.band.fx-drift .w{--kc:clamp(0,(var(--k,0) - var(--th,0))*2.8,1);opacity:var(--kc);transform:translateY(calc((1 - var(--kc))*-26px))}
+/* 3. lights switching on, character by character (made for this footage) */
+.band.fx-light .c{--kc:clamp(0,(var(--k,0) - var(--th,0))*2.6,1);position:relative;opacity:calc(.06 + .94*var(--kc));transform:translateY(calc((1 - var(--kc))*4px))}
+.band.fx-light .c::after{content:attr(data-c);position:absolute;left:0;top:0;color:var(--accent);opacity:calc(var(--kc)*(1 - var(--kc))*4);text-shadow:0 0 18px rgba(217,173,100,.9),0 0 40px rgba(217,173,100,.6);pointer-events:none}
+/* 4. rise into a staged settle */
+.band.fx-rise .w{--kc:clamp(0,(var(--k,0) - var(--th,0))*3,1);opacity:var(--kc);transform:translateY(calc((1 - var(--kc))*22px))}
+.band.fx-rise .sub{--ks:clamp(0,(var(--k,0) - .62)*4,1);opacity:var(--ks);transform:translateY(calc((1 - var(--ks))*12px))}
+.band.fx-rise .cta{--kb:clamp(0,(var(--k,0) - .76)*5,1);opacity:var(--kb);transform:translateY(calc((1 - var(--kb))*10px))}
+
+/* static hero (phones, portrait tablets, reduced motion) */
+.static-hero{display:none;background:var(--canvas) url("assets/hero-ending.jpg") center/cover no-repeat}
+.static-hero .inner{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:84px var(--gutter) 64px;background:linear-gradient(180deg,rgba(15,19,24,.2),rgba(15,19,24,.72) 60%,rgba(15,19,24,.88));text-shadow:var(--tshadow)}
+.static-hero h1{font-size:clamp(2.1rem,8vw,3.6rem)}
+.static-hero p{margin-top:18px;color:var(--text-secondary);max-width:36ch}
+.static-hero .cta{margin-top:28px;display:flex;flex-wrap:wrap;gap:12px}
+/* the five gates, character for character identical to the JS list */
+@media (max-width: 720px),(orientation: portrait) and (max-width: 1024px),(orientation: portrait) and (pointer: coarse),(orientation: landscape) and (pointer: coarse) and (max-height: 560px),(prefers-reduced-motion: reduce){
+  .hero{height:auto}
+  .stage{position:relative;height:100svh;min-height:560px}
+  .stage video,.poster,.band,.ring,.cue,.scrim{display:none}
+  .static-hero{display:block}
+}
+@media (max-height:560px){.cue,.ring{display:none}}
+
+/* ---------- sections ---------- */
+main{position:relative;z-index:1}
+.sec{position:relative;padding:clamp(96px,14vh,180px) var(--gutter);max-width:1240px;margin:0 auto}
+.sec .kicker{display:block;margin-bottom:18px;color:var(--accent)}
+.sec h2{font-size:clamp(1.9rem,4vw,3.6rem);max-width:18ch}
+.sec .lede{margin-top:clamp(18px,2.4vw,28px);font-size:clamp(1.02rem,1.25vw,1.22rem);color:var(--text-secondary);max-width:46ch}
+.sec .note{margin-top:clamp(28px,4vw,48px);font-size:.9rem;color:var(--text-tertiary);max-width:62ch}
+/* the signature rail: one line down the left gutter, a station per section */
+.seg{position:absolute;left:var(--rail-x);top:0;bottom:0;width:2px;pointer-events:none}
+.seg::before{content:"";position:absolute;left:0;top:0;width:2px;height:100%;background:linear-gradient(var(--accent),rgba(217,173,100,.35));transform:scaleY(var(--p,0));transform-origin:top;opacity:.9}
+.seg i{position:absolute;left:-5px;top:clamp(96px,14vh,180px);width:12px;height:12px;border-radius:50%;border:2px solid var(--accent);background:var(--canvas);opacity:.35;transform:scale(.7);transition:opacity 500ms var(--ease-out),transform 500ms var(--ease-out),box-shadow 500ms}
+.seg.lit i{opacity:1;transform:scale(1);box-shadow:0 0 0 4px rgba(217,173,100,.18),0 0 24px rgba(217,173,100,.55)}
+.seg i::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--accent);opacity:0;transition:opacity 500ms}
+.seg.lit i::after{opacity:1}
+/* whisper particles */
+.dots{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.dots b{position:absolute;width:4px;height:4px;border-radius:50%;background:var(--accent);opacity:0}
+.live .dots b{animation:breathe 6s ease-in-out infinite}
+.dots b:nth-child(1){left:18%;top:22%;animation-delay:-1.2s}
+.dots b:nth-child(2){left:62%;top:30%;animation-delay:-3.1s;animation-duration:7.5s}
+.dots b:nth-child(3){left:80%;top:70%;animation-delay:-5s;animation-duration:8.5s}
+.dots b:nth-child(4){left:36%;top:78%;animation-delay:-2.2s;animation-duration:9s}
+@keyframes breathe{0%,100%{opacity:0;transform:translateY(0)}50%{opacity:.55;transform:translateY(-10px)}}
+/* entrances */
+.rv .part{opacity:0;transform:translateY(18px);transition:opacity 700ms var(--ease-out),transform 700ms var(--ease-out)}
+.rv.in .part{opacity:1;transform:none}
+.rv.in .part:nth-child(1){transition-delay:0ms}.rv.in .part:nth-child(2){transition-delay:90ms}.rv.in .part:nth-child(3){transition-delay:180ms}.rv.in .part:nth-child(4){transition-delay:270ms}.rv.in .part:nth-child(5){transition-delay:360ms}.rv.in .part:nth-child(6){transition-delay:450ms}.rv.in .part:nth-child(7){transition-delay:540ms}.rv.in .part:nth-child(8){transition-delay:630ms}.rv.in .part:nth-child(9){transition-delay:720ms}
+.rv.in.done .part:nth-child(n){transition-delay:0ms}
+/* drawn SVG */
+.draw path,.draw line,.draw circle.ln{stroke-dasharray:var(--len,1000);stroke-dashoffset:var(--len,1000);transition:stroke-dashoffset 1600ms var(--ease-std)}
+.draw.in path,.draw.in line,.draw.in circle.ln{stroke-dashoffset:0}
+.draw .st{opacity:0;transition:opacity 500ms var(--ease-out)}
+.draw.in .st{opacity:1}
+
+/* why */
+.split{display:grid;gap:clamp(40px,6vw,96px);align-items:center}
+.split h2{max-width:none}
+@media(min-width:960px){.split{grid-template-columns:5fr 6fr}}
+.concept{width:100%;height:auto;overflow:visible}
+.concept text{font-family:var(--mono);font-size:13px;fill:var(--text-tertiary);letter-spacing:.06em}
+.day{list-style:none;margin:clamp(40px,6vh,72px) 0 0;padding:0;border-top:1px solid var(--hair)}
+.day li{padding:18px 0;border-bottom:1px solid var(--hair);color:var(--text-secondary);font-size:.98rem;display:grid;grid-template-columns:7.5em 1fr;gap:16px}
+.day b{font-weight:500;color:var(--text-primary)}
+.three{display:grid;gap:28px;margin-top:clamp(56px,8vh,96px);padding-top:32px;border-top:1px solid var(--hair);list-style:none;padding-left:0}
+@media(min-width:760px){.three{grid-template-columns:repeat(3,1fr)}}
+.three b{display:block;font-family:var(--display);font-weight:800;letter-spacing:-.02em;font-size:1.25rem;margin-bottom:10px;line-height:1.3}
+.three span{color:var(--text-secondary);font-size:.95rem}
+
+/* map */
+.center{text-align:center}
+.center h2,.center .lede{margin-left:auto;margin-right:auto}
+.map-wrap{margin:clamp(48px,7vh,88px) auto 0;max-width:1040px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin}
+.metro{display:block;width:100%;min-width:720px;height:auto}
+.metro text{font-family:var(--body);font-size:15px;fill:var(--text-primary);font-weight:500}
+.metro .sm{font-size:12.5px;fill:var(--text-tertiary);font-weight:400}
+.metro .hubt{font-family:var(--display);font-weight:800;font-size:17px}
+.lines{list-style:none;margin:clamp(40px,6vh,64px) auto 0;padding:0;max-width:980px;display:grid;gap:18px;text-align:left}
+@media(min-width:900px){.lines{grid-template-columns:repeat(2,1fr)}}
+.lines li{padding:22px 24px;background:var(--panel);border-radius:18px;font-size:.95rem;color:var(--text-secondary);border-left:3px solid var(--c,var(--accent))}
+.lines b{display:block;color:var(--text-primary);font-weight:500;margin-bottom:6px}
+.lines .mono{display:block;margin-bottom:8px;color:var(--c,var(--accent))}
+.map-hint{display:none;margin-top:12px;font-size:.8rem;color:var(--text-tertiary)}
+@media(max-width:720px){.map-hint{display:block}}
+
+/* roles */
+.roles{position:relative;margin-top:clamp(48px,7vh,88px);display:grid;gap:24px}
+@media(min-width:900px){.roles{grid-template-columns:1fr 1fr;gap:40px}}
+.hubcard{padding:28px;border-radius:24px;background:var(--panel-2);display:flex;flex-direction:column;justify-content:center;gap:8px;min-height:200px}
+.hubcard b{font-family:var(--display);font-weight:800;font-size:1.6rem;letter-spacing:-.02em}
+.hubrail text{font-family:var(--mono);font-size:11px;fill:var(--text-tertiary);letter-spacing:.04em}
+.rolelist{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+@media(min-width:600px){.rolelist{grid-template-columns:1fr 1fr}}
+.rolelist li{padding:18px 20px;border:1px solid var(--hair);border-radius:16px;font-size:.92rem;color:var(--text-secondary);position:relative;transition:border-color 160ms}
+@media(hover:hover){.rolelist li:hover{border-color:var(--hair-strong)}}
+.rolelist b{display:block;color:var(--text-primary);font-weight:500;font-size:1.02rem;margin-bottom:4px}
+.rolelist .mono{display:block;margin-top:10px;color:var(--accent)}
+
+/* work */
+.trio{list-style:none;margin:clamp(40px,6vh,72px) 0 0;padding:0;border-top:1px solid var(--hair)}
+.trio li{display:grid;grid-template-columns:6.5em 1fr;gap:18px;padding:20px 0;border-bottom:1px solid var(--hair);color:var(--text-secondary);font-size:.96rem}
+.trio b{font-family:var(--mono);font-weight:500;color:var(--text-primary);font-size:.9rem;letter-spacing:.06em;padding-top:4px}
+.device{margin:0 auto;max-width:520px;border-radius:32px;background:var(--panel);border:1px solid var(--hair);box-shadow:0 30px 80px rgba(0,0,0,.5);padding:22px 22px 26px}
+.device .top{display:flex;justify-content:space-between;align-items:baseline;font-size:.78rem;color:var(--text-tertiary);padding-bottom:12px;border-bottom:1px solid var(--hair)}
+.chat{display:flex;flex-direction:column;gap:12px;padding-top:16px}
+.msg{max-width:88%;padding:12px 16px;border-radius:18px;font-size:.95rem;line-height:1.55}
+.msg.me{align-self:flex-end;background:var(--panel-2);border-bottom-right-radius:6px}
+.card{padding:16px 18px;border-radius:16px;border:1px solid var(--hair-strong);background:var(--canvas)}
+.card b{display:block;font-weight:500;margin-bottom:6px}
+.card p{font-size:.9rem;color:var(--text-secondary)}
+.hold{margin-top:14px;display:flex;align-items:center;gap:14px}
+.hold button{position:relative;min-height:46px;padding:0 20px 0 52px;border-radius:999px;border:1px solid var(--hair-strong);background:transparent;color:var(--text-primary);font:inherit;font-weight:500;cursor:pointer;touch-action:none;user-select:none;-webkit-user-select:none;transition:border-color 160ms,background 160ms}
+.hold button:hover{border-color:var(--accent)}
+.hold svg{position:absolute;left:12px;top:50%;width:28px;height:28px;transform:translateY(-50%) rotate(-90deg);color:var(--accent)}
+.hold svg .bg{stroke:var(--hair-strong)}
+.hold svg .fg{stroke:currentColor;stroke-dasharray:76;stroke-dashoffset:calc(76*(1 - var(--h,0)));transition:stroke-dashoffset 80ms linear}
+.hold .state{font-size:.82rem;color:var(--text-tertiary)}
+.hold.done button{border-color:var(--accent);background:var(--accent-muted);cursor:default}
+.hold.done .state{color:var(--accent)}
+.result{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px}
+.result li{display:flex;align-items:center;gap:10px;font-size:.88rem;color:var(--text-tertiary);opacity:.4;transform:translateX(-6px);transition:opacity 500ms var(--ease-out),transform 500ms var(--ease-out),color 500ms}
+.result li::before{content:"";width:8px;height:8px;border-radius:50%;border:1.5px solid var(--hair-strong);flex:none;transition:background 300ms,border-color 300ms}
+.result li.on{opacity:1;transform:none;color:var(--text-primary)}
+.result li.on::before{background:var(--rail-work);border-color:var(--rail-work)}
+.work-grid{display:grid;gap:clamp(40px,6vw,80px);margin-top:clamp(48px,7vh,88px);align-items:start}
+@media(min-width:960px){.work-grid{grid-template-columns:1fr 1fr}}
+
+/* trust */
+.rules{list-style:none;margin:clamp(48px,7vh,88px) 0 0;padding:0;display:grid;gap:2px 32px;counter-reset:r}
+@media(min-width:640px){.rules{grid-template-columns:1fr 1fr}}
+@media(min-width:960px){.rules{grid-template-columns:repeat(3,1fr)}}
+.rules li{padding:24px 0;border-top:1px solid var(--hair);font-size:.93rem;color:var(--text-secondary)}
+.rules li .mono{display:block;margin-bottom:10px}
+.rules b{display:block;color:var(--text-primary);font-weight:500;font-size:1.05rem;margin-bottom:6px}
+
+/* revenue */
+.rev{position:relative}
+.rev .bg{position:absolute;inset:0;z-index:-1;background:url("assets/hero-ending.jpg") center/cover no-repeat;opacity:.55}
+.rev .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,var(--canvas) 0%,rgba(15,19,24,.55) 30%,rgba(15,19,24,.55) 70%,var(--canvas) 100%)}
+.rev .inner{text-shadow:var(--tshadow)}
+.fees{list-style:none;margin:clamp(48px,7vh,80px) 0 0;padding:0;display:grid;gap:16px}
+@media(min-width:900px){.fees{grid-template-columns:repeat(3,1fr)}}
+.fees li{padding:26px 26px 28px;border-radius:22px;background:rgba(23,28,35,.78);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--hair);font-size:.94rem;color:var(--text-secondary);text-shadow:none}
+.fees b{display:block;font-family:var(--display);font-weight:800;letter-spacing:-.02em;font-size:1.2rem;color:var(--text-primary);margin-bottom:10px;line-height:1.3}
+
+/* start */
+.tiers{list-style:none;margin:clamp(48px,7vh,88px) 0 0;padding:0;display:grid;gap:18px}
+@media(min-width:620px){.tiers{grid-template-columns:1fr 1fr}}
+@media(min-width:1100px){.tiers{grid-template-columns:repeat(4,1fr)}}
+.tiers li{border-radius:22px;overflow:hidden;background:var(--panel);display:flex;flex-direction:column}
+.tiers .ph{aspect-ratio:16/10;background:var(--panel-2) center/cover no-repeat;position:relative}
+.tiers .ph::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,var(--panel))}
+.tiers .tx{padding:18px 22px 24px}
+.tiers h3{font-size:1.15rem;margin-bottom:14px}
+.tiers dl{margin:0;display:grid;gap:10px;font-size:.9rem}
+.tiers dt{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.tiers dt.later{color:var(--text-tertiary)}
+.tiers dd{margin:2px 0 0;color:var(--text-secondary)}
+
+/* roadmap */
+.road{position:relative;margin:clamp(48px,7vh,88px) 0 0;padding-left:46px;list-style:none;max-width:760px}
+.road::before{content:"";position:absolute;left:11px;top:8px;bottom:8px;width:2px;background:var(--hair)}
+.road::after{content:"";position:absolute;left:11px;top:8px;bottom:8px;width:2px;background:linear-gradient(var(--accent),rgba(217,173,100,.5));transform:scaleY(var(--p,0));transform-origin:top}
+.road li{position:relative;padding:0 0 clamp(32px,5vh,52px)}
+.road li:last-child{padding-bottom:0}
+.road li::before{content:"";position:absolute;left:-41px;top:6px;width:12px;height:12px;border-radius:50%;border:2px solid var(--hair-strong);background:var(--canvas);transition:border-color 400ms,box-shadow 400ms,background 400ms}
+.road li.lit::before{border-color:var(--accent);background:var(--accent);box-shadow:0 0 0 4px rgba(217,173,100,.18),0 0 20px rgba(217,173,100,.5)}
+.road .mono{display:block;margin-bottom:6px}
+.road b{display:block;font-family:var(--display);font-weight:800;letter-spacing:-.02em;font-size:1.3rem;margin-bottom:6px;line-height:1.3}
+.road span{color:var(--text-secondary);font-size:.95rem}
+
+/* faq */
+.faq{margin:clamp(40px,6vh,72px) 0 0;max-width:820px;border-top:1px solid var(--hair)}
+.faq details{border-bottom:1px solid var(--hair)}
+.faq summary{list-style:none;cursor:pointer;padding:22px 44px 22px 0;font-weight:500;font-size:1.05rem;position:relative;line-height:1.45}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"";position:absolute;right:6px;top:50%;width:10px;height:10px;border-right:1.5px solid var(--text-tertiary);border-bottom:1.5px solid var(--text-tertiary);transform:translateY(-70%) rotate(45deg);transition:transform 300ms var(--ease-out)}
+.faq details[open] summary::after{transform:translateY(-30%) rotate(225deg)}
+.faq p{padding:0 0 24px;color:var(--text-secondary);font-size:.96rem;max-width:70ch}
+
+/* contact */
+.contact{position:relative;text-align:center;padding-top:clamp(120px,18vh,220px);padding-bottom:clamp(120px,18vh,220px)}
+.contact h2{max-width:22ch;margin:0 auto;font-size:clamp(2rem,4.6vw,4.2rem)}
+.contact .lede{margin:clamp(20px,3vw,32px) auto 0}
+.contact .conv{position:absolute;inset:0;z-index:-1;width:100%;height:100%;opacity:.7}
+.contact .label{margin-top:clamp(44px,7vh,72px)}
+.contact .who{margin-top:14px;color:var(--text-primary);font-size:1.05rem}
+
+/* footer */
+footer{position:relative;z-index:1;padding:48px var(--gutter) 56px;border-top:1px solid var(--hair);font-size:.84rem;color:var(--text-tertiary);max-width:1240px;margin:0 auto}
+footer p+p{margin-top:8px}
+footer .brand{margin-bottom:18px;color:var(--text-secondary)}
+
+/* reduced motion: everything in its finished state */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;transition-delay:0s!important}
+  body{opacity:1}
+  .rv .part{opacity:1;transform:none}
+  .draw path,.draw line,.draw circle.ln{stroke-dashoffset:0}
+  .draw .st{opacity:1}
+  .seg::before,.road::after{transform:none}
+  .seg i{opacity:1;transform:scale(1)}
+  .seg i::after{opacity:1}
+  .road li::before{border-color:var(--accent);background:var(--accent)}
+  .dots b{opacity:.3}
+  .hold svg .fg{stroke-dashoffset:0}
+  .result li{opacity:1;transform:none;color:var(--text-primary)}
+  .result li::before{background:var(--rail-work);border-color:var(--rail-work)}
+}
+body.rm *,body.rm *::before,body.rm *::after{animation:none!important;transition:none!important;transition-delay:0s!important}
+body.paused *,body.paused *::before,body.paused *::after{animation-play-state:paused!important}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">본문으로 건너뛰기</a>
+<div class="env" aria-hidden="true"><i></i><i></i><span class="grain"></span></div>
+
+<nav class="topbar" aria-label="주 메뉴">
+  <a class="brand" href="#top" aria-label="BEST 생태계, 처음으로"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>BEST 생태계</span></a>
+  <ul class="menu">
+    <li><a href="#why">왜 지금</a></li>
+    <li><a href="#map">노선도</a></li>
+    <li><a href="#roles">역할</a></li>
+    <li><a href="#work">업무</a></li>
+    <li><a href="#trust">신뢰</a></li>
+    <li><a href="#revenue">수익</a></li>
+    <li><a href="#start">시작</a></li>
+    <li><a href="#roadmap">로드맵</a></li>
+    <li><a href="#faq">질문</a></li>
+  </ul>
+  <a class="btn btn-ghost btn-sm" href="#contact">문의</a>
+</nav>
+
+<header class="hero" id="top">
+  <div class="stage" id="stage">
+    <div class="poster" aria-hidden="true"></div>
+    <video id="hero" preload="none" muted playsinline aria-hidden="true" tabindex="-1"></video>
+    <div class="scrim" aria-hidden="true"></div>
+
+    <div class="band fx-blur" data-a="0" data-b="0.24" data-ramp="0.05" style="--sa:.70">
+      <span class="mono num">01</span>
+      <h1 class="copy"><span class="vh">기능을 팔지 않습니다. 사람을 잇는 철도를 깝니다.</span><span class="soft" aria-hidden="true">기능을 팔지 않습니다.<br>사람을 잇는 철도를 깝니다.</span><span class="sharp" aria-hidden="true">기능을 팔지 않습니다.<br>사람을 잇는 <em>철도</em>를 깝니다.</span></h1>
+    </div>
+
+    <div class="band fx-drift" data-a="0.27" data-b="0.50" data-split="word" style="--sa:.64">
+      <span class="mono num">02</span>
+      <h2>레일이 먼저 깔린 곳에<br>시장이 열렸습니다.</h2>
+    </div>
+
+    <div class="band fx-light" data-a="0.53" data-b="0.76" data-split="char" data-spread="0.5" data-ramp="0.06" style="--sa:.64">
+      <span class="mono num">03</span>
+      <h2>동네 마트, 야채가게, 나들가게.<br>자기 이름을 지킨 채 올라탑니다.</h2>
+    </div>
+
+    <div class="band fx-rise" data-a="0.80" data-b="1" data-split="word" data-ramp="0.045" style="--sa:.66">
+      <span class="mono num">04</span>
+      <h2>서비스는 나누고,<br>기반은 함께 씁니다.</h2>
+      <p class="sub">거래망, 고객 접점, 업무 도구, AI를 하나의 레일 위에서.</p>
+      <div class="cta"><a class="btn btn-primary" href="#contact">투자·파트너십 문의</a><a class="btn btn-ghost" href="#map">노선도 보기</a></div>
+    </div>
+
+    <svg class="ring" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="20" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="126" style="stroke-dashoffset:var(--ld,126)"/></svg>
+    <div class="cue" aria-hidden="true"><span></span>scroll</div>
+
+    <div class="static-hero">
+      <div class="inner">
+        <h1>기능을 팔지 않습니다.<br>사람을 잇는 <em>철도</em>를 깝니다.</h1>
+        <p>동네 마트와 야채가게가 자기 이름을 지킨 채 거래망, 고객 접점, 업무 도구, AI를 함께 씁니다.</p>
+        <div class="cta"><a class="btn btn-primary" href="#contact">투자·파트너십 문의</a></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+  <section class="sec rv" id="why">
+    <div class="seg" aria-hidden="true"><i></i></div>
+    <div class="dots" aria-hidden="true"><b></b><b></b><b></b><b></b></div>
+    <div class="split">
+      <div>
+        <span class="mono kicker part">왜 지금</span>
+        <h2 class="part">기능을 만드는 비용은 내려갑니다.<br>남는 것은 연결입니다.</h2>
+        <p class="lede part">산업혁명의 가치는 기차표 한 장이 아니라 철도가 이어 준 도시와 사람의 이동에서 나왔습니다. 레일이 먼저 깔린 곳에 시장이 열렸습니다. AI 이후에도 같습니다.</p>
+        <ul class="day part" aria-label="지금 동네 가게의 하루">
+          <li><b>거래망</b><span>공급사·주변 점포와의 거래가 전화, 메신저, 수기 장부에 흩어져 있습니다.</span></li>
+          <li><b>고객 접점</b><span>온라인으로 팔려면 간판을 바꾸거나 POS를 교체하거나 외부 플랫폼의 조건을 따라야 합니다.</span></li>
+          <li><b>업무 도구</b><span>발주, 재고, 근태, 승인이 대화와 따로 놉니다. 지금 쓰는 메신저에는 말만 남습니다.</span></li>
+          <li><b>AI</b><span>자료가 흩어져 있어 AI가 도울 근거가 없습니다. 쌓이는 건 대화뿐, 판단의 기록이 아닙니다.</span></li>
+        </ul>
+      </div>
+      <div class="part">
+        <svg class="concept draw" viewBox="0 0 600 420" role="img" aria-label="개념도: 기능을 만드는 비용은 내려가고 연결의 가치는 올라간다">
+          <line x1="40" y1="360" x2="580" y2="360" stroke="rgba(244,242,236,.22)" stroke-width="1.5" style="--len:540"/>
+          <line x1="40" y1="40" x2="40" y2="360" stroke="rgba(244,242,236,.22)" stroke-width="1.5" style="--len:320"/>
+          <line x1="330" y1="60" x2="330" y2="360" stroke="rgba(244,242,236,.14)" stroke-width="1" stroke-dasharray="4 6" style="--len:300"/>
+          <path d="M60 90 C 180 100, 260 200, 330 260 S 500 340, 570 345" fill="none" stroke="rgba(244,242,236,.42)" stroke-width="3" stroke-linecap="round" style="--len:620"/>
+          <path d="M60 330 C 180 325, 260 250, 330 190 S 500 70, 570 55" fill="none" stroke="#D9AD64" stroke-width="4" stroke-linecap="round" style="--len:640"/>
+          <circle class="ln" cx="330" cy="225" r="7" fill="none" stroke="#D9AD64" stroke-width="2" style="--len:44"/>
+          <text class="st" x="60" y="72">기능을 만드는 비용</text>
+          <text class="st" x="60" y="316" fill="#D9AD64" style="fill:#D9AD64">연결의 가치</text>
+          <text class="st" x="318" y="392">지금</text>
+          <text class="st" x="508" y="392">AI 이후</text>
+        </svg>
+      </div>
+    </div>
+    <ul class="three">
+      <li class="part"><b>레일을 먼저 깝니다.</b><span>계정, 상품 기준, 파일, 메신저, 승인 같은 공통 기반을 먼저 만들고, 서비스는 그 위에 올라탑니다.</span></li>
+      <li class="part"><b>역을 하나씩 늘립니다.</b><span>사진 한 장으로 시작하는 야채가게부터 부서별 승인이 필요한 중형 마트까지, 필요한 기능 하나로 올라탑니다.</span></li>
+      <li class="part"><b>사람이 사람을 연결합니다.</b><span>우리는 마트를 직접 운영하며 그 현장을 출발점으로 삼습니다. 기능은 복제되지만 신뢰로 쌓인 관계망은 복제되지 않습니다.</span></li>
+    </ul>
+  </section>
+
+  <section class="sec rv center" id="map">
+    <div class="seg" aria-hidden="true"><i></i></div>
+    <span class="mono kicker part">생태계</span>
+    <h2 class="part">서비스는 나누고, 기반은 함께 씁니다.</h2>
+    <p class="lede part">브랜드, 고객, 거래 방식은 서비스마다 다르게. 계정, 상품정보, 메신저, 업무 연결은 하나로. 새 서비스는 이 노선도에 역 하나로 추가됩니다.</p>
+    <div class="map-wrap part">
+      <svg class="metro draw" viewBox="0 0 1040 420" role="img" aria-label="생태계 노선도: 소비자선, 사업자선, 업무선이 공통 기반 환승역에서 만난다">
+        <path d="M80 110 H 360 Q 420 110 460 160 L 520 210" fill="none" stroke="#D4796B" stroke-width="5" stroke-linecap="round" style="--len:520"/>
+        <path d="M80 210 H 520" fill="none" stroke="#D9AD64" stroke-width="5" stroke-linecap="round" style="--len:440"/>
+        <path d="M520 210 L 580 260 Q 620 310 680 310 H 960" fill="none" stroke="#6FAE8A" stroke-width="5" stroke-linecap="round" style="--len:520"/>
+        <path d="M520 210 Q 620 110 760 110 H 960" fill="none" stroke="#D4796B" stroke-width="5" stroke-linecap="round" stroke-dasharray="1 0" style="--len:520"/>
+        <g class="st">
+          <circle cx="200" cy="110" r="9" fill="#0F1318" stroke="#D4796B" stroke-width="3"/>
+          <circle cx="340" cy="110" r="9" fill="#0F1318" stroke="#D4796B" stroke-width="3"/>
+          <circle cx="260" cy="210" r="9" fill="#0F1318" stroke="#D9AD64" stroke-width="3"/>
+          <circle cx="760" cy="310" r="9" fill="#0F1318" stroke="#6FAE8A" stroke-width="3"/>
+          <circle cx="860" cy="310" r="9" fill="#0F1318" stroke="#6FAE8A" stroke-width="3"/>
+          <circle cx="960" cy="310" r="9" fill="#0F1318" stroke="#6FAE8A" stroke-width="3"/>
+          <circle cx="860" cy="110" r="9" fill="#0F1318" stroke="#D4796B" stroke-width="3" stroke-dasharray="4 4"/>
+          <circle cx="520" cy="210" r="22" fill="#171C23" stroke="#7A9FD6" stroke-width="4"/>
+          <circle cx="520" cy="210" r="9" fill="#D9AD64"/>
+          <text x="200" y="80" text-anchor="middle">베스트마켓 직영몰</text>
+          <text x="340" y="150" text-anchor="middle">베스트마트 온라인몰</text>
+          <text class="sm" x="340" y="168" text-anchor="middle">협력사몰</text>
+          <text x="260" y="250" text-anchor="middle">베스트마켓 운영허브</text>
+          <text class="sm" x="260" y="268" text-anchor="middle">가칭 · 사업자선</text>
+          <text x="760" y="350" text-anchor="middle">ERP</text>
+          <text x="860" y="350" text-anchor="middle">메신저</text>
+          <text x="960" y="350" text-anchor="middle">ARGOS</text>
+          <text class="sm" x="860" y="80" text-anchor="middle">다음 서비스 · 예정</text>
+          <text class="hubt" x="520" y="268" text-anchor="middle">공통 기반</text>
+          <text class="sm" x="90" y="98">소비자선</text>
+          <text class="sm" x="90" y="198">사업자선</text>
+          <text class="sm" x="700" y="298">업무선</text>
+        </g>
+      </svg>
+    </div>
+    <p class="map-hint part">좌우로 밀어 전체 노선도를 보세요</p>
+    <ul class="lines">
+      <li class="part" style="--c:#D4796B"><span class="mono">소비자선</span><b>베스트마켓 직영몰</b>개인 고객과 본사 직영 판매. 본사가 상품 구성, 판매가격, 주문, 고객 응대를 독립적으로 책임집니다.</li>
+      <li class="part" style="--c:#D4796B"><span class="mono">소비자선</span><b>베스트마트 온라인몰(협력사몰)</b>개인 고객과 기존 마트·협력사. 매장별 상품, 가격, 수량, 배송·픽업 조건. 간판과 POS를 바꾸지 않고 참여합니다.</li>
+      <li class="part" style="--c:#D9AD64"><span class="mono">사업자선</span><b>베스트마켓 운영허브(가칭)</b>점주·판매점과 다른 점주·공급사. 상품자료 공유, 공급 제안, 구매 요청, 공동구매. 반무인 픽업전문점도 참여합니다.</li>
+      <li class="part" style="--c:#7A9FD6"><span class="mono">환승역</span><b>공통 기반</b>계정, 사업자, 점포, 상품 기준, 파일, 거래 연결, 재고 연동, 배송·픽업, 권한, 알림, 감사기록. 하나의 로그인으로 들어오지만, 어떤 회사·점포의 자료를 볼 수 있는지는 요청마다 따로 검사합니다.</li>
+    </ul>
+  </section>
+
+  <section class="sec rv" id="roles">
+    <div class="seg" aria-hidden="true"><i></i></div>
+    <div class="dots" aria-hidden="true"><b></b><b></b><b></b><b></b></div>
+    <span class="mono kicker part">서비스</span>
+    <h2 class="part">하나의 마트가 네 가지 역할을 가집니다.</h2>
+    <p class="lede part">마트를 네 번 등록하지 않습니다. 하나의 사업자, 하나의 점포에 참여 역할과 연결된 서비스를 더합니다.</p>
+    <div class="roles">
+      <div class="hubcard part">
+        <span class="mono">하나의 사업자 · 하나의 점포</span>
+        <b>우리동네마트</b>
+        <svg class="draw hubrail" viewBox="0 0 320 70" width="100%" aria-hidden="true" style="margin-top:18px;max-width:320px">
+          <path d="M16 24 H 304" stroke="#D9AD64" stroke-width="2" stroke-linecap="round" style="--len:290"/>
+          <g class="st">
+            <circle cx="40" cy="24" r="6" fill="#171C23" stroke="#D9AD64" stroke-width="2"/><circle cx="114" cy="24" r="6" fill="#171C23" stroke="#D9AD64" stroke-width="2"/><circle cx="188" cy="24" r="6" fill="#171C23" stroke="#D9AD64" stroke-width="2"/><circle cx="262" cy="24" r="6" fill="#171C23" stroke="#D9AD64" stroke-width="2"/>
+            <text x="40" y="54" text-anchor="middle">판매자</text><text x="114" y="54" text-anchor="middle">구매자</text><text x="188" y="54" text-anchor="middle">공급자</text><text x="262" y="54" text-anchor="middle">수령대행자</text>
+          </g>
+        </svg>
+      </div>
+      <ul class="rolelist">
+        <li class="part"><b>판매자</b>내 온라인몰에서 소비자에게 판매<span class="mono">베스트마트 온라인몰</span></li>
+        <li class="part"><b>구매자</b>운영허브에서 공급사 상품 구매<span class="mono">베스트마켓 운영허브</span></li>
+        <li class="part"><b>공급자</b>남는 물량을 다른 점포에 판매<span class="mono">베스트마켓 운영허브</span></li>
+        <li class="part"><b>수령대행자</b>직영몰 주문 물품을 보관하고 전달<span class="mono">베스트마켓 직영몰</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec rv" id="work">
+    <div class="seg" aria-hidden="true"><i></i></div>
+    <div class="work-grid">
+      <div>
+        <span class="mono kicker part">업무 도구</span>
+        <h2 class="part">대화가 곧 업무가 됩니다.</h2>
+        <p class="lede part">조회, 요청, 승인, 실행, 결과 확인까지 한 대화에서. ERP에서 열든 ARGOS에서 열든 같은 대화, 같은 승인함입니다.</p>
+        <ul class="trio part">
+          <li><b>ERP</b><span>실제 업무 기록과 처리. 거래 상대와 연결돼도 각 회사의 기록은 각자의 ERP에 남습니다.</span></li>
+          <li><b>메신저</b><span>사람이 쓰는 공통 창구. 대화는 그냥 쌓이지 않고 발주, 입고, 재고, 근태 기록과 연결됩니다.</span></li>
+          <li><b>ARGOS</b><span>서비스와 AI 에이전트의 조정. 허용된 범위에서 상태를 모으고, 확인할 사항을 제안하며, 승인된 실행을 연결합니다.</span></li>
+        </ul>
+        <p class="note part">AI는 승인 전에 중요 데이터를 바꾸지 않습니다. 승인 후에도 공식 업무 API로만 실행하고, 권한은 서버가 요청마다 검사합니다.</p>
+      </div>
+      <div class="device part" id="device">
+        <div class="top"><span>우장산점 · 농산팀</span><span>시연용 가상 데이터</span></div>
+        <div class="chat">
+          <div class="msg me">오늘 우장산점 농산팀 발주 상황 확인해줘.</div>
+          <div class="card">
+            <span class="mono">ARGOS</span>
+            <b>우장산점 농산팀 · 발주 3건 승인 대기</b>
+            <p>공급사 2곳, 합계 금액은 ERP 기준. 승인하면 공식 업무 API로만 실행됩니다.</p>
+            <div class="hold" id="hold">
+              <button type="button" id="holdBtn" aria-describedby="holdState"><svg viewBox="0 0 28 28" aria-hidden="true"><circle class="bg" cx="14" cy="14" r="12" fill="none" stroke-width="2"/><circle class="fg" cx="14" cy="14" r="12" fill="none" stroke-width="2" stroke-linecap="round"/></svg><span id="holdLabel">길게 눌러 승인</span></button>
+              <span class="state" id="holdState">누르고 있는 동안 승인이 진행됩니다</span>
+            </div>
+            <ul class="result" id="result" aria-live="polite">
+              <li>권한 재검사 통과</li>
+              <li>ERP 매입 반영</li>
+              <li>같은 대화에 결과 기록</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec rv" id="trust">
+    <div class="seg" aria-hidden="true"><i></i></div>
+    <div class="dots" aria-hidden="true"><b></b><b></b><b></b><b></b></div>
+    <span class="mono kicker part">신뢰</span>
+    <h2 class="part">연결하는 플랫폼, 통제하지 않는 본사.</h2>
+    <p class="lede part">본사가 직접 마트를 운영하기 때문에 규칙을 더 엄격하게 두고, 약관 문구가 아닌 제품 구조로 지킵니다.</p>
+    <ol class="rules">
+      <li class="part"><span class="mono">01</span><b>점포의 선택권</b>상호, 매장 운영, 판매가격, 거래처는 점포가 정합니다.</li>
+      <li class="part"><span class="mono">02</span><b>비공개 자료 이용 금지</b>참여 점포의 원가, 고객, 판매 데이터를 자사 매장 경쟁에 쓰지 않습니다.</li>
+      <li class="part"><span class="mono">03</span><b>우선 노출 금지</b>자사 점포를 별도 설명 없이 우선 노출하지 않습니다.</li>
+      <li class="part"><span class="mono">04</span><b>권한 분리</b>플랫폼 운영 권한과 자사 마트 직원 권한을 분리합니다.</li>
+      <li class="part"><span class="mono">05</span><b>거래해도 ERP는 각자</b>판매점의 매출과 구매점의 매입은 각각 기록합니다. 상대 회사 ERP를 들여다보지 않습니다.</li>
+      <li class="part"><span class="mono">06</span><b>승인 후 실행</b>AI는 승인 전에 데이터를 바꾸지 않고, 승인 후에도 공식 업무 API로만 실행합니다.</li>
+      <li class="part"><span class="mono">07</span><b>끝까지 격리</b>데이터베이스뿐 아니라 검색, 파일, 임시 저장소, 처리 대기열, 백업, AI 검색 범위까지 점포별로 분리합니다.</li>
+      <li class="part"><span class="mono">08</span><b>관리자도 예외 없음</b>플랫폼 운영자라는 이유로 참여 점포의 대화를 상시 열람하게 설계하지 않습니다.</li>
+      <li class="part"><span class="mono">09</span><b>이웃을 느리게 하지 않음</b>한 점포의 대량 업로드나 AI 분석이 다른 점포의 주문 확인을 늦추지 않도록 자원을 나눕니다.</li>
+    </ol>
+  </section>
+
+  <section class="rev" id="revenue">
+    <div class="bg" aria-hidden="true"></div>
+    <div class="sec rv inner">
+      <div class="seg" aria-hidden="true"><i></i></div>
+      <span class="mono kicker part">수익</span>
+      <h2 class="part">철도 회사는 레일을 팔지 않았습니다.</h2>
+      <p class="lede part">기능 하나하나를 팔아 매출을 만드는 회사가 아닙니다. 특정 기능을 참여 조건으로 걸지 않고, 연결망 위에서 실제로 생긴 가치의 일부를 나눕니다.</p>
+      <ul class="fees">
+        <li class="part"><b>고급 업무 도구 이용료</b>ERP, ARGOS 고급 기능은 원하는 점포만 골라 씁니다. 쓰지 않는 점포에는 비용이 없습니다.</li>
+        <li class="part"><b>거래 서비스 비용</b>거래중개, 공동매입, 물류. 이용한 거래에만 붙고, 운송, 소분, 검수, 반품까지 포함한 실제 비용이 줄었는지 확인합니다.</li>
+        <li class="part"><b>현장 도입·운영 지원</b>첫 상품 등록부터 첫 주문 처리까지 함께합니다. 소프트웨어 제공으로 끝나지 않는 지원이 참여를 만듭니다.</li>
+      </ul>
+      <p class="note part">세 가지를 한꺼번에 부과하지 않습니다. 점포에 실제 가치가 생겼다고 확인된 항목부터 적용합니다. 수수료율과 수익성은 근거가 쌓인 뒤 정합니다.</p>
+    </div>
+  </section>
+
+  <section class="sec rv" id="start">
+    <div class="seg" aria-hidden="true"><i></i></div>
+    <div class="dots" aria-hidden="true"><b></b><b></b><b></b><b></b></div>
+    <span class="mono kicker part">시작</span>
+    <h2 class="part">사진 한 장으로 시작합니다.</h2>
+    <p class="lede part">가입 조건은 전체 상품 등록도, POS 교체도 아닙니다. 사진 한 장과 상품명, 가격만 등록해도 첫 기능을 쓸 수 있습니다.</p>
+    <ul class="tiers">
+      <li class="part"><div class="ph" role="img" aria-label="밤의 길거리 야채·과일점, 생성 이미지" style="background-image:url('assets/store-1.jpg')"></div><div class="tx"><h3>길거리 야채·과일점</h3><dl><dt>처음</dt><dd>사진·음성으로 오늘 상품과 가격 등록, 문의 받기, 품절 처리</dd><dt class="later">이후</dt><dd>간편 발주, 매입 기록, 단골 관리</dd></dl></div></li>
+      <li class="part"><div class="ph" role="img" aria-label="밤의 동네 슈퍼, 생성 이미지" style="background-image:url('assets/store-2.jpg')"></div><div class="tx"><h3>동네 슈퍼·나들가게</h3><dl><dt>처음</dt><dd>행사상품 공유, 거래처 주문, 주문 확인</dd><dt class="later">이후</dt><dd>간편 재고, 매입·판매 분석</dd></dl></div></li>
+      <li class="part"><div class="ph" role="img" aria-label="밤의 소형마트, 생성 이미지" style="background-image:url('assets/store-3.jpg')"></div><div class="tx"><h3>소형마트</h3><dl><dt>처음</dt><dd>상품 게시, 발주·입고 확인, 직원 업무 공유</dd><dt class="later">이후</dt><dd>기존 POS 연동, ERP 기능</dd></dl></div></li>
+      <li class="part"><div class="ph" role="img" aria-label="밤의 중형 개인마트, 생성 이미지" style="background-image:url('assets/store-4.jpg')"></div><div class="tx"><h3>중형 개인마트</h3><dl><dt>처음</dt><dd>부서별 업무·승인, 거래처 관리, 상품·재고 연동</dd><dt class="later">이후</dt><dd>주변 점포 대상 공급, 공동매입 참여</dd></dl></div></li>
+    </ul>
+    <p class="note part">연동되지 않은 점포의 재고는 실시간 재고처럼 보여주지 않습니다. '점주 확인 필요'와 '마지막 갱신 시각'을 표시하고, 주문 확정 전에 점주가 확인합니다.</p>
+  </section>
+
+  <section class="sec rv" id="roadmap">
+    <div class="seg" aria-hidden="true"><i></i></div>
+    <span class="mono kicker part">로드맵</span>
+    <h2 class="part">크게 설계하고, 연결이 필요한 순서로 짓습니다.</h2>
+    <p class="lede part">운영 중인 매장과 실제로 협력 가능한 주변 점포에서 시작해, 하나의 생활권에서 하나의 거래 흐름을 반복해 검증합니다.</p>
+    <ol class="road" id="road">
+      <li class="part"><span class="mono">역 1</span><b>공통 기반</b><span>같은 계정으로 여러 서비스를 쓰되, 점포별 자료는 분리됩니다.</span></li>
+      <li class="part"><span class="mono">역 2</span><b>협력사몰 연결</b><span>한 점포의 상품, 주문, 재고, 업무 확인이 한 흐름으로 이어집니다.</span></li>
+      <li class="part"><span class="mono">역 3</span><b>운영허브 연결</b><span>상품자료 공유와 사업자 매입이 소비자 판매와 구분된 채 연결됩니다.</span></li>
+      <li class="part"><span class="mono">역 4</span><b>직영몰·픽업 연결</b><span>판매자와 픽업점이 달라도 주문, 물품, 정산 기록이 서로 맞아떨어집니다.</span></li>
+      <li class="part"><span class="mono">역 5</span><b>신규 서비스 추가 검증</b><span>기존 계정, 상품, 주문 기반을 재사용하면서 새 업무만 추가할 수 있습니다.</span></li>
+    </ol>
+  </section>
+
+  <section class="sec rv" id="faq">
+    <div class="seg" aria-hidden="true"><i></i></div>
+    <span class="mono kicker part">질문</span>
+    <h2 class="part">먼저 물으실 것들.</h2>
+    <div class="faq part">
+      <details open><summary>중소형 마트 플랫폼은 이미 실패한 사례가 있지 않나요?</summary><p>있습니다. 업계가 꼽는 이유는 오프라인 비용 위에 온라인 운영비가 이중으로 들고, 제각각인 상품을 데이터로 정리하는 일이 무겁다는 점입니다. 그래서 우리는 전체 상품 등록을 조건으로 걸지 않고 사진 한 장으로 시작하게 하며, 현장 도입 지원을 제품의 일부로 둡니다. 그리고 레일을 팔지 않습니다. 실제로 생긴 가치가 확인된 항목부터 비용을 붙입니다.</p></details>
+      <details><summary>프랜차이즈처럼 점포를 묶는 것과 무엇이 다른가요?</summary><p>상호, 매장 운영, 판매가격, 거래처 선택권을 점포가 유지합니다. 공통 도구와 거래망을 함께 쓰는 관계입니다. 공동 브랜드나 공급 계약을 도입하더라도 생태계 참여 자체와는 구분합니다.</p></details>
+      <details><summary>네이버웍스, 카카오톡 같은 메신저와 무엇이 다른가요?</summary><p>대화, 파일, ERP 업무, ARGOS 명령, 승인이 하나의 업무 흐름으로 이어집니다. 메신저만 따로 만들면 차이가 작습니다. 외부 메신저는 고객과 소통하는 통로로 계속 씁니다.</p></details>
+      <details><summary>소비자도 반드시 앱을 설치해야 하나요?</summary><p>초기에는 상품, 가게, 행사 정보를 공유 링크와 웹으로 보고, 주문처럼 확인이 필요한 단계에서만 절차를 거칩니다. 반복 구매와 단골 관리처럼 앱을 설치할 이유가 생긴 뒤 앱 이용을 확대합니다.</p></details>
+      <details><summary>외부 메시징 기술을 쓰면서도 우리 생태계라고 할 수 있나요?</summary><p>모든 부품을 직접 만드는 것이 기준이 아닙니다. 제품 경험, 계정 관계, 업무 규칙, 데이터 연결을 우리가 통제하는 것이 기준입니다. 외부 기술은 대화와 첨부파일의 내보내기 범위, 이용 조건, 이전 가능성까지 검증해 고릅니다.</p></details>
+      <details><summary>애플처럼 하려면 자체 하드웨어도 만들어야 하나요?</summary><p>필수 조건이 아닙니다. 기존 휴대전화, PC, 태블릿, 현장 장비에서 일관된 경험을 먼저 만들고, 기존 장비로 풀기 어려운 문제가 확인됐을 때 전용 기기를 검토합니다.</p></details>
+      <details><summary>생태계가 실제로 만들어지고 있는지 어떻게 판단하나요?</summary><p>여덟 가지 기준으로 봅니다. 제품 개수나 가입 점포 수는 기준이 아닙니다. 점포가 다시 쓰는가, 문의가 거래로 이어지는가, 상품 정보가 갱신되는가, 점주의 시간과 총비용이 줄었는가, 취소와 분쟁이 얼마나 생기는가, 새 제품을 더했을 때 재등록과 재입력이 줄었는가, 제품 사이를 오가는 업무가 끝까지 처리되는가, 그 과정에서 속도와 안정성이 유지되는가.</p></details>
+    </div>
+  </section>
+
+  <section class="sec rv contact" id="contact">
+    <div class="seg" aria-hidden="true"><i></i></div>
+    <svg class="conv draw" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <g fill="none" stroke="#D9AD64" stroke-width="1" stroke-opacity=".45">
+        <path d="M-50 80 Q 400 300 560 300" style="--len:720"/>
+        <path d="M-50 300 Q 350 300 560 300" style="--len:620"/>
+        <path d="M-50 520 Q 400 300 560 300" style="--len:720"/>
+        <path d="M1250 80 Q 800 300 640 300" style="--len:720"/>
+        <path d="M1250 300 Q 850 300 640 300" style="--len:620"/>
+        <path d="M1250 520 Q 800 300 640 300" style="--len:720"/>
+      </g>
+    </svg>
+    <h2 class="part">결국, 사람과 사람을 연결하는 것은 <em>사람</em>입니다.</h2>
+    <p class="lede part">우리는 그 사람들이 모이는 곳을 만듭니다. 함께 레일을 깔 파트너를 찾습니다.</p>
+    <p class="mono label part">투자·파트너십 문의</p>
+    <p class="who part">담당자 연락처는 발표 자리에서 안내합니다.</p>
+  </section>
+</main>
+
+<footer>
+  <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>BEST 생태계</span></a>
+  <p>BEST 생태계. 상위 브랜드명은 미정(가칭)입니다.</p>
+  <p>이 페이지의 시각물은 생성 이미지입니다.</p>
+  <p>서비스 구성, 업무 흐름, 수치는 설계 목표이며, 구현이 완료되었거나 성과가 검증되었다는 뜻이 아닙니다. 채팅 시연은 가상 데이터입니다.</p>
+  <p>© 2026 BEST 생태계.</p>
+</footer>
+
+<script>
+(function(){
+'use strict';
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const clamp=(v,lo,hi)=>Math.min(hi,Math.max(lo,v));
+const smoothstep=(p,e0,e1)=>{const t=clamp((p-e0)/(e1-e0),0,1);return t*t*(3-2*t)};
+function rng(seed){let s=seed>>>0;return()=>(s=(s*1664525+1013904223)>>>0)/4294967296}
+
+/* ---------- hero ---------- */
+const VIDEO_URL='assets/hero-scrub.mp4';
+const VIDEO_BYTES=2224166; /* real byte size of assets/hero-scrub.mp4 */
+const hero=$('.hero'), stage=$('#stage'), video=$('#hero'), poster=$('.poster'), ring=$('.ring'), cue=$('.cue');
+const bands=$$('.band').map((el,i)=>({el,a:+el.dataset.a,b:+el.dataset.b,ramp:el.dataset.ramp?+el.dataset.ramp:null,op:-1,k:-1,first:i===0,last:false}));
+bands[bands.length-1].last=true;
+
+/* split headline text once, seeded */
+bands.forEach((b,i)=>{
+  const mode=b.el.dataset.split; if(!mode) return;
+  const h=$('h1,h2',b.el); const r=rng(1000+i*97); const spread=b.el.dataset.spread?+b.el.dataset.spread:0.55;
+  const html=h.innerHTML; const full=h.textContent;
+  const parts=html.split(/<br\s*\/?>/i);
+  let out=`<span class="vh">${full}</span>`;
+  let ci=0; const total=full.replace(/\s/g,'').length;
+  parts.forEach((line,li)=>{
+    const words=line.replace(/<[^>]+>/g,'').trim().split(/\s+/);
+    out+='<span aria-hidden="true">';
+    words.forEach((w,wi)=>{
+      if(mode==='word'){
+        const th=(r()*spread).toFixed(3);
+        out+=`<span class="w" style="--th:${th}">${w}</span>`;
+      }else{
+        out+='<span class="w">';
+        for(const ch of w){const th=(ci/total*spread + r()*0.06).toFixed(3);ci++;out+=`<span class="c" data-c="${ch}" style="--th:${th}">${ch}</span>`}
+        out+='</span>';
+      }
+      if(wi<words.length-1) out+=' ';
+    });
+    out+='</span>'+(li<parts.length-1?'<br>':'');
+  });
+  h.innerHTML=out;
+});
+
+let heroTop=0, heroRange=1, heroOnScreen=true;
+function measure(){const r=hero.getBoundingClientRect();heroTop=r.top+scrollY;heroRange=Math.max(1,hero.offsetHeight-innerHeight)}
+const heroProgress=()=>clamp((scrollY-heroTop)/heroRange,0,1);
+
+let target=0, shown=0, rafId=null, lastTick=0, loadK=0, loadStart=0;
+function tick(now){
+  const dt=Math.min(100,now-(lastTick||now)); lastTick=now;
+  const k=0.16; shown+=(target-shown)*(1-Math.pow(1-k,dt/16.667));
+  if(loadK<1){ if(!loadStart) loadStart=now; loadK=clamp((now-loadStart-200)/1100,0,1); }
+  if(Math.abs(target-shown)<0.0005 && loadK>=1){shown=target;rafId=null;lastTick=0}
+  else rafId=requestAnimationFrame(tick);
+  requestSeek(shown*(video.duration||0));
+  updateCaptions(shown);
+}
+function onScroll(){
+  target=heroProgress();
+  if(rafId===null && heroOnScreen) rafId=requestAnimationFrame(tick);
+  const past=scrollY>heroTop+heroRange*0.08; if(past!==hero.classList.contains('past')) hero.classList.toggle('past',past);
+}
+let seekBusy=false, pendingTime=null;
+function requestSeek(t){
+  if(!video.duration||!stage.classList.contains('video-ready')) return;
+  if(seekBusy){pendingTime=t;return}
+  seekBusy=true; video.currentTime=t;
+}
+video.addEventListener('seeked',()=>{seekBusy=false;if(pendingTime!==null){const t=pendingTime;pendingTime=null;requestSeek(t)}});
+video.addEventListener('error',()=>{seekBusy=false;pendingTime=null;failVideo()});
+
+function updateCaptions(p){
+  bands.forEach(b=>{
+    const len=b.b-b.a, f=Math.min(0.02,len/3);
+    let op=(b.first?1:smoothstep(p,b.a,b.a+f))*(b.last?1:(1-smoothstep(p,b.b-f,b.b)));
+    const ramp=b.ramp||Math.min(0.025,len*0.35);
+    let k=clamp((p-b.a)/ramp,0,1);
+    if(b.first) k=Math.max(k,loadK);
+    if(Math.abs(op-b.op)>0.004){b.op=op;b.el.style.opacity=op.toFixed(3);const on=op>0.5;if(on!==b.el.classList.contains('on'))b.el.classList.toggle('on',on)}
+    if(Math.abs(k-b.k)>0.008){b.k=k;b.el.style.setProperty('--k',k.toFixed(3))}
+  });
+}
+
+/* blob loader */
+let started=false, inited=false;
+function initHeroOnce(){
+  if(inited) return; inited=true;
+  poster.style.backgroundImage="url('assets/hero-poster.jpg')";
+  const img=new Image(); img.onload=startBlobFetch; img.onerror=startBlobFetch; img.src='assets/hero-poster.jpg';
+  setTimeout(startBlobFetch,4000);
+}
+function startBlobFetch(){ if(started) return; started=true; loadHeroBlob().catch(failVideo) }
+async function loadHeroBlob(){
+  if(location.protocol==='file:') throw new Error('file protocol');
+  const ctrl=new AbortController(); let watchdog=setTimeout(()=>ctrl.abort(),20000);
+  const res=await fetch(VIDEO_URL,{priority:'low',signal:ctrl.signal});
+  if(!res.ok) throw new Error('video '+res.status);
+  const total=Number(res.headers.get('Content-Length'))||VIDEO_BYTES;
+  const reader=res.body.getReader(); const chunks=[]; let got=0,lastRing=0;
+  for(;;){
+    const {done,value}=await reader.read(); if(done) break;
+    clearTimeout(watchdog); watchdog=setTimeout(()=>ctrl.abort(),20000);
+    chunks.push(value); got+=value.length;
+    const frac=Math.min(1,got/total); const now=performance.now();
+    if(now-lastRing>100||frac===1){lastRing=now;ring.style.setProperty('--ld',Math.round(126*(1-frac)))}
+  }
+  clearTimeout(watchdog); ring.style.setProperty('--ld',0);
+  video.src=URL.createObjectURL(new Blob(chunks,{type:'video/mp4'})); video.load();
+  video.addEventListener('canplay',()=>{
+    stage.classList.add('video-ready');
+    requestSeek(heroProgress()*video.duration);
+  },{once:true});
+}
+function failVideo(){ ring.style.opacity='0'; stage.classList.add('video-failed') }
+
+/* the five gates, identical to the CSS */
+const GATES=['(max-width: 720px)','(orientation: portrait) and (max-width: 1024px)','(orientation: portrait) and (pointer: coarse)','(orientation: landscape) and (pointer: coarse) and (max-height: 560px)','(prefers-reduced-motion: reduce)'];
+let scrubOn=false;
+function enableScrub(){
+  if(scrubOn) return; scrubOn=true;
+  measure(); initHeroOnce();
+  addEventListener('scroll',onScroll,{passive:true});
+  bands.forEach(b=>{b.op=-1;b.k=-1});
+  unpinFinalStates();
+  updateCaptions(heroProgress()); onScroll();
+  if(rafId===null) rafId=requestAnimationFrame(tick);
+}
+function disableScrub(){
+  if(!scrubOn) return; scrubOn=false;
+  removeEventListener('scroll',onScroll);
+  if(rafId!==null){cancelAnimationFrame(rafId);rafId=null}
+}
+function applyHeroMode(){ if(GATES.some(q=>matchMedia(q).matches)) disableScrub(); else enableScrub() }
+const MQLS=GATES.map(q=>matchMedia(q)); MQLS.forEach(m=>m.addEventListener('change',applyHeroMode));
+new IntersectionObserver(es=>{heroOnScreen=es[0].isIntersecting;if(heroOnScreen&&scrubOn&&rafId===null)rafId=requestAnimationFrame(tick)},{threshold:0}).observe(hero);
+addEventListener('resize',()=>{measure()},{passive:true});
+
+/* ---------- page ---------- */
+const topbar=$('.topbar');
+let solid=false;
+addEventListener('scroll',()=>{const s=scrollY>40;if(s!==solid){solid=s;topbar.classList.toggle('solid',s)}},{passive:true});
+
+/* entrances */
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');setTimeout(()=>e.target.classList.add('done'),1400);io.unobserve(e.target)}})},{threshold:0.18,rootMargin:'0px 0px -8% 0px'});
+$$('.rv,.draw').forEach(el=>io.observe(el));
+$$('.draw path,.draw line,.draw circle.ln').forEach(el=>{if(el.getTotalLength){const L=Math.ceil(el.getTotalLength())+2;el.style.setProperty('--len',L)}});
+
+/* the signature rail: each segment draws with its section's own scroll progress */
+const segs=$$('.seg').map(el=>({el,sec:el.parentElement,p:-1,lit:false}));
+const road=$('#road'); const roadItems=road?$$('li',road):[]; let roadP=-1;
+function drawRails(){
+  const vh=innerHeight;
+  segs.forEach(s=>{
+    const r=s.sec.getBoundingClientRect();
+    const p=clamp((vh*0.8-r.top)/(r.height),0,1);
+    if(Math.abs(p-s.p)>0.01){s.p=p;s.el.style.setProperty('--p',p.toFixed(3))}
+    const lit=p>0.12; if(lit!==s.lit){s.lit=lit;s.el.classList.toggle('lit',lit)}
+  });
+  if(road){
+    const r=road.getBoundingClientRect(); const p=clamp((vh*0.72-r.top)/r.height,0,1);
+    if(Math.abs(p-roadP)>0.01){roadP=p;road.style.setProperty('--p',p.toFixed(3));roadItems.forEach((li,i)=>{const on=p>=(i+0.5)/roadItems.length-0.08;if(on!==li.classList.contains('lit'))li.classList.toggle('lit',on)})}
+  }
+}
+let railRaf=null;
+function onPageScroll(){ if(railRaf===null) railRaf=requestAnimationFrame(()=>{railRaf=null;drawRails()}) }
+let pageDrivesOn=false;
+function armPageDrives(){ if(pageDrivesOn) return; pageDrivesOn=true; addEventListener('scroll',onPageScroll,{passive:true}); drawRails() }
+function disarmPageDrives(){ if(!pageDrivesOn) return; pageDrivesOn=false; removeEventListener('scroll',onPageScroll) }
+
+/* live sections: whisper loops only while on screen */
+const live=new IntersectionObserver(es=>{es.forEach(e=>e.target.classList.toggle('live',e.isIntersecting))},{threshold:0});
+$$('.sec').forEach(el=>live.observe(el)); live.observe(stage);
+$('.env').classList.add('live');
+document.addEventListener('visibilitychange',()=>document.body.classList.toggle('paused',document.hidden));
+
+/* the one interactive moment: press and hold to approve */
+const hold=$('#hold'), holdBtn=$('#holdBtn'), holdState=$('#holdState'), holdLabel=$('#holdLabel'), result=$$('#result li');
+let h=0, holding=false, holdRaf=null, lastH=0, holdDone=false;
+function setH(v){h=clamp(v,0,1);hold.style.setProperty('--h',h.toFixed(3))}
+function holdTick(now){
+  const dt=Math.min(50,now-(lastH||now)); lastH=now;
+  if(holdDone){holdRaf=null;return}
+  setH(h+(holding?dt/1100:-dt/500));
+  if(h>=1){completeHold();holdRaf=null;return}
+  if(!holding&&h<=0){holdRaf=null;lastH=0;return}
+  holdRaf=requestAnimationFrame(holdTick);
+}
+function startHold(e){ if(holdDone) return; if(e.type==='pointerdown'&&e.button!==0) return; holding=true; holdBtn.setPointerCapture&&e.pointerId!==undefined&&holdBtn.setPointerCapture(e.pointerId); if(holdRaf===null){lastH=0;holdRaf=requestAnimationFrame(holdTick)} }
+function endHold(){ holding=false; if(!holdDone&&holdRaf===null){lastH=0;holdRaf=requestAnimationFrame(holdTick)} }
+function completeHold(){ holdDone=true; holding=false; setH(1); hold.classList.add('done'); holdLabel.textContent='승인됨'; holdState.textContent='승인 후에만 실행됩니다.'; result.forEach((li,i)=>setTimeout(()=>li.classList.add('on'),250+i*420)) }
+function pinHold(){ holdDone=true; setH(1); hold.classList.add('done'); holdLabel.textContent='승인됨'; holdState.textContent='승인 후에만 실행됩니다.'; result.forEach(li=>li.classList.add('on')) }
+function unpinHold(){ holdDone=false; setH(0); hold.classList.remove('done'); holdLabel.textContent='길게 눌러 승인'; holdState.textContent='누르고 있는 동안 승인이 진행됩니다'; result.forEach(li=>li.classList.remove('on')) }
+holdBtn.addEventListener('pointerdown',startHold); holdBtn.addEventListener('pointerup',endHold); holdBtn.addEventListener('pointercancel',endHold); holdBtn.addEventListener('pointerleave',endHold);
+holdBtn.addEventListener('keydown',e=>{if((e.key===' '||e.key==='Enter')&&!e.repeat){e.preventDefault();startHold(e)}});
+holdBtn.addEventListener('keyup',e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();endHold()}});
+holdBtn.addEventListener('contextmenu',e=>e.preventDefault());
+
+/* reduced motion, live in both directions */
+function pinToFinalStates(){
+  document.body.classList.add('rm');
+  $$('.rv').forEach(el=>el.classList.add('in','done'));
+  $$('.draw').forEach(el=>el.classList.add('in'));
+  segs.forEach(s=>{s.el.style.setProperty('--p',1);s.el.classList.add('lit');s.p=1;s.lit=true});
+  if(road){road.style.setProperty('--p',1);roadItems.forEach(li=>li.classList.add('lit'));roadP=1}
+  pinHold(); disarmPageDrives();
+}
+function unpinFinalStates(){
+  document.body.classList.remove('rm');
+  segs.forEach(s=>{s.p=-1;s.lit=false;s.el.classList.remove('lit')});
+  if(road){roadP=-1;roadItems.forEach(li=>li.classList.remove('lit'))}
+  if(hold.classList.contains('done')&&h>=1&&holdDone&&document.body.dataset.pinned==='1') unpinHold();
+  armPageDrives();
+}
+const rmq=matchMedia('(prefers-reduced-motion: reduce)');
+rmq.addEventListener('change',e=>{ if(e.matches){document.body.dataset.pinned='1';pinToFinalStates();disableScrub()} else {applyHeroMode();unpinFinalStates();document.body.dataset.pinned='0'} });
+
+/* boot */
+if(rmq.matches){document.body.dataset.pinned='1';pinToFinalStates()} else armPageDrives();
+applyHeroMode();
+addEventListener('load',()=>{measure();if(scrubOn){updateCaptions(heroProgress());onScroll()}drawRails()});
+})();
+</script>
+</body>
+</html>
